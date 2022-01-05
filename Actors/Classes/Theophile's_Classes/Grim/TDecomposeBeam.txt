@@ -1,0 +1,298 @@
+actor Ability2_TGrim : AbilityMasterBase
+{
+Weapon.AmmoUse2 1
+Weapon.AmmoGive2 0
+Inventory.Pickupmessage "$PU_GrimBUSTER"
+Obituary "$OB_GrimBUSTER"
+Tag "DecomposeBeam"
+weapon.ammotype2 "busterPower"
+inventory.icon "LASERSI"
+Dropitem ""
++WEAPON.ALLOW_WITH_RESPAWN_INVUL
+States
+{
+
+Ready:
+HSPR M 0 
+"####" "#" 0 A_Jumpif(CallACS("CSLT_CheckAbilityInput",1)==1,"User1")
+"####" "#" 0 A_Jumpif(CallACS("CSLT_CheckAbilityInput",3)==1,"User3")
+"####" B 1 A_WeaponReady
+goto ready
+
+Fire:
+"####" NOP 2
+"####" C 0 A_GiveInventory("DecomposeBeamTimer",1)
+"####" D 1 A_TakeInventory("AbilityCharge_2",1)
+FireHold:
+"####" P 0 A_PlaySoundEx("weapon/Gemini","Weapon")
+"####" P 0 A_FireCustomMissile("DecomposeBeamDamager",0,0,8,0)
+"####" PP 1 A_FireCustomMissile("DecomposeBeamBurstStart",0,0,8,0)
+"####" P 0 A_Jumpif(CallACS("CSLT_ButtonCheck",BT_ALTATTACK)==1,"FireHoldEnd")
+"####" P 0 A_JumpIfInventory("DecomposeBeamTimer",1,"FireHold")
+FireHoldEnd:
+//===
+"####" QR 2
+"####" B 0 A_Jump(256,"End")
+goto End
+
+AltFire:
+"####" R 1
+End:
+"####" R 1 A_TakeInventory("AbilityActiveFlag",9)
+"####" R 0 
+Goto End
+}
+}
+//====
+
+actor UseAbility2_TGrim : CustomInventory
+{
+states
+{
+Use:
+WEA2 A 0 A_GiveInventory("GrimDecomposeBeamAbility",1)
+fail
+}
+}
+
+actor GrimDecomposeBeamAbility : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_JumpIfInventory("AbilityCharge_2",1,"Pickup2")
+stop
+
+Pickup2:
+TNT1 A 0 ACS_NamedExecuteAlways("RunClassAbility",0,2)
+stop
+}
+}
+//=================
+//=================
+
+Actor DecomposeBeamTimer : Powerup{inventory.amount 1 powerup.duration 35}
+
+Const Int DecomposeBeamRange = 60;
+
+actor DecomposeBeamDamager : BasicFastProjectile
+{
+    PROJECTILE
+    damagetype "DecomposeBeam"
+    Obituary "$OB_DECOMPOSEBEAM"
+    +SKYEXPLODE
+    +EXPLODEONWATER
+    +HITTRACER
+    RenderStyle None
+    Damage (0) 
+    Radius 4
+    Height 4
+    speed 900 //15 * DecomposeBeamRange(125)
+    scale 2.5
+    states
+    {
+    Spawn:
+        TNT1 A 0
+        TNT1 A 1 A_Stop
+        TNT1 A 0
+        stop
+    Death:
+    AQBA L 0 A_GiveInventory("ProjectileDCode",1)
+    TNT1 A 0 A_JumpIf(ACS_NamedExecuteWithResult("TracerHealthGet")>0,"Headshotcheck")
+    TNT1 A 0 A_SpawnItemEx("LazerTagPuff",0,0,0,0,0,0,0,1)
+    stop
+    HeadShotCheck:
+    TNT1 A 0 A_JumpIf(Checkclass("PlayerPawn",AAPTR_TRACER,true)&&z>=ACS_NamedExecuteWithResult("TF2_TracerZGet")+40,"DoHeadshot")
+    TNT1 A 0 A_SpawnItemEx("DecomposeBeam_BodyShotter",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+    TNT1 A 0 A_SpawnItemEx("LazerTagPuff",0,0,0,0,0,0,0,1)
+    stop
+    DoHeadShot:
+    TNT1 A 0 A_SpawnItemEx("DecomposeBeam_HeadShotter",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+    TNT1 A 0 A_SpawnItemEx("PowerStrikeFX",0,0,0,0,0,0,0,1)
+    stop
+    }
+}
+
+actor DecomposeBeamBurstStart //: BasicHelper
+{
+    +MISSILE
+    -SOLID
+    +NOCLIP
+    +NOINTERACTION
+    +NOGRAVITY
+    +DONTBLAST
+    +DONTREFLECT
+    +THRUACTORS
+    RenderStyle none
+    Radius 2
+    Height 2
+
+    Speed 15
+    States
+    {
+    Spawn:
+        TNT1 A 0
+        TNT1 A 0 A_Warp(2,0,0,32,0,16+8)//But which interpolation? Does it matter?
+        TNT1 A 1 A_SpawnItemEx("DecomposeBeamBurst",0,0,0,momx,momy,momz,0,8)
+        stop
+    }
+}
+
+actor DecomposeBeamBurst : BasicFastProjectile//FastProj to match damager hitbox
+{
+    +MISSILE
+    +NOGRAVITY
+    +SKYEXPLODE
+    +EXPLODEONWATER
+    +DONTSPLASH
+    +PAINLESS
+    +CLIENTSIDEONLY
+    RenderStyle None
+    Damage (0)
+    Radius 4
+    Height 4
+    Speed 15
+    Scale 2.5
+    States
+    {
+    Spawn:
+        TNT1 A 0
+        TNT1 A 0 A_GiveInventory("ProjectileCode",1)
+        TNT1 A 0 A_JumpIf(Pitch > DecomposeBeamRange,"Death2")
+        TNT1 A 0 A_SetPitch(Pitch+1)
+        TNT1 A 0 A_SpawnItemEx("DecomposeBeamBurst",0,0,0,momx,momy,momz,0,552+1)//512+32+8
+        TNT1 A 0 A_Stop
+        TNT1 A 0 A_SpawnItemEx("DecomposeBeamFX",0,0,0,0,0,0,0,1)
+        TNT1 A 1
+        stop
+    Death:
+        TNT1 A 0 A_SpawnItemEx("DecomposeBeamEndFX",0,0,0,0,0,0,0,1)
+        stop
+    Death2:
+        TNT1 A 0 A_Stop
+        TNT1 A 0 A_SpawnItemEx("DecomposeBeamEndFX",0,0,0,0,0,0,0,1)
+        stop
+    }
+}
+
+
+actor DecomposeBeamFX : BasicGraphicEffect
+{
+    +FORCEXYBILLBOARD
+    +BRIGHT
+    RenderStyle "add"
+    Scale 2.0
+    States
+    {
+    Spawn:
+        ICEL I 0
+        ICEL I 1
+        stop
+    }
+}
+
+actor DecomposeBeamEndFX : DecomposeBeamFX
+{
+    RenderStyle "add"
+    States
+    {
+    Spawn:
+        HARD DCBE 1
+        stop
+    }
+}
+
+
+//=======================
+actor DecomposeBeam
+{
+PROJECTILE
+Obituary "%o got decomposed by %k's Decompose Beam."
++SKYEXPLODE
++FORCEXYBILLBOARD
++HITTRACER
+Renderstyle "Add"
+Damagetype "DecomposeBeam"
+Damage (0)
+radius 6
+height 6
+Speed 60
+Scale 3.75
+States
+{
+Spawn:
+ICEL I 0
+AQBA L 0 A_GiveInventory("ProjectileCode",1)
+TNT1 A 0 A_SetPitch(CallACS("CSLT_PitchGrab"))
+ICEL I 2
+ICEL I 2 A_Fadeout(0.5)
+ICEL I 2 A_Fadeout(0.25)
+ICEL I 2
+//ICEL IZIZ 2
+stop
+Death:
+AQBA L 0 A_GiveInventory("ProjectileDCode",1)
+TNT1 A 0 A_JumpIf(ACS_NamedExecuteWithResult("TracerHealthGet")>0,"Headshotcheck")
+TNT1 A 0 A_SpawnItemEx("LazerTagPuff",0,0,0,0,0,0,0,1)
+stop
+HeadShotCheck:
+TNT1 A 0 A_JumpIf(Checkclass("PlayerPawn",AAPTR_TRACER,true)&&z>=ACS_NamedExecuteWithResult("TF2_TracerZGet")+40,"DoHeadshot")
+TNT1 A 0 A_SpawnItemEx("DecomposeBeam_BodyShotter",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+TNT1 A 0 A_SpawnItemEx("LazerTagPuff",0,0,0,0,0,0,0,1)
+stop
+DoHeadShot:
+TNT1 A 0 A_SpawnItemEx("DecomposeBeam_HeadShotter",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+TNT1 A 0 A_SpawnItemEx("PowerStrikeFX",0,0,0,0,0,0,0,1)
+stop
+}
+}
+
+actor DecomposeBeamFake : DecomposeBeam
+{
+Damagetype "GeminiLaser"
+States
+{
+HeadShotCheck:
+TNT1 A 0 A_JumpIf(Checkclass("PlayerPawn",AAPTR_TRACER,true)&&z>=ACS_NamedExecuteWithResult("TF2_TracerZGet")+40,"DoHeadshot")
+TNT1 A 0 A_SpawnItemEx("LazerTagPuff",0,0,0,0,0,0,0,1)
+stop
+DoHeadShot:
+TNT1 A 0 A_SpawnItemEx("PowerStrikeFX",0,0,0,0,0,0,0,1)
+stop
+}
+}
+
+actor DecomposeBeam_BodyShotter : TF2BodyShotter
+{
+Obituary "%o got decomposed by %k's Decompose Beam. (Bodyshotted)"
+Damagetype "DecomposeBeam"
+args 30
+states
+{
+
+Spawn2:
+TNT1 A 0 A_Explode(2,1,0,0,2)
+TNT1 A 1
+stop
+}
+}
+
+actor DecomposeBeam_WallBodyShotter : DecomposeBeam_BodyShotter
+{Obituary "%o got decomposed by %k's Decompose Beam. (Wallbanged)"}
+
+actor DecomposeBeam_HeadShotter : TF2HeadShotter
+{
+Obituary "%o got decomposed by %k's Decompose Beam. (Headshotted)"
+Damagetype "DecomposeBeam"
+args 45
+states
+{
+Spawn2:
+TNT1 A 0 A_Explode(3,1,0,0,3)
+TNT1 A 1
+stop
+}
+}
+
+actor DecomposeBeam_WallHeadShotter : DecomposeBeam_HeadShotter
+{Obituary "%o got decomposed by %k's Decompose Beam. (Wallbanged+Headshotted)"}

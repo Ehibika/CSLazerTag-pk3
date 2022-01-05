@@ -1,0 +1,287 @@
+actor Ability2_Stakeout : AbilityMasterBase
+{
+Tag "Holographic Bush"
+inventory.icon "STKOUTA2"
+States
+{
+Select:
+STU2 A 0 ACS_NamedExecuteAlways("WepSpeedMod",0,Knife_MoveSpeed*FVM)
+TNT1 AAAAAAAAAAAAAAAAAAAAAA 0 A_Raise
+STU2 A 1 A_Raise
+Loop
+
+Ready:
+STU2 A 0 
+"####" A 0 A_TakeInventory("AbilityCharge_2",1)
+"####" A 0 ACS_NamedExecuteWithResult("CSLT_Chatline",CLT_ABILITY,random(13,16))
+"####" AB 1 
+"####" C 0 A_PlaySoundEx("weapon/mbuster","Weapon")
+"####" C 0 A_FireCustomMissile("StakeoutBush",0,0,8,0)
+"####" CDEF 1
+goto End
+End:
+"####" Z 1 A_TakeInventory("AbilityActiveFlag",9)
+"####" Z 0 
+Goto End
+}
+}
+
+actor UseAbility2_Stakeout : CustomInventory
+{
+states
+{
+Use:
+WEA2 A 0 A_GiveInventory("HolographicBush_Ability",1)
+fail
+}
+}
+
+actor HolographicBush_Ability : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_JumpIfInventory("AbilityCharge_2",1,"Pickup2")
+stop
+
+Pickup2:
+TNT1 A 0 ACS_NamedExecuteAlways("RunClassAbility",0,2)
+stop
+}
+}
+
+actor StakeoutBush
+{
+PROJECTILE
+-NOGRAVITY
+gravity 1.8
+speed 40
++DONTBLAST
++DONTREFLECT
++NOTARGETSWITCH
+
++BOUNCEONWALLS
++BOUNCEONCEILINGS
++CANBOUNCEWATER
+-ALLOWBOUNCEONACTORS
+-BOUNCEONACTORS
+wallbouncefactor 0.7
+bouncefactor 0.7
+BounceSound "item/protoreflect"
+
+Radius 13
+Height 10
+scale 2.5
+
++RIPPER
+damage (0)
+
+Args 245
+States
+{
+Spawn:
+CHIL B 0
+CHIL B 0 A_GiveInventory("ProjectileCode",1)
+CHIL B 0 ThrustThingZ(0,20,0,1)
+SpawnLoop:
+STUT D 1 
+loop
+Death:
+TNT1 A 0 A_GiveInventory("ProjectileDCode",1)
+TNT1 A 0 ACS_NamedExecuteWithResult("CSLT_Stakeout_BushRustling")
+TNT1 A 0 A_PlaySoundEx("weapon/copyvision", "weapon")
+TNT1 A 0 A_Stop
+TNT1 A 0 A_ScaleVelocity(0.0)
+TNT1 A 0 A_ChangeFlag("NOGRAVITY",true)
+STUT E 0 A_SpawnItemEX("StakeoutBushFX0.25",60,0,0,0,0,0,72*0,1)
+STUT E 0 A_SpawnItemEX("StakeoutBushFX0.25",60,0,0,0,0,0,72*1,1)
+STUT E 0 A_SpawnItemEX("StakeoutBushFX0.25",60,0,0,0,0,0,72*2,1)
+STUT E 0 A_SpawnItemEX("StakeoutBushFX0.25",60,0,0,0,0,0,72*3,1)
+STUT E 0 A_SpawnItemEX("StakeoutBushFX0.25",60,0,0,0,0,0,72*4,1)
+STUT E 1 A_CountdownArg(0,"DeathTrue")
+STUT E 0 A_SpawnItemEX("StakeoutBushFX0.25",60,0,0,0,0,0,72*0,1)
+STUT E 0 A_SpawnItemEX("StakeoutBushFX0.25",60,0,0,0,0,0,72*1,1)
+STUT E 0 A_SpawnItemEX("StakeoutBushFX0.25",60,0,0,0,0,0,72*2,1)
+STUT E 0 A_SpawnItemEX("StakeoutBushFX0.25",60,0,0,0,0,0,72*3,1)
+STUT E 0 A_SpawnItemEX("StakeoutBushFX0.25",60,0,0,0,0,0,72*4,1)
+STUT E 1 A_CountdownArg(0,"DeathTrue")
+STUT F 0 A_SpawnItemEX("StakeoutBushFX0.5",60,0,0,0,0,0,72*0,1)
+STUT F 0 A_SpawnItemEX("StakeoutBushFX0.5",60,0,0,0,0,0,72*1,1)
+STUT F 0 A_SpawnItemEX("StakeoutBushFX0.5",60,0,0,0,0,0,72*2,1)
+STUT F 0 A_SpawnItemEX("StakeoutBushFX0.5",60,0,0,0,0,0,72*3,1)
+STUT F 0 A_SpawnItemEX("StakeoutBushFX0.5",60,0,0,0,0,0,72*4,1)
+STUT F 1 A_CountdownArg(0,"DeathTrue")
+STUT F 0 A_SpawnItemEX("StakeoutBushFX0.5",60,0,0,0,0,0,72*0,1)
+STUT F 0 A_SpawnItemEX("StakeoutBushFX0.5",60,0,0,0,0,0,72*1,1)
+STUT F 0 A_SpawnItemEX("StakeoutBushFX0.5",60,0,0,0,0,0,72*2,1)
+STUT F 0 A_SpawnItemEX("StakeoutBushFX0.5",60,0,0,0,0,0,72*3,1)
+STUT F 0 A_SpawnItemEX("StakeoutBushFX0.5",60,0,0,0,0,0,72*4,1)
+STUT F 1 A_CountdownArg(0,"DeathTrue")
+STUT E 0 A_SpawnItemEX("StakeoutBushFX0.75",60,0,0,0,0,0,72*0,1)
+STUT E 0 A_SpawnItemEX("StakeoutBushFX0.75",60,0,0,0,0,0,72*1,1)
+STUT E 0 A_SpawnItemEX("StakeoutBushFX0.75",60,0,0,0,0,0,72*2,1)
+STUT E 0 A_SpawnItemEX("StakeoutBushFX0.75",60,0,0,0,0,0,72*3,1)
+STUT E 0 A_SpawnItemEX("StakeoutBushFX0.75",60,0,0,0,0,0,72*4,1)
+STUT E 1 A_CountdownArg(0,"DeathTrue")
+STUT E 0 A_SpawnItemEX("StakeoutBushFX0.75",60,0,0,0,0,0,72*0,1)
+STUT E 0 A_SpawnItemEX("StakeoutBushFX0.75",60,0,0,0,0,0,72*1,1)
+STUT E 0 A_SpawnItemEX("StakeoutBushFX0.75",60,0,0,0,0,0,72*2,1)
+STUT E 0 A_SpawnItemEX("StakeoutBushFX0.75",60,0,0,0,0,0,72*3,1)
+STUT E 0 A_SpawnItemEX("StakeoutBushFX0.75",60,0,0,0,0,0,72*4,1)
+STUT E 1 A_CountdownArg(0,"DeathTrue")
+DeathLoop:
+STUT F 0 A_SpawnItemEX("StakeoutBushFX1.0",60,0,0,0,0,0,72*0,1)
+STUT F 0 A_SpawnItemEX("StakeoutBushFX1.0",60,0,0,0,0,0,72*1,1)
+STUT F 0 A_SpawnItemEX("StakeoutBushFX1.0",60,0,0,0,0,0,72*2,1)
+STUT F 0 A_SpawnItemEX("StakeoutBushFX1.0",60,0,0,0,0,0,72*3,1)
+STUT F 0 A_SpawnItemEX("StakeoutBushFX1.0",60,0,0,0,0,0,72*4,1)
+STUT F 1 A_CountdownArg(0,"DeathTrue")
+STUT F 0 A_SpawnItemEX("StakeoutBushFX1.0",60,0,0,0,0,0,72*0,1)
+STUT F 0 A_SpawnItemEX("StakeoutBushFX1.0",60,0,0,0,0,0,72*1,1)
+STUT F 0 A_SpawnItemEX("StakeoutBushFX1.0",60,0,0,0,0,0,72*2,1)
+STUT F 0 A_SpawnItemEX("StakeoutBushFX1.0",60,0,0,0,0,0,72*3,1)
+STUT F 0 A_SpawnItemEX("StakeoutBushFX1.0",60,0,0,0,0,0,72*4,1)
+STUT F 1 A_CountdownArg(0,"DeathTrue")
+STUT E 0 A_SpawnItemEX("StakeoutBushFX1.0",60,0,0,0,0,0,72*0,1)
+STUT E 0 A_SpawnItemEX("StakeoutBushFX1.0",60,0,0,0,0,0,72*1,1)
+STUT E 0 A_SpawnItemEX("StakeoutBushFX1.0",60,0,0,0,0,0,72*2,1)
+STUT E 0 A_SpawnItemEX("StakeoutBushFX1.0",60,0,0,0,0,0,72*3,1)
+STUT E 0 A_SpawnItemEX("StakeoutBushFX1.0",60,0,0,0,0,0,72*4,1)
+STUT E 1 A_CountdownArg(0,"DeathTrue")
+STUT E 0 A_SpawnItemEX("StakeoutBushFX1.0",60,0,0,0,0,0,72*0,1)
+STUT E 0 A_SpawnItemEX("StakeoutBushFX1.0",60,0,0,0,0,0,72*1,1)
+STUT E 0 A_SpawnItemEX("StakeoutBushFX1.0",60,0,0,0,0,0,72*2,1)
+STUT E 0 A_SpawnItemEX("StakeoutBushFX1.0",60,0,0,0,0,0,72*3,1)
+STUT E 0 A_SpawnItemEX("StakeoutBushFX1.0",60,0,0,0,0,0,72*4,1)
+STUT E 1 A_CountdownArg(0,"DeathTrue")
+loop
+DeathTrue:
+STUT F 0 A_SpawnItemEX("StakeoutBushFX0.75",60,0,0,0,0,0,72*0,1)
+STUT F 0 A_SpawnItemEX("StakeoutBushFX0.75",60,0,0,0,0,0,72*1,1)
+STUT F 0 A_SpawnItemEX("StakeoutBushFX0.75",60,0,0,0,0,0,72*2,1)
+STUT F 0 A_SpawnItemEX("StakeoutBushFX0.75",60,0,0,0,0,0,72*3,1)
+STUT F 0 A_SpawnItemEX("StakeoutBushFX0.75",60,0,0,0,0,0,72*4,1)
+MMFX F 1
+STUT F 0 A_SpawnItemEX("StakeoutBushFX0.75",60,0,0,0,0,0,72*0,1)
+STUT F 0 A_SpawnItemEX("StakeoutBushFX0.75",60,0,0,0,0,0,72*1,1)
+STUT F 0 A_SpawnItemEX("StakeoutBushFX0.75",60,0,0,0,0,0,72*2,1)
+STUT F 0 A_SpawnItemEX("StakeoutBushFX0.75",60,0,0,0,0,0,72*3,1)
+STUT F 0 A_SpawnItemEX("StakeoutBushFX0.75",60,0,0,0,0,0,72*4,1)
+MMFX F 1
+STUT G 0 A_SpawnItemEX("StakeoutBushFX0.5",60,0,0,0,0,0,72*0,1)
+STUT G 0 A_SpawnItemEX("StakeoutBushFX0.5",60,0,0,0,0,0,72*1,1)
+STUT G 0 A_SpawnItemEX("StakeoutBushFX0.5",60,0,0,0,0,0,72*2,1)
+STUT G 0 A_SpawnItemEX("StakeoutBushFX0.5",60,0,0,0,0,0,72*3,1)
+STUT G 0 A_SpawnItemEX("StakeoutBushFX0.5",60,0,0,0,0,0,72*4,1)
+MMFX G 1
+STUT G 0 A_SpawnItemEX("StakeoutBushFX0.5",60,0,0,0,0,0,72*0,1)
+STUT G 0 A_SpawnItemEX("StakeoutBushFX0.5",60,0,0,0,0,0,72*1,1)
+STUT G 0 A_SpawnItemEX("StakeoutBushFX0.5",60,0,0,0,0,0,72*2,1)
+STUT G 0 A_SpawnItemEX("StakeoutBushFX0.5",60,0,0,0,0,0,72*3,1)
+STUT G 0 A_SpawnItemEX("StakeoutBushFX0.5",60,0,0,0,0,0,72*4,1)
+MMFX G 1
+STUT H 0 A_SpawnItemEX("StakeoutBushFX0.25",60,0,0,0,0,0,72*0,1)
+STUT H 0 A_SpawnItemEX("StakeoutBushFX0.25",60,0,0,0,0,0,72*1,1)
+STUT H 0 A_SpawnItemEX("StakeoutBushFX0.25",60,0,0,0,0,0,72*2,1)
+STUT H 0 A_SpawnItemEX("StakeoutBushFX0.25",60,0,0,0,0,0,72*3,1)
+STUT H 0 A_SpawnItemEX("StakeoutBushFX0.25",60,0,0,0,0,0,72*4,1)
+MMFX H 1
+STUT H 0 A_SpawnItemEX("StakeoutBushFX0.25",60,0,0,0,0,0,72*0,1)
+STUT H 0 A_SpawnItemEX("StakeoutBushFX0.25",60,0,0,0,0,0,72*1,1)
+STUT H 0 A_SpawnItemEX("StakeoutBushFX0.25",60,0,0,0,0,0,72*2,1)
+STUT H 0 A_SpawnItemEX("StakeoutBushFX0.25",60,0,0,0,0,0,72*3,1)
+STUT H 0 A_SpawnItemEX("StakeoutBushFX0.25",60,0,0,0,0,0,72*4,1)
+MMFX HII 1
+stop
+}
+}
+
+actor StakeoutBushFX0.25 : BasicGraphicEffect
+{
+scale 2.0
+alpha 0.25
+States
+{
+Spawn:
+STUT G 2
+stop
+}
+}
+
+actor StakeoutBushFX0.5 : StakeoutBushFX0.25 {alpha 0.5}
+actor StakeoutBushFX0.75 : StakeoutBushFX0.25 {alpha 0.75}
+actor StakeoutBushFX1.0 : StakeoutBushFX0.25 {alpha 1.0}
+
+actor StakeoutLeafFX1
+{
++MISSILE
++NOGRAVITY
++THRUACTORS
++DONTBLAST
++DONTSPLASH
++CLIENTSIDEONLY
+Radius 2
+Height 2
+scale 2.5
+States
+{
+Spawn:
+TNT1 A 0
+TNT1 A 0 A_Jump(256,2,3,4,5,6)
+TNT1 A 0 A_Jump(256,5,6,7,8,9)
+STU2 S 4 A_ChangeVelocity(0,2,-2,3)
+STU2 T 3 A_ChangeVelocity(0,3,-2,3)
+STU2 U 4 A_ChangeVelocity(0,4,-2,3)
+STU2 V 3 A_ChangeVelocity(0,3,-2,3)
+STU2 W 4 A_ChangeVelocity(0,2,-2,3)
+STU2 S 4 A_ChangeVelocity(0,-2,-2,3)
+STU2 T 3 A_ChangeVelocity(0,-3,-2,3)
+STU2 U 4 A_ChangeVelocity(0,-4,-2,3)
+STU2 V 3 A_ChangeVelocity(0,-3,-2,3)
+STU2 W 4 A_ChangeVelocity(0,-2,-2,3)
+goto Spawn+3
+}
+}
+actor StakeoutLeafFX2 : StakeoutLeafFX1
+{
+States
+{
+Spawn:
+TNT1 A 0
+goto StakeoutLeafFX1::Spawn+2
+}
+}
+
+actor StakeoutBushHelperGiver : CustomInventory
+{
+States
+{
+Pickup:
+TNT1 A 0
+TNT1 A 0 A_SpawnItemEX("StakeoutBushHelper")
+stop
+}
+}
+
+actor StakeoutBushHelper : BasicHelper
+{
+States
+{
+Spawn:
+TNT1 A 0
+TNT1 A 1 A_GiveInventory("ProjectileCode",1)
+TNT1 A 0 A_PlaySoundEX("weapon/bushrustle","Weapon")
+TNT1 A 0 A_SpawnItemEx("StakeoutLeafFX1",(random(1,9)*7)+60,0,70+random(0,16),0,0,-2,(random(0,17)*10)+(72*0),1)
+TNT1 A 0 A_SpawnItemEx("StakeoutLeafFX1",(random(1,9)*7)+60,0,70+random(0,16),0,0,-2,(random(0,17)*10)+(72*1),1)
+TNT1 A 0 A_SpawnItemEx("StakeoutLeafFX1",(random(1,9)*7)+60,0,70+random(0,16),0,0,-2,(random(0,17)*10)+(72*2),1)
+TNT1 A 0 A_SpawnItemEx("StakeoutLeafFX1",(random(1,9)*7)+60,0,70+random(0,16),0,0,-2,(random(0,17)*10)+(72*3),1)
+TNT1 A 0 A_SpawnItemEx("StakeoutLeafFX1",(random(1,9)*7)+60,0,70+random(0,16),0,0,-2,(random(0,17)*10)+(72*4),1)
+TNT1 A 0 A_SpawnItemEx("StakeoutLeafFX2",(random(1,9)*7)+60,0,70+random(0,16),0,0,-2,(random(18,35)*10)+(72*0),1)
+TNT1 A 0 A_SpawnItemEx("StakeoutLeafFX2",(random(1,9)*7)+60,0,70+random(0,16),0,0,-2,(random(18,35)*10)+(72*1),1)
+TNT1 A 0 A_SpawnItemEx("StakeoutLeafFX2",(random(1,9)*7)+60,0,70+random(0,16),0,0,-2,(random(18,35)*10)+(72*2),1)
+TNT1 A 0 A_SpawnItemEx("StakeoutLeafFX2",(random(1,9)*7)+60,0,70+random(0,16),0,0,-2,(random(18,35)*10)+(72*3),1)
+TNT1 A 0 A_SpawnItemEx("StakeoutLeafFX2",(random(1,9)*7)+60,0,70+random(0,16),0,0,-2,(random(18,35)*10)+(72*4),1)
+TNT1 A 10
+stop
+}
+}

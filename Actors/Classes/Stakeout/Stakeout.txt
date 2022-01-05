@@ -1,0 +1,133 @@
+actor Stakeout : ClassBase
+{
+Player.displayname "Stakeout"
+player.startitem "IsStakeout"
+player.startitem "BusterPower", 1000
+player.startitem "SetupShop"
+player.startitem "LoadShopInventory"
+
+player.startitem "Stakeout_ClassSet"
+
+
+states
+{
+Spawn:
+TRSM A 0
+TRSM B 1
+TRSM A 1
+Goto Spawn+2
+See:
+TRSM BCDE 5
+Goto Spawn
+Missile:
+TRSM F 5
+TRSM G 4
+goto Spawn
+}
+}
+
+Actor IsStakeout : Once{}
+
+Const int Cap_CameraDrone = 1;
+Const int Cap_HolographicBush = 3;
+Const int Cap_AutoTripod = 2;
+
+actor StakeoutStarterSet : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("Zapper",1)
+TNT1 A 0 ACS_NamedExecuteAlways("GiveSignatureCharge",0,Cap_CameraDrone)
+TNT1 A 0
+Done:
+TNT1 A 0
+stop
+}
+}
+
+actor Stakeout_Melee : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("StakeoutMelee",1)
+TNT1 A 0
+Done:
+TNT1 A 0
+stop
+}
+}
+
+actor Stakeout_ClassSet : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("UseAbility1_Stakeout",1)
+TNT1 A 0 A_GiveInventory("Ability1_ChargeFlag",1)
+TNT1 A 0 A_GiveInventory("AbilityChargeCap_1",Cap_CameraDrone)
+//==
+TNT1 A 0 A_GiveInventory("UseAbility2_Stakeout",1)
+TNT1 A 0 A_GiveInventory("Ability2_ChargeFlag",1)
+TNT1 A 0 A_GiveInventory("AbilityChargeCap_2",Cap_HolographicBush)
+//==
+TNT1 A 0 A_GiveInventory("UseAbility3_Stakeout",1)
+TNT1 A 0 A_GiveInventory("Ability3_ChargeFlag",1)
+TNT1 A 0 A_GiveInventory("AbilityChargeCap_3",Cap_AutoTripod)
+TNT1 A 0
+Done:
+TNT1 A 0
+stop
+}
+}
+
+actor Stakeout_ClassShop : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("BuyHolographicBush",1)
+TNT1 A 0 A_GiveInventory("BuyAutoTripod",1)
+stop
+}
+}
+
+Const int Cost_HolographicBush = 100;
+Const int Cost_AutoTripod = 250;
+
+actor BuyHolographicBush : BuyThing
+{
+states
+{
+Use1:
+TNT1 A 0 A_JumpIf(CallACS("CashCheck",Cost_HolographicBush),"Use2")
+goto NoMoney
+CostPay:
+TNT1 A 0 ACS_NamedExecuteWithResult("CashPay",Cost_HolographicBush)
+goto BuySuccess
+Use2:
+TNT1 A 0 A_JumpIfInventory("AbilityCharge_2",Cap_HolographicBush,"FullCapacity")
+TNT1 A 0 A_GiveInventory("AbilityCharge_2",1)
+TNT1 A 0 ACS_NamedExecuteAlways("Write_Inventory",0)
+goto CostPay
+}
+}
+
+actor BuyAutoTripod : BuyThing
+{
+states
+{
+Use1:
+TNT1 A 0 A_JumpIf(CallACS("CashCheck",Cost_AutoTripod),"Use2")
+goto NoMoney
+CostPay:
+TNT1 A 0 ACS_NamedExecuteWithResult("CashPay",Cost_AutoTripod)
+goto BuySuccess
+Use2:
+TNT1 A 0 A_JumpIfInventory("AbilityCharge_3",Cap_AutoTripod,"FullCapacity")
+TNT1 A 0 A_GiveInventory("AbilityCharge_3",1)
+TNT1 A 0 ACS_NamedExecuteAlways("Write_Inventory",0)
+goto CostPay
+}
+}

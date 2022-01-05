@@ -1,0 +1,117 @@
+actor Gastro : ClassBase
+{
+Player.displayname "Gastro"
+player.startitem "IsGastro"
+player.startitem "BusterPower", 100
+player.startitem "SetupShop"
+player.startitem "LoadShopInventory"
+
+player.startitem "Gastro_ClassSet"
+
+states
+{
+Spawn:
+ROLL A 0
+ROLL B 1
+ROLL A 1
+Goto Spawn+2
+See:
+ROLL BCDE 5
+Goto Spawn
+Missile:
+ROLL F 5
+ROLL G 4
+goto Spawn
+}
+}
+
+Actor IsGastro : Once{}
+
+actor GastroStarterSet : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("Zapper",1)
+TNT1 A 0 A_GiveInventory("AbilityCharge_1",1)
+TNT1 A 0 A_GiveInventory("AbilityCharge_2",1)
+TNT1 A 0
+Done:
+TNT1 A 0
+stop
+}
+}
+
+actor Gastro_ClassSet : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("UseAbility1_Gastro",1)
+TNT1 A 0 A_GiveInventory("Ability1_ChargeFlag",1)
+//==
+TNT1 A 0 A_GiveInventory("UseAbility2_Gastro",1)
+TNT1 A 0 A_GiveInventory("Ability2_ChargeFlag",1)
+TNT1 A 0
+Done:
+TNT1 A 0
+stop
+}
+}
+
+//=========|Class Shop|============
+
+actor Gastro_ClassShop : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("BuyGastroHeal",1)
+TNT1 A 0 A_GiveInventory("BuyBarrier",1)
+stop
+}
+}
+
+
+Const int Cost_GastroHeal = 300;
+Const int Cost_Barrier = 500;
+
+actor BuyGastroHeal : BuyThing
+{
+states
+{
+Use1:
+TNT1 A 0 A_JumpIf(CallACS("CashCheck",Cost_GastroHeal),"Use2")
+goto NoMoney
+CostPay:
+TNT1 A 0 ACS_NamedExecuteWithResult("CashPay",Cost_GastroHeal)
+goto BuySuccess
+//===
+Use2:
+TNT1 A 0 A_JumpIfInventory("AbilityCharge_1",3,"FullCapacity")
+TNT1 A 0 A_GiveInventory("AbilityCharge_1",1)
+TNT1 A 0 ACS_NamedExecuteAlways("Write_Inventory",0)
+
+goto CostPay
+}
+}
+
+actor BuyBarrier : BuyThing
+{
+states
+{
+Use1:
+TNT1 A 0 A_JumpIf(CallACS("CashCheck",Cost_Barrier),"Use2")
+goto NoMoney
+CostPay:
+TNT1 A 0 ACS_NamedExecuteWithResult("CashPay",Cost_Barrier)
+goto BuySuccess
+//===
+Use2:
+TNT1 A 0 A_JumpIfInventory("AbilityCharge_2",1,"FullCapacity")
+TNT1 A 0 A_GiveInventory("AbilityCharge_2",1)
+TNT1 A 0 ACS_NamedExecuteAlways("Write_Inventory",0)
+
+goto CostPay
+}
+}

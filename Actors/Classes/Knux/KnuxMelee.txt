@@ -1,0 +1,56 @@
+
+actor KnuxMelee : BasicKnife
+{
+Tag "Class Melee"
+inventory.icon "SCLASI"
+States
+{
+SpawnLoop:
+WEAP X 1
+loop
+Ready:
+MKNI B 1 
+"####" "#" 0 A_Jump(256,"Ready.Core")
+Goto Ready.Core
+Deselect:
+TNT1 AAAAAAAAAAAAAAAAAAAAAA 0 A_Lower
+MKNI B 1 A_Lower
+Loop
+Select:
+//TNT1 AAAAAAAAAAAAAAAAAAAAAA 0 A_Raise
+TNT1 A 0 ACS_NamedExecuteAlways("WepSpeedMod",0,Knife_MoveSpeed*FVM)
+MKNI BBB 0 A_Raise
+MKNI B 1 A_WEAPONREADY(WRF_NOPRIMARY|WRF_NOSECONDARY|WRF_NOBOB)
+Loop
+
+Fire:
+"####" A 0 A_PlaySoundEx("weapon/SlashClaw","Weapon")
+"####" A 5
+// ==|5 Frames Before|===
+"####" A 0 A_FireCustomMissile("TestMeleeHitBox",0,0,8,0)
+// ==|23 Frames Before|===
+"####" BCD 2
+"####" E 17
+"####" A 0 A_Refire
+goto Ready
+}
+}
+
+
+actor TestMeleeHitBox : ScratchMelee
+{
+States
+{
+Spawn:
+TNT1 A 0
+TNT1 A 0 A_GiveInventory("ProjectileCode",1)
+TBLA GGGG 1 A_SpawnItemEx("ScratchTrail",-48,0,0,momx,momy,momz,0,9)
+stop
+
+Death:
+TNT1 A 0 A_GiveInventory("ProjectileCode",1)
+NDFX A 0 A_PlaySoundEx("weapon/slashclawhit","Weapon")
+NDFX A 3 A_SpawnItemEx("ScratchImpactFX",0,0,0,0,0,0,0,1)
+stop
+}
+}

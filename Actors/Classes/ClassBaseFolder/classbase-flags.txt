@@ -1,0 +1,44 @@
+actor ClassDeathPickup : CustomInventory
+{
+States
+{
+Pickup:
+TNT1 A 0 SetPlayerProperty(0, 0, PROP_TOTALLYFROZEN)
+TNT1 A 0 A_NoBlocking
+TNT1 A 0 A_Stop
+TNT1 A 0 A_GiveInventory("DeathFlagPack",1)
+TNT1 A 0 A_GiveInventory("3PCam_Off",1)
+TNT1 A 0 A_GiveInventory("PlayerVisionHide_Off",1)
+TNT1 A 0 A_GiveToTarget("SignatureKillCounter",1)
+stop
+}
+}
+
+actor ClassPainPickup : CustomInventory
+{
+States
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("RemoteKiller",1)
+stop
+}
+}
+
+actor PainPower : Powerup
+{
+powerup.duration 3
+}
+
+actor GravityHoldPainPower : PainPower {}
+actor WilyIcePainPower : PainPower {}
+
+actor TypeDeathFlag : Inventory
+{
+inventory.amount 1
+inventory.maxamount 1
+}
+
+actor ExplodeDeathFlag : TypeDeathFlag {}
+actor FallingDeathFlag : TypeDeathFlag {}
+actor RisingDeathFlag : TypeDeathFlag {}
+actor IceDeathFlag : TypeDeathFlag {}

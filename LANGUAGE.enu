@@ -1,0 +1,345 @@
+[enu default]
+
+
+//Obituaries
+OB_SNIPERRIFLE = "%o was BodyShotted by %k.";
+OB_HEADSHOT = "%o was headshotted by %k.";
+OB_MOLOTOV = "%o Was cooked by %k's Molotov.";
+OB_FLASHBANG = "%o Was Blinded by %k's FlashBang.";
+
+
+OB_WALLBANG = "%o was WallBanged by %k.";
+OB_WallHEADSHOT = "%o was WallBang headshotted by %k.";
+
+
+
+OB_FIREFIELD = "%o Was cooked by %k's FireField.";
+
+//===|Knux
+OB_BUBBLEARROW = "%o was sabotaged by %k's Bubble Arrow.";
+TAG_BUBBLEARROW = "BubbleArrow";
+PU_BUBBLEARROW = "Got a cleaning implement";
+
+OB_KNUXMINE = "%k's Mine Cleaned %o's Clock.";
+OB_BUBBLEBOUNCER = "%o was rejected by %p own attack!";
+
+
+PU_LAZERBATTERY = "Got a Lazer Battery";
+TAG_LAZERBATTERY = "Lazer Battery";
+
+PU_ZAPPER = "Picked up the Zapper";
+TAG_ZAPPER = "Zapper";
+OB_ZAPPER = "%k Eliminated %o with the Zapper";
+OB_ZAPPER2 = "%k HeadShotted %o with the Zapper";
+
+PU_SCRAPPER = "Picked up the Scrapper";
+TAG_SCRAPPER = "Scrapper";
+OB_SCRAPPER = "%k Eliminated %o with the Scrapper";
+OB_SCRAPPER2 = "%k HeadShotted %o with the Scrapper";
+
+PU_WATCHMAN = "Picked up the Watchman";
+TAG_WATCHMAN = "Watchman";
+OB_WATCHMAN = "%k Eliminated %o with the Watchman";
+OB_WATCHMAN2 = "%k HeadShotted %o with the Watchman";
+
+PU_SCOUT = "Picked up the Scout";
+TAG_SCOUT = "Scout";
+OB_SCOUT = "%k Eliminated %o with the Scout";
+OB_SCOUT2 = "%k HeadShotted %o with the Scout";
+
+PU_POUNDER = "Picked up the Pounder";
+TAG_POUNDER = "Pounder";
+OB_POUNDER = "%k Eliminated %o with the Pounder";
+OB_POUNDER2 = "%k HeadShotted %o with the Pounder";
+
+PU_GUNSLINGER = "Picked up the Gunslinger";
+TAG_GUNSLINGER = "Gunslinger";
+OB_GUNSLINGER = "%k Eliminated %o with the Gunslinger";
+OB_GUNSLINGER2 = "%k HeadShotted %o with the Gunslinger";
+
+//===
+PU_FIGHTER = "Picked up the Fighter";
+TAG_FIGHTER = "Fighter";
+OB_FIGHTER = "%k Eliminated %o with the Fighter";
+OB_FIGHTER2 = "%k HeadShotted %o with the Fighter";
+
+PU_WARDEN = "Picked up the Warden";
+TAG_WARDEN = "Warden";
+OB_WARDEN = "%k Eliminated %o with the Warden";
+OB_WARDEN2 = "%k HeadShotted %o with the Warden";
+
+PU_TRACER = "Picked up the Tracer";
+TAG_TRACER = "Tracer";
+OB_TRACER = "%k Eliminated %o with the Tracer";
+OB_TRACER2 = "%k HeadShotted %o with the Tracer";
+
+PU_ENFORCER = "Picked up the Enforcer";
+TAG_ENFORCER = "Enforcer";
+OB_ENFORCER = "%k Eliminated %o with the Enforcer";
+OB_ENFORCER2 = "%k HeadShotted %o with the Enforcer";
+
+PU_TOUJORPREY = "Picked up the Toujorprey";
+TAG_TOUJORPREY = "Toujorprey";
+OB_TOUJORPREY = "%k Eliminated %o with the Toujorprey";
+OB_TOUJORPREY2 = "%k HeadShotted %o with the Toujorprey";
+
+//===
+PU_HYPERBEAM = "Picked up the Hyperbeam";
+TAG_HYPERBEAM = "Hyperbeam";
+OB_HYPERBEAM = "%k Eliminated %o with the Hyperbeam";
+OB_HYPERBEAM2 = "%k HeadShotted %o with the Hyperbeam";
+
+PU_LIGHTCANNON = "Picked up the LightCannon";
+TAG_LIGHTCANNON = "LightCannon";
+OB_LIGHTCANNON = "%k Eliminated %o with the LightCannon";
+OB_LIGHTCANNON2 = "%k HeadShotted %o with the LightCannon";
+
+PU_MUSCLER = "Picked up the Muscler";
+TAG_MUSCLER = "Muscler";
+OB_MUSCLER = "%k Eliminated %o with the Muscler";
+OB_MUSCLER2 = "%k HeadShotted %o with the Muscler";
+
+PU_SKYE = "Picked up the Skye";
+TAG_SKYE = "Skye";
+OB_SKYE = "%k Eliminated %o with the Skye";
+OB_SKYE2 = "%k HeadShotted %o with the Skye";
+//Join Menu
+MNU_JOIN1 = "Choose your Class!"; //This doesn't want to work for some reason
+MNU_JOIN11 = "\c[MenuGreen]Choose your \c[MenuRed]Class!";
+MNU_JOIN2 = "\c[MenuCyan]Auto Select \c[MenuGreen]picks a team for you.";
+
+MNU_JOIN3 = "\c[MenuRed]Class \c-Select";
+MNU_JOIN4 = "\c[MenuGreen]Type name::";
+MNU_JOIN5 = "\c[MenuGreen]Archetypes";
+MNU_JOIN6 = "\c[MenuCyan]Auto Select";//"\c[MenuBlue]Auto\c--Select";
+MNU_JOIN7 = "\c[MenuCyan]Original Selection";
+
+MNU_JOIN7 = "\c[MenuWhite]Make sure you have the following Keys\n" 
+            "Bound for this mod.";
+
+
+//Shop
+PL_PICKUPOFF = "Loadout capacity reached. Pickups Off.";
+PL_PICKUPON = "Pickups On.";
+
+SHOP_OPEN = "Shop's Open! Open the shop menu!";
+SHOP_BUY = "Purchase Success!";
+SHOP_BUYFAIL_MONEY = "Purchase Fail! Not Enough Money!";
+SHOP_BUYFAIL_POSSESS = "Purchase Fail! Already Possessed!";
+SHOP_BUYFAIL_SPACE = "Purchase Fail! Can't carry any more!";
+
+//Shop Titles
+
+SHOP_BORDER = "\c[MenuYellow][+]=========================================================[+]";
+
+SHOP_GEAR = "\c[MenuYellow][+]\cj Armor and Gear \c[MenuYellow][+]";
+SHOP_CLASS = "\c[MenuYellow][+]\cj Abilities and Armor \c[MenuYellow][+]";
+
+SHOP_SETTINGS = "\c[MenuYellow][+]\cj Game Settings \c[MenuYellow][+]";
+
+CSLT_OPTEXT1 = "\c[MenuYellow][+]\cj Game Inputs \c[MenuYellow][+]";
+CSLT_OPTEXT2 = "\c[MenuYellow][+]\cj Alternative Game Inputs \c[MenuYellow][+]";
+CSLT_OPTEXT3 = "\c[MenuYellow][+]\cj Optional Inputs \c[MenuYellow][+]";
+
+SHOP_Zapper = "\cgZapper\cj :: Free";
+SHOP_Scrapper = "\cFScrapper\cj :: 600";
+SHOP_Watchman = "\cFWatchman\cj :: 500";
+SHOP_Scout = "\cFScout\cj :: 400";
+SHOP_Pounder = "\cFPounder\cj :: 200";
+SHOP_Gunslinger = "\cFGunslinger\cj :: 800";
+//===
+SHOP_Fighter = "\cFFighter\cj :: 2200";
+SHOP_Warden = "\cFWarden\cj :: 2700";
+SHOP_Tracer = "\cFTracer\cj :: 1100";
+SHOP_Enforcer = "\cFEnforcer\cj :: 2900";
+SHOP_Toujorprey = "\cFToujorprey\cj :: 2900";
+//===
+SHOP_Hyperbeam = "\cFHyperbeam\cj :: 5000";
+SHOP_LightCannon = "\cFLightCannon\cj :: 4200";
+//===
+SHOP_Muscler = "\cFMuscler\cj :: 1000";
+SHOP_Skye = "\cFSkye\cj :: 1400";
+
+SHOP_LightArmor = "\cFLight Armor\cj :: 400";
+SHOP_HeavyArmor = "\cFHeavy Armor\cj :: 1000";
+SHOP_LazerBattery = "\cFLazer Battery\cj :: 300";
+
+//Shop Descriptions
+SHOPDESC_Zapper = "\c[MenuWhite]The Starting Blaster";
+SHOPDESC_Scrapper = "\c[MenuWhite]Well Rounded";
+SHOPDESC_Watchman = "\c[MenuWhite]Great Damage at a distance";
+SHOPDESC_Scout = "\c[MenuWhite]Rapid Fire with free Movement";
+SHOPDESC_Pounder = "\c[MenuWhite]Potent Mini Shotgun";
+SHOPDESC_Gunslinger = "\c[MenuWhite]Lethal Headshots";
+//===
+SHOPDESC_Fighter = "\c[MenuWhite]Flexible and Versatile";
+SHOPDESC_Warden = "\c[MenuWhite]Burst Fire with Great Precision";
+SHOPDESC_Tracer = "\c[MenuWhite]Fires Fast with full free movement";
+SHOPDESC_Enforcer = "\c[MenuWhite]Shots pack high power and Precision";
+SHOPDESC_Toujorprey = "\c[MenuWhite]High Damage consistency and Ammo Efficiency";
+//===
+SHOPDESC_Hyperbeam = "\c[MenuWhite]A powerful Sniper rifle with a Scope";
+SHOPDESC_LightCannon = "\c[MenuWhite]A Light Machine gun that can punch\n"
+"Through walls and players alike!";
+//===
+SHOPDESC_Muscler = "\c[MenuWhite]Mighty and flexible Shotgun";
+SHOPDESC_Skye = "\c[MenuWhite]Swift and Subtle";
+
+SHOPDESC_LightArmor = "\c[MenuWhite]Armor that Blocks 25 points of damage";
+SHOPDESC_HeavyArmor = "\c[MenuWhite]Armor that Blocks 50 points of damage";
+SHOPDESC_LazerBattery = "\c[MenuWhite]Restore's half of your Weapon Energy";
+
+//Class Shop Descriptions
+
+SHOP_HyperBomb = "\cFHyper Bomb\cj :: 250";
+SHOPDESC_HyperBomb = "\c[MenuWhite]Powerful Thrown Explosives";
+
+SHOP_RushCall = "\cFRush Call\cj :: 200";
+SHOPDESC_RushCall = "\c[MenuWhite]Call Rush to give you a boost up\n"
+"High Places";
+
+SHOP_CombatSlide = "\cFCombat Slide\cj :: ---";
+SHOPDESC_CombatSlide = "\c[MenuWhite]Do a quick slide! Recovers\n"
+"after 2 frags!";
+
+SHOP_IceBolt = "\cFIce Bolt\cj :: 350";
+SHOPDESC_IceBolt = "\c[MenuWhite]Cast a Freezing Blast that\n"
+"Leaves behind a slowing field";
+
+SHOP_IceFog = "\cFIce Fog\cj :: 200";
+SHOPDESC_IceFog = "\c[MenuWhite]Conjure up dense fogs at\n"
+"Remote locations";
+
+SHOP_AuroraVeil = "\cFAurora Veil\cj :: 250";
+SHOPDESC_AuroraVeil = "\c[MenuWhite]Create a line of blinding lights\n"
+"That Block Vision and blind anyone that\n"
+"Passes through it.";
+
+SHOP_SnowStorm = "\cFSnow Storm\cj :: 6 Points";
+SHOPDESC_SnowStorm = "\c[MenuWhite]Conjur a Whirling Blizzard\n"
+"At your location that deflects enemy \n"
+"projectiles and slows foes who enter it.";
+
+SHOP_FlashWisp = "\cFFlash Wisp\cj :: 200";
+SHOPDESC_FlashWisp = "\c[MenuWhite]Cast a Guided Wisp\n"
+"That can be detonated to blind foes.";
+
+SHOP_FireSpirit = "\cFFire Spirit\cj :: 400";
+SHOPDESC_FireSpirit = "\c[MenuWhite]Conjure up a Wisp that\n"
+"Reveals Targets";
+
+SHOP_FireField = "\cFFire Field\cj :: 300";
+SHOPDESC_FireField = "\c[MenuWhite]Toss a Molotov on the ground";
+
+SHOP_EsperHeal = "\cFHeal\cj :: 300";
+SHOPDESC_EsperHeal = "\c[MenuWhite]Restore 60 HP on A Teammate\n"
+"or oneself over time (Press Altfire to\n."
+"self heal.";
+
+SHOP_Barrier = "\cFBarrier\cj :: 500";
+SHOPDESC_Barrier = "\c[MenuWhite]Erect a Psychic Barrier\n"
+"That Blocks enemies and their shots.";
+
+SHOP_PsycheBomb = "\cFPsyche Bomb\cj :: 200";
+SHOPDESC_PsycheBomb = "\c[MenuWhite]Remotely Plant Psychic Mines that \n"
+"Detonate and reveal approaching Enemies.\n";
+
+
+//Théophile's Classes
+
+SHOP_CardboardBox = "\cFCardboard Box\cj :: 200";
+SHOPDESC_CardboardBox = "\c[MenuWhite]Deploys a box that\n"
+"makes every player inside it invisible.\n"
+"This isn't cheap cardboard, huh.\n";
+
+SHOP_SmokeGrenade = "\cFSmoke Grenade\cj :: 300";
+SHOPDESC_SmokeGrenade = "\c[MenuWhite]Throws a grenade that will\n"
+"Stop on surfaces and makes smoke\n"
+"that makes opponents move at half speed\n";
+
+SHOP_StunMine = "\cFStun Mine\cj :: 350";
+SHOPDESC_StunMine = "\c[MenuWhite]Places down a trap that\n"
+"Jumps up and stuns opponents around it\n"
+"This mine can be destroyed by others.";
+
+SHOP_WeakenShuriken = "\cFWeaken Shuriken\cj :: 250";
+SHOPDESC_WeakenShuriken = "\c[MenuWhite]Throws 3 spreaded shurikens\n"
+"that gives opponents half damage if hit\n";
+
+SHOP_NinjaRope = "\cFNinja Rope\cj :: 250";
+SHOPDESC_NinjaRope = "\c[MenuWhite]Throws a kunai with a rope that\n"
+"Acts as a long wire adaptor\n"
+"This rope doesn't include refunds.\n";
+
+SHOP_KillingDash = "\cFKilling Dash\cj :: 350";
+SHOPDESC_KillingDash = "\c[MenuWhite]Dashes forward for a long\n"
+"duration, press Altfire to use Knife instantly\n"
+"at the cost of longer endlag, killing\n"
+"with it will reward you a single charge.\n";
+
+SHOP_HeadWheel = "\cFHead Wheel\cj :: 100";
+SHOPDESC_HeadWheel = "\c[MenuWhite]Throws an half speed beam\n"
+"that deals lethal damage when headshotting with.\n";
+
+SHOP_DecomposeBeam = "\cFDecompose Beam\cj :: 200";
+SHOPDESC_DecomposeBeam = "\c[MenuWhite]Creates a close-range beam\n"
+"that steal health, remove ammo\n"
+"and make their aim worse\n";
+
+SHOP_Necromancy = "\cFNecromancy\cj :: ---";
+SHOPDESC_Necromancy = "\c[MenuWhite]Summons a monster\n"
+"that shoots opponents, last shots\n"
+"make it move a bit, fragging opponents\n"
+"using your abilities rewards this one.\n";
+
+SHOP_GrandBomb = "\cFGrand Bomb\cj :: 350";
+SHOPDESC_GrandBomb = "\c[MenuWhite]Throws a lobbing grenade\n"
+"that bounces several times on surfaces.\n";
+
+SHOP_BatteryDepleter = "\cFBattery Depleter\cj :: 400";
+SHOPDESC_BatteryDepleter = "\c[MenuWhite]Throws a faster lobbing grenade\n"
+"that removes ammo from opponents\n"
+"explodes into an area of anti-ammo.\n";
+
+SHOP_BulletGrenade = "\cFBullet Grenade\cj :: 400";
+SHOPDESC_BulletGrenade = "\c[MenuWhite]Throws an even faster lobbing grenade\n"
+"That explodes into dozens of lazers,\n"
+"a few lazers moves honrizontally.\n";
+
+//PRBlaster's Classes
+
+SHOP_BombSlide = "\cFBomb Slide\cj :: ---";
+SHOPDESC_BombSlide = "\c[MenuWhite]A very quick dash, useful for getting away";
+
+SHOP_BombLay = "\cFLay Bomb\cj :: 250";
+SHOPDESC_BombLay = "\c[MenuWhite]Lay's a crash bomb, will chase anything";
+
+SHOP_BlakeOut = "\cFBlake Out\cj :: 350";
+SHOPDESC_BlakeOut = "\c[MenuWhite]An escape option when all else fails";
+
+//Knux
+SHOP_BubbleArrow = "\cFBubble Arrow\cj :: 200";
+SHOPDESC_BubbleArrow = "\c[MenuWhite]Draw a bow to fire bubble\n"
+"Arrows, toggle the number of \n"
+"bounces with altfire.";
+
+SHOP_BubbleBouncer = "\cFBubble Bouncer\cj :: 350";
+SHOPDESC_BubbleBouncer = "\c[MenuWhite]Spawn a large, obstructive\n"
+"Bubble, bursts into slow foam\n"
+"when hit with a bubble Arrow.";
+
+SHOP_BubbleMine = "\cFBubble Mine\cj :: 250";
+SHOPDESC_BubbleMine = "\c[MenuWhite]Deploy a mine that upon\n"
+"detecting an opponent, explodes and releases \n"
+"slowing foam. you can step on\n"
+"The mines yourself for a boost!";
+
+//Stakeout
+SHOP_CAMERADRONE = "\cFCamera Drone\cj :: N/A";
+SHOPDESC_CAMERADRONE = "\c[MenuWhite]Equips drone that watches all\n\c[MenuWhite]Hold to readjust its aim\n\c[MenuWhite]Reactivate to pop flash.";
+
+SHOP_HOLOGRAPHICBUSH = "\cFHolographic Bush\cj :: 100";
+SHOPDESC_HOLOGRAPHICBUSH = "\c[MenuWhite]Tosses hologram projector\n\c[MenuWhite]Bushes rustle when entered";
+
+SHOP_AUTOTRIPOD = "\cFAuto Tripod\cj :: 250";
+SHOPDESC_AUTOTRIPOD = "\c[MenuWhite]Equips automatic tripod\n\c[MenuWhite]Altfire to flip its angle\n\c[MenuWhite]Flashes when enemies show";

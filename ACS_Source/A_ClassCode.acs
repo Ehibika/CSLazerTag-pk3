@@ -1,0 +1,291 @@
+#library "A_ClassCode"
+#include "zcommon.acs"
+#import "A_Core.acs"
+
+Script "CSLT_DefineChatlines" OPEN
+{
+DefineClassChatlines("MegamanC",0,0,0,0,0,0);
+DefineClassChatlines("North",1,0,0,0,0,0);
+DefineClassChatlines("Stakeout",1,0,0,0,0,1);
+
+}
+
+/*
+Str ChatArray
+
+Script "CSLT_DefineChatlines" ENTER
+{
+if(CheckInventory("isMegaman")){DefineClassChatlines("MegamanC",0,0,0,0,0,0);}
+if(CheckInventory("isNorth")){DefineClassChatlines("North",1,0,0,0,0,0);}
+if(CheckInventory("isStakeout")){DefineClassChatlines("Stakeout",1,0,0,0,0,1);}
+
+}
+
+Script "CSLT_ReDefineChatlines" RESPAWN
+{
+ACS_NamedExecuteAlways("CSLT_DefineChatlines",0);
+}
+
+*/
+//This spawns the sprite
+Script "drawNinjaRope" (int playerTid, int density) CLIENTSIDE
+{
+    int plX; int plY;  int plZ;
+    int grX; int grY;  int grZ;
+    int vX;  int vY;   int vZ;
+    int nX;  int nY;   int nZ;
+    int bX;  int bY;   int bZ;
+    int magnitude;
+    int pointCount;
+    int pointOffset;
+	
+	while(ClassifyActor(0) && GetActorProperty(playerTid, APROP_HEALTH)>0){
+
+    plX = GetActorX(playerTid); grX = GetActorX(0);
+    plY = GetActorY(playerTid); grY  = GetActorY(0);
+    plZ = GetActorZ(playerTid)+(28 << 16); grZ  = GetActorZ(0);
+//+28 to the spawn height of the ^player so the chain doesn't spawn from their feet.
+    vX = grX - plX;   vY = grY - plY;   vZ = grZ - plZ;
+
+    magnitude = magnitudeThree(vX >> 16, vY >> 16, vZ >> 16);
+
+    pointCount  = magnitude / density;
+    pointOffset = magnitude - (pointCount * density);
+
+	str SpawnName = "NinjaRopeFX";
+	
+	if(grX == 0 && grY == 0 && grZ == 0){terminate;} 
+
+    if (magnitude != 0)
+    {
+        nX = vX / magnitude; nY = vY / magnitude; nZ = vZ / magnitude;
+
+        int i; int j;
+        for (i = 0; i < pointCount; i++)
+        {
+            j = (i * density) + pointOffset;
+
+            bX = (nX * j) + plX;
+            bY = (nY * j) + plY;
+            bZ = (nZ * j) + plZ;// +(16 << 16);
+
+			if(i>0){
+			Spawn(SpawnName, bX, bY, bZ);
+			}
+		
+        }
+    }				
+			
+
+			Delay(1);
+			
+			}
+}
+
+// Hookshot
+function int magnitudeThree(int x, int y, int z)
+{
+    return sqrt8(x*x + y*y + z*z);
+}
+
+Script "CSLT_Stakeout_CheckFlash" (void)
+{
+SetActivatorToTarget(0);
+SetResultValue((GetPlayerInput(-1, INPUT_BUTTONS)&BT_USER1)>0);
+}
+
+Script "CSLT_Stakeout_ConfirmTarget" (void)
+{
+int tracer = ACS_NamedExecuteWithResult("core_gettracer");
+int target = ACS_NamedExecuteWithResult("core_gettarget");
+int result = 0;
+if(target >= 1000 && target < 1064){
+	if(tracer != target){
+		if(GetPlayerInfo(target-1000,PLAYERINFO_TEAM)!=GetPlayerInfo(tracer-1000,PLAYERINFO_TEAM) || GetPlayerInfo(target-1000,PLAYERINFO_TEAM)>=4){
+			result = 1;
+			}
+		}
+	}
+SetResultValue(result);
+}
+
+Script "CSLT_Stakeout_CamAngle" (int first)
+{
+int targetPlayer = ACS_ExecuteWithResult(257);
+int playerPitch = GetActorPitch(targetPlayer);
+int playerAngle = GetActorAngle(targetPlayer);
+
+if(CheckActorInventory(TargetPlayer,"StakeoutCamFlag")>0){
+	SetUserVariable(ActivatorTID(),"user_setPitch",playerPitch);
+	SetUserVariable(ActivatorTID(),"user_setAngle",playerAngle);
+	}
+else{
+	if(first == 1){
+		SetUserVariable(ActivatorTID(),"user_setPitch",GetActorPitch(ActivatorTID()));
+		SetUserVariable(ActivatorTID(),"user_setAngle",GetActorAngle(ActivatorTID()));
+		}
+	}
+	
+if(CheckActorInventory(targetPlayer,"StakeoutCamFlag")>0){
+	SetActorPitch(ActivatorTID(), playerPitch);
+	SetActorAngle(ActivatorTID(), playerAngle);
+	}
+else{
+	SetActorAngle(ActivatorTID(), GetUserVariable(ActivatorTID(),"user_setAngle"));
+	SetActorPitch(ActivatorTID(), GetUserVariable(ActivatorTID(),"user_setPitch"));
+	}
+}
+
+script "CSLT_Stakeout_Camera" (void)
+{
+int targetPlayer = ACS_ExecuteWithResult(257);
+int targetPLN = targetPlayer - 1000;
+
+SetCameraToTexture(targetPlayer + 666, StrParam(s:"STKTC1", i:targetPLN), 90);
+
+NamedExecuteClientScript("CSLT_Show_Stakeout_Camera",targetPLN,targetPlayer);
+
+SetActivator(targetPlayer);
+while(GetActorProperty(targetPlayer,APROP_Health)>0 && UniqueTID(targetPlayer+666,1) != targetPlayer+666&& PlayerInGame(targetPLN)){
+	Delay(1);
+	}
+if(GetActorProperty(targetPlayer,APROP_Health)>0 && PlayerInGame(targetPLN)){
+	if(CheckInventory("SignatureTimer")<=0){ACS_NamedExecuteWithResult("CSLT_Chatline",0,random(3,4));}
+	GiveInventory("SignatureRecharge",1);
+	}
+else{Thing_Remove(targetPlayer+666);}
+}
+
+script "CSLT_Show_Stakeout_Camera" (int TID) CLIENTSIDE
+{
+SetHudSize(4096, 3072, 0);
+str team = "";
+switch(GetPlayerInfo(TID-1000,PLAYERINFO_TEAM)){
+	case 0:
+		team = "L";
+		break;
+	case 1:
+		team = "W";
+		break;
+	case 2:
+		team = "C";
+		break;
+	case 3:
+		team = "K";
+		break;
+	}
+while(GetActorProperty(TID,APROP_Health)>0 && UniqueTID(TID+666,1) != TID+666 && PlayerInGame(TID-1000)){
+	SetFont(StrParam(s:"STKTC1", i:TID-1000));
+	HudMessage(s:"A";HUDMSG_PLAIN,467,CR_WHITE,3712.0,1920.0,1.0 / 35 + 3);//0.1, 225.1//1024 768
+	SetFont(StrParam(s:"STKTC", s:team));
+	HudMessage(s:"A";HUDMSG_PLAIN,468,CR_WHITE,3712.0,1920.0,1.0 / 35 + 3);//0.1, 225.1//1024 768
+	Delay(1);
+	}
+}
+
+#DEFINE BUSHRADIUS 138
+#DEFINE BUSHHEIGHT -138
+script "CSLT_Stakeout_BushRustling" (void)
+{
+int playersInBush = 0;
+for(int i = 0; i<64; i++){ //if you're in the area of the bush to begin with, no rustling
+	if(PlayerInGame(i) && GetActorProperty(i+1000,APROP_Health)>0){
+		if(xyDistance(0,i+1000) < BUSHRADIUS && zDistance(0,i+1000) > BUSHHEIGHT && zDistance(0,i+1000) <= 0){
+			playersInBush++;
+			}
+		}
+	}
+int oldPlayersInBush = playersInBush;
+
+int live = 245;
+while(live > 0){
+	playersInBush = 0;
+	for(i = 0; i<64; i++){ 
+		if(PlayerInGame(i) && GetActorProperty(i+1000,APROP_Health)>0){
+			if(xyDistance(0,i+1000) < BUSHRADIUS && zDistance(0,i+1000) > BUSHHEIGHT && zDistance(0,i+1000) <= 0){
+				playersInBush++;
+				}
+			}
+		}
+	if(playersInBush != oldPlayersInBush){
+		GiveInventory("StakeoutBushHelperGiver",1);
+		}
+	oldPlayersInBush = playersInBush;
+	Delay(1);
+	live--;
+	}
+}
+
+function int sqrt8(int number)
+{
+	if(number <= 3)
+	{
+		if(number > 0)
+		{
+			return 1;
+		}
+		return 0;
+	}
+
+	int oldAns = number >> 1,                     // initial guess
+	    newAns = (oldAns + number / oldAns) >> 1; // first iteration
+
+	// main iterative method
+	while(newAns < oldAns)
+	{
+		oldAns = newAns;
+		newAns = (oldAns + number / oldAns) >> 1;
+	}
+
+	return oldAns;
+}
+	
+function int xyDistance (int tid1, int tid2)
+{
+	int x, y, d;
+	x = GetActorX(tid1) - GetActorX(tid2) >> 16;
+	y = GetActorY(tid1) - GetActorY(tid2) >> 16;
+	d = sqrt8( x*x + y*y );
+	return d;
+}
+
+function int zdistance (int tid1, int tid2)
+{
+	int z;
+	z = GetActorZ(tid1) - GetActorZ(tid2) >> 16;
+	return z;
+}
+
+ //[Trill] - for later
+script "CSLT_Stakeout_GoPro" (int targetPlayer) CLIENTSIDE
+{
+if(ConsolePlayerNumber() != targetPlayer-1000){terminate;}
+
+int targetPLN = targetPlayer - 1000;
+
+SetCameraToTexture(targetPlayer + 6660, StrParam(s:"STKTC2", i:targetPLN), 90);
+
+SetActivator(targetPlayer);
+
+SetHudSize(4096, 3072, 0);
+SetFont(StrParam(s:"STKTC2", i:targetPLN));
+while(GetActorProperty(targetPlayer,APROP_Health)>0 && PlayerInGame(targetPLN) && (ClassifyActor(targetPlayer+6660) != ACTOR_NONE)){
+	HudMessage(s:"A";HUDMSG_PLAIN,568,CR_WHITE,2808.0,616.0,1.0 / 35 + 3);
+	Delay(1);
+	}
+Thing_Remove(targetPlayer + 6660);
+}
+
+
+Script "WideScreenKiller" (Void)
+{
+int Player = ACS_NamedExecuteWithResult("core_gettarget",0);
+
+	//While(ThingCount(T_NONE,4000+(Player))
+	//||ThingCount(T_NONE,5000+(Player))
+	//)
+	//{
+	SetActorState (4000+(Player), "Perish");
+	SetActorState (5000+(Player), "Perish");
+	//}
+}

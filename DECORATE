@@ -1,0 +1,121 @@
+#include "Actors/Classes/classbasefolder/classbases.txt"
+
+#include "Actors/BaseActors.txt"
+#include "Actors/BaseFlags.txt"
+#include "Actors/GameConstants.txt"
+#include "Actors/ThirdPCamera.txt"
+#include "Actors/HealerUtilities.txt"
+
+//Inventory
+#include "Actors/Inventory/ArcTargeter.txt"
+
+#include "Actors/Inventory/items/Armor.txt"
+#include "Actors/Inventory/items/GeneralItems.txt"
+
+
+#include "Actors/Inventory/Shop/ShopAct.txt"
+#include "Actors/Inventory/Shop/ShopWeps.txt"
+#include "Actors/Inventory/Shop/ShopItems.txt"
+
+
+//Weapons
+#include "Actors/Weapons/LaserGuns/Base/MasterWepBase.txt"
+#include "Actors/Weapons/LaserGuns/Base/BasicLazerGun.txt"
+
+#include "Actors/Weapons/BasicKnife.txt"
+
+
+#include "Actors/Weapons/LaserGuns/Tier0/Zapper.txt"
+#include "Actors/Weapons/LaserGuns/Tier1/Gunslinger.txt"
+#include "Actors/Weapons/LaserGuns/Tier1/Scrapper.txt"
+#include "Actors/Weapons/LaserGuns/Tier1/Watchman.txt"
+#include "Actors/Weapons/LaserGuns/Tier1/Scout.txt"
+#include "Actors/Weapons/LaserGuns/Tier1/Pounder.txt"
+
+#include "Actors/Weapons/LaserGuns/Tier2/Fighter.txt"
+#include "Actors/Weapons/LaserGuns/Tier2/Warden.txt"
+#include "Actors/Weapons/LaserGuns/Tier2/Tracer.txt"
+#include "Actors/Weapons/LaserGuns/Tier2/Enforcer.txt"
+#include "Actors/Weapons/LaserGuns/Tier2/Toujorprey.txt"
+#include "Actors/Weapons/LaserGuns/Tier2/Muscler.txt"
+#include "Actors/Weapons/LaserGuns/Tier2/Skye.txt"
+
+#include "Actors/Weapons/LaserGuns/Tier3/HyperBeam.txt"
+#include "Actors/Weapons/LaserGuns/Tier3/LightCannon.txt"
+
+
+#include "Actors/Conditions/Blinded.txt"
+
+//Classes
+#include "Actors/Classes/classes.txt"
+
+#include "Actors/Classes/MegamanC/MegamanC.txt"
+#include "Actors/Classes/MegamanC/MegaHyperBomb.txt"
+#include "Actors/Classes/MegamanC/RushCall.txt"
+#include "Actors/Classes/MegamanC/CombatSlide.txt"
+
+#include "Actors/Classes/North/NorthClass.txt"
+#include "Actors/Classes/North/IceBolt.txt"
+#include "Actors/Classes/North/IceFog.txt"
+#include "Actors/Classes/North/AuroraVeil.txt"
+#include "Actors/Classes/North/SnowStorm.txt"
+
+#include "Actors/Classes/Gadget/GadgetClass.txt"
+#include "Actors/Classes/Gadget/HealthGenerator.txt"
+#include "Actors/Classes/Gadget/TopGrenade.txt"
+
+#include "Actors/Classes/Cinder/CinderClass.txt"
+#include "Actors/Classes/Cinder/FlashWisp.txt"
+#include "Actors/Classes/Cinder/FireSpirit.txt"
+#include "Actors/Classes/Cinder/FireField.txt"
+
+#include "Actors/Classes/Esper/EsperClass.txt"
+#include "Actors/Classes/Esper/EsperHeal.txt"
+#include "Actors/Classes/Esper/Barrier.txt"
+#include "Actors/Classes/Esper/PsycheBomb.txt"
+
+#include "Actors/Weapons/SmokeScreen.txt"
+#include "Actors/Weapons/Molotov.txt"
+#include "Actors/Weapons/FlashBang.txt"
+
+//Théophile's Classes
+#include "Actors/Classes/Theophile's_Classes/Sneaker/TSneaker.txt"
+#include "Actors/Classes/Theophile's_Classes/Sneaker/TCardboardBox.txt"
+#include "Actors/Classes/Theophile's_Classes/Sneaker/TSmokeGrenade.txt"
+#include "Actors/Classes/Theophile's_Classes/Sneaker/TStunMine.txt"
+
+#include "Actors/Classes/Theophile's_Classes/Assassin/TAssassin.txt"
+#include "Actors/Classes/Theophile's_Classes/Assassin/TWeakenShuriken.txt"
+#include "Actors/Classes/Theophile's_Classes/Assassin/TKillingDash.txt"
+#include "Actors/Classes/Theophile's_Classes/Assassin/TNinjaRope.txt"
+
+#include "Actors/Classes/Theophile's_Classes/Grim/TGrim.txt"
+#include "Actors/Classes/Theophile's_Classes/Grim/THeadWheel.txt"
+#include "Actors/Classes/Theophile's_Classes/Grim/TDecomposeBeam.txt"
+#include "Actors/Classes/Theophile's_Classes/Grim/TNecromancy.txt"
+
+#include "Actors/Classes/Theophile's_Classes/Grand/TGrand.txt"
+#include "Actors/Classes/Theophile's_Classes/Grand/TGrandBomb.txt"
+#include "Actors/Classes/Theophile's_Classes/Grand/TBatteryDepleter.txt"
+#include "Actors/Classes/Theophile's_Classes/Grand/TBulletGrenade.txt"
+
+//PRBlaster's Classes
+#include "Actors/Classes/PRBlaster's_Classes/BlakeClass.txt"
+#include "Actors/Classes/PRBlaster's_Classes/BombDash.txt"
+#include "Actors/Classes/PRBlaster's_Classes/BombLay.txt"
+#include "Actors/Classes/PRBlaster's_Classes/BlakeOut.txt"
+#include "Actors/Classes/PRBlaster's_Classes/BlakeMelee.txt"
+
+//Knux
+#include "Actors/Classes/Knux/KnuxClass.txt"
+#include "Actors/Classes/Knux/KnuxMelee.txt"
+#include "Actors/Classes/Knux/BubbleArrow.txt"
+#include "Actors/Classes/Knux/BubbleBouncer.txt"
+#include "Actors/Classes/Knux/BubbleMine.txt"
+
+//Stakeout
+#include "actors/Classes/Stakeout/Stakeout.txt"
+#include "actors/Classes/Stakeout/CameraDrone.txt"
+#include "actors/Classes/Stakeout/HolographicBush.txt"
+#include "actors/Classes/Stakeout/AutoTripod.txt"
+#include "actors/Classes/Stakeout/StakeoutMelee.txt"

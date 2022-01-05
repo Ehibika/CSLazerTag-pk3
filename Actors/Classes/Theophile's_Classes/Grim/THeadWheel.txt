@@ -1,0 +1,225 @@
+actor Ability1_TGrim : AbilityMasterBase
+{
+Weapon.AmmoUse2 1
+Weapon.AmmoGive2 0
+Inventory.Pickupmessage "$PU_MEGABUSTER"
+Obituary "$OB_MEGABUSTER"
+Tag "Head Wheel"
+weapon.ammotype2 "busterPower"
+inventory.icon "SKLBSI"
+Dropitem ""
++WEAPON.ALLOW_WITH_RESPAWN_INVUL
+States
+{
+
+Ready:
+HSPR B 0 
+"####" B 0
+"####" "#" 0 A_Jumpif(CallACS("CSLT_CheckAbilityInput",2)==1,"User2")
+"####" "#" 0 A_Jumpif(CallACS("CSLT_CheckAbilityInput",3)==1,"User3")
+"####" B 1 A_WeaponReady
+goto ready
+
+Fire:
+"####" CD 2
+"####" C 0 A_PlaySoundEx("weapon/crackerthrow","Weapon")
+"####" B 0 A_FireCustomMissile("HeadWheel_Beam",0,0,1,0)
+"####" D 0 A_TakeInventory("AbilityCharge_1",1)
+"####" B 0 A_GiveInventory("AmmoStaller")
+"####" B 0 A_JumpIfInventory("AbilityCharge_1",1,"Hold")
+"####" B 0 A_Jump(256,"End")
+goto End
+
+Hold:
+"####" E 1
+"####" B 0 A_Refire
+"####" LM 2
+goto ready
+
+AltFire:
+"####" M 1
+End:
+"####" M 1 A_TakeInventory("AbilityActiveFlag",9)
+"####" M 0 
+Goto End
+EndM: //Mainfire, mainfire.
+"####" M 1 A_TakeInventory("AbilityActiveFlag",9)
+"####" B 0 
+Goto End
+}
+}
+//====
+
+actor UseAbility1_TGrim : CustomInventory
+{
+states
+{
+Use:
+WEA2 A 0 A_GiveInventory("TGrimHeadWheelAbility",1)
+fail
+}
+}
+
+actor TGrimHeadWheelAbility : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_JumpIfInventory("AbilityCharge_1",1,"Pickup2")
+stop
+
+Pickup2:
+TNT1 A 0 ACS_NamedExecuteAlways("RunClassAbility",0,1)
+stop
+}
+}
+//=================
+//=================
+
+Const int HeadWheel_Damage = 40;
+Const int HeadWheel_FalloffRange = 600;
+Const int HeadWheel_FalloffRate = 20;
+
+Const int HeadWheel_HeadShotDamage = 100;
+Const int HeadWheel_HeadShotFalloffRange = 600;
+Const int HeadWheel_HeadShotFalloffRate = 50;
+
+actor HeadWheel_Beam : LazerTagBeam
+{
+//Speed 80
+Args 0
+States
+{
+
+Spawn.Beam:
+TNT1 A 0 A_PlaySoundEx("weapon/Gemini","Weapon")
+TNT1 A 0 A_SpawnItemEx("HWLazerTagBeamFX2",0,0,0,momx,momy,momz,0,9)
+TNT1 A 0 A_Jump(256,"Spawn.Hitbox")
+goto Spawn.Hitbox
+
+}
+}
+
+actor HeadWheel_BeamHitBox : BasicFastProjectile
+{
++SERVERSIDEONLY
++HITTRACER
+reactiontime 1
+states
+{
+Spawn:
+PLAY A 0
+Spawn2:
+PLAY A 1 A_CountDown
+loop
+XDeath:
+TNT1 A 0 A_RemoveSiblings(true)
+AQBA L 0 A_GiveInventory("ProjectileDCode",1)
+TNT1 A 0 A_JumpIf(ACS_NamedExecuteWithResult("TracerHealthGet")>0,"Headshotcheck")
+TNT1 A 0 A_SpawnItemEx("LazerTagPuff",0,0,0,0,0,0,0,1)
+stop
+HeadShotCheck:
+TNT1 A 0 A_JumpIf(Checkclass("PlayerPawn",AAPTR_TRACER,true)&&z>=ACS_NamedExecuteWithResult("TF2_TracerZGet")+40,"DoHeadshot")
+TNT1 A 0 A_SpawnItemEx("HeadWheel_BodyShotter",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+TNT1 A 0 A_SpawnItemEx("LazerTagPuff",0,0,0,0,0,0,0,1)
+stop
+DoHeadShot:
+TNT1 A 0 A_SpawnItemEx("HeadWheel_HeadShotter",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+TNT1 A 0 A_SpawnItemEx("PowerStrikeFX",0,0,0,0,0,0,0,1)
+stop
+Death:
+TNT1 A 0 A_Jumpif(reactiontime <= 0,"Terminate")
+TNT1 A 0 A_GiveInventory("BurrowDecayFunc",1,AAPTR_MASTER)
+stop
+
+Terminate:
+TNT1 A 0
+stop
+}
+}
+
+actor HWLazerTagBeamFX1 : BasicClientSide
+{
++FORCEXYBILLBOARD
+Renderstyle "Add"
+Scale 0.5
+States
+{
+Spawn:
+AQBA L 0 A_GiveInventory("ProjectileCode",1)
+SKLC ABCDEFGH 1 
+stop
+}
+}
+
+actor HWLazerTagBeamFX2 : BasicExplosion
+{
+Obituary "$OB_MegaBuster"
+damagetype "MegaBuster"
+States
+{
+Spawn:
+TNT1 A 0
+AQBA L 0 A_GiveInventory("ProjectileCode",1)
+TNT1 A 0 A_SpawnItemEx("HWLazerTagBeamFX3",0,0,0,0,0,0,0,1)
+TNT1 A 0 A_SpawnItemEx("HWLazerTagBeamFX3",0,0,0,-momx*0.1,-momy*0.1,-momz*0.1,0,9)
+TNT1 A 0 A_SpawnItemEx("HWLazerTagBeamFX3",0,0,0,-momx*0.2,-momy*0.2,-momz*0.2,0,9)
+TNT1 A 0 A_SpawnItemEx("HWLazerTagBeamFX3",0,0,0,-momx*0.3,-momy*0.3,-momz*0.3,0,9)
+TNT1 A 0 A_SpawnItemEx("HWLazerTagBeamFX3",0,0,0,-momx*0.4,-momy*0.4,-momz*0.4,0,9)
+TNT1 A 0 A_SpawnItemEx("HWLazerTagBeamFX3",0,0,0,-momx*0.5,-momy*0.5,-momz*0.5,0,9)
+TNT1 A 0 A_SpawnItemEx("HWLazerTagBeamFX3",0,0,0,-momx*0.6,-momy*0.6,-momz*0.6,0,9)
+TNT1 A 0 A_SpawnItemEx("HWLazerTagBeamFX3",0,0,0,-momx*0.7,-momy*0.7,-momz*0.7,0,9)
+TNT1 A 0 A_SpawnItemEx("HWLazerTagBeamFX3",0,0,0,-momx*0.8,-momy*0.8,-momz*0.8,0,9)
+TNT1 A 0 A_SpawnItemEx("HWLazerTagBeamFX3",0,0,0,-momx*0.9,-momy*0.9,-momz*0.9,0,9)
+TNT1 A 1 
+stop
+}
+}
+
+actor HWLazerTagBeamFX3 : BasicClientSide
+{
++FORCEXYBILLBOARD
+Renderstyle "Add"
+Scale 0.5
+States
+{
+Spawn:
+ICEL I 0
+AQBA L 0 A_GiveInventory("ProjectileCode",1)
+ICEL I 0 A_Stop
+SKLC AB 1
+SKLC CD 1 A_Fadeout(0.5)
+SKLC EF 1 A_Fadeout(0.25)
+SKLC GH 1
+//ICEL IZIZ 2
+stop
+}
+}
+
+
+actor HeadWheel_BodyShotter : TF2BodyShotter
+{
+damagetype "HeadWheel"
+args 30
+states
+{
+
+Spawn2:
+TNT1 A 0 A_Explode(CallACS("DamageRate",HeadWheel_Damage,HeadWheel_FalloffRange,HeadWheel_FalloffRate),1,0,0,1)
+TNT1 A 1
+stop
+}
+}
+
+actor HeadWheel_HeadShotter : TF2HeadShotter
+{
+damagetype "HeadWheel"
+args 45
+states
+{
+Spawn2:
+TNT1 A 0 A_Explode(CallACS("DamageRate",HeadWheel_HeadShotDamage,HeadWheel_HeadShotFalloffRange,HeadWheel_HeadShotFalloffRate),1,0,0,1)
+TNT1 A 1
+stop
+}
+}

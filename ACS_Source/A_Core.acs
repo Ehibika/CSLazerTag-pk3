@@ -1,0 +1,155 @@
+#library "A_Core"
+#include "zcommon.acs"
+#include "8bdmlib.acs"
+
+#LIBDEFINE MAX_PLAYERS 64
+#LIBDEFINE TEAM_NONE -1
+#LIBDEFINE TEAM_COOP -2
+
+#LIBDEFINE XRAYActorTID 580000
+
+#LIBDEFINE BARRIERTID 390000 // 37| Owner TID
+
+#LIBDEFINE DROPITEMTID 4540
+
+Function bool CheckActorTeam(int TID)
+{
+	if(ClassifyActor(TID) & ACTOR_PLAYER) {return GetPlayerInfo(TID-1000, PLAYERINFO_TEAM);}
+
+	if(ClassifyActor(TID) & ACTOR_MONSTER)
+		{
+			if(CheckActorInventory(TID,"LightTeamFlag")) {Return 0;}
+			if(CheckActorInventory(TID,"WilyTeamFlag")) {Return 1;}
+			if(CheckActorInventory(TID,"CossackTeamFlag")) {Return 2;}
+			if(CheckActorInventory(TID,"KingTeamFlag")) {Return 3;}
+		}
+
+		return -1;
+}
+
+Function bool GetMaxEntities(void)
+{
+	int ret = GetCVAR("sv_MaxClients");
+	
+	if(PlayerCount()>ret) // admins can join above the max player limit.
+	{
+		ret = PlayerCount();
+	}
+
+	int output = ret+GetCvar("Sv_MaxEntities");
+	return output;
+}
+
+Function int NoNeg (int Numb)
+{
+Int Output;
+
+if(Numb > 0){Output = Numb;}
+else{Output = 0;}
+return Output;
+}
+
+
+
+Function int CSLTButtonCheck (int NewButtons, int OldButtons, int Which)
+{
+	int ButtonNow = NewButtons & Which;
+	int ButtonOld = OldButtons & Which;
+	If(ButtonNow > ButtonOld){Return 1;}
+	If(ButtonNow < ButtonOld){Return 2;}
+	If(ButtonNow > 0 &&  ButtonOld > 0){Return 3;}
+	Return 0;
+}
+
+
+function bool PressingButton (int theButton)
+{
+return PressingButton2(GetPlayerInput(-1, INPUT_BUTTONS),theButton);
+}
+
+function bool PressingButton2 (int buttons, int theButton)
+{
+return ((buttons&theButton)>0);
+}
+
+Function int ButtonCheck (int Buttons, int OldButtons, int WhichButton)
+{
+int ButtonNow = Buttons & WhichButton;
+int ButtonOld = OldButtons & WhichButton;
+If(ButtonNow > ButtonOld){Return 1;}
+If(ButtonNow < ButtonOld){Return 2;}
+If(ButtonNow > 0 &&  ButtonOld > 0){Return 3;}
+Return 0;
+}
+
+Function bool isKBProof (void)
+{
+	if(CheckInventory("STF_Curse")) return true;
+	if(CheckInventory("STF_IronDefense")) return true;
+	if(CheckInventory("STF_Amnesia")) return true;
+	if(CheckInventory("STF_CosmicPower")) return true;
+	if(CheckInventory("STF_Defensecurl")) return true;
+	//if(CheckInventory("SafeguardPower")) return true;
+	//if(CheckInventory("CraftyShieldPower")) return true;
+return false;
+}
+
+Function bool isTID_KBProof (int TID)
+{
+	if(CheckActorInventory(TID,"STF_Curse")) return true;
+	if(CheckActorInventory(TID,"STF_IronDefense")) return true;
+	if(CheckActorInventory(TID,"STF_Amnesia")) return true;
+	if(CheckActorInventory(TID,"STF_CosmicPower")) return true;
+	if(CheckActorInventory(TID,"STF_Defensecurl")) return true;
+	//if(CheckActorInventory(TID,"SafeguardPower")) return true;
+	//if(CheckActorInventory(TID,"CraftyShieldPower")) return true;
+return false;
+}
+
+Function Int ValueMap (int Input, int InputHigh, int InputLow, int OutputHigh, int OutputLow)
+{
+
+int FinalOut;
+int A;
+int B;
+Int C;
+
+int AB;
+int ABC;
+
+A = (Input - InputLow)<<16;
+B = (InputHigh - InputLow)<<16;
+C = (OutputHigh - OutputLow);
+
+AB = fixedDiv(A,B);
+ABC = (AB * C) >> 16;
+FinalOut = ABC + OutputLow;
+//FinalOut = ( ((Input - InputLow)/(InputHigh - InputLow))*(OutputHigh - OutputLow) + OutputLow);
+
+return FinalOut;
+}
+
+
+
+#DEFINE CHATLINE_NONE -1
+
+function void SetNoSaveCvarInt(str cvar, int value)
+{
+ConsoleCommand(StrParam(s:"set ",s:cvar,s:" ",i:value));
+}
+
+function void SetNoSaveCvarString(str cvar, str value)
+{
+ConsoleCommand(StrParam(s:"set ",s:cvar,s:" \"",s:value,s:"\""));
+}
+
+function void DefineClassChatlines(str character, int roundStart, int clutch, int clutchCommend, int losing, int winning, int comeback){
+	SetNoSaveCvarString("cslt_clt_character", character);
+	SetNoSaveCvarInt("cslt_clt_roundstart", roundStart);
+	SetNoSaveCvarInt("cslt_clt_clutch", clutch);
+	SetNoSaveCvarInt("cslt_clt_clutchcommend", clutchCommend);
+	SetNoSaveCvarInt("cslt_clt_losing", losing);
+	SetNoSaveCvarInt("cslt_clt_winning", winning);
+	SetNoSaveCvarInt("cslt_clt_comeback", comeback);
+    ACS_NamedExecuteWithResult("CreateCharacterChatLineLimits_S");
+}

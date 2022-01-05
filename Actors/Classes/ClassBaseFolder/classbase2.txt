@@ -1,0 +1,68 @@
+actor ClassBase2 : ClassBase1
+{
+States
+{
+//modded pain states go here
+
+
+Pain.SnowStorm:
+"####" H 0 A_GiveInventory("SnowStormProtect",1)
+Pain.IceBolt:
+"####" H 0 A_GiveInventory("NorthSlowed",1)
+Goto pain+1
+
+Pain.Knife:
+"----" H 0 A_GiveInventory("KnifeBackstabItem",1)
+Goto pain+1
+Pain.KnifeCrit:
+"----" H 0
+Goto pain+1
+
+
+//==============
+Pain.StunMine:
+"----" H 0 A_GiveInventory("MineStunPickup",1)
+//Goto Pain.FlashStopper
+Goto PhantomPain
+Pain.SmokeGrenade:
+"----" H 0 A_ScaleVelocity(0.9)
+"----" H 0 A_GiveInventory("SmokeGrenadePickup",1)
+Goto PhantomPain
+PhantomPain:
+"----" H 0
+//goto Pain+3//Silent
+//goto Pain+5//Silent + No Knockback
+goto Pain+1
+
+Pain.WeakenShuriken:
+Pain.WeakenShurikenCrit:
+"----" H 0 A_GiveInventory("ShurikenWeakenEffect")
+goto Pain+1
+Pain.KillingDashKnife:
+"----" H 0 A_GiveInventory("KillingDashKnifeBackstabItem",1)
+Goto pain+1
+Pain.KillingDashKnifeCrit:
+"----" H 0
+Goto pain+1
+
+Death.HeadWheel:
+Death.DecomposeBeam:
+"----" H 0 A_GiveToTarget("Necromancy_AbilityCharge",1)
+goto Death
+
+Death.KillingDashKnife:
+Death.KillingDashKnifeCrit:
+"----" H 0 A_GiveToTarget("KillingDash_AbilityCharge",1)
+goto Death
+
+Pain.DecomposeBeam:
+"----" H 0 A_GiveInventory("BloomCount",8)
+"----" H 0 A_TakeInventory("BusterPower",25)
+"----" H 0 A_GiveToTarget("Health",1)
+goto Pain+1
+
+Pain.BatteryDepleter:
+"----" H 0 A_TakeInventory("BusterPower",50)
+goto Pain+1
+}
+}

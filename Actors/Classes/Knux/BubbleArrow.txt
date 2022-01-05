@@ -1,0 +1,419 @@
+
+actor Ability1_Knux : AbilityMasterBase
+{
+Tag "Ability 1"
+inventory.icon "BUBARI"
+States
+{
+
+Ready:
+BBOW AABBCCDDEE 1 A_WEAPONREADY(WRF_NOPRIMARY|WRF_NOSECONDARY|WRF_NOBOB) 
+Ready2:
+BBOW "#" 0 
+"####" "#" 0 A_Jumpif(CallACS("CSLT_CheckAbilityInput",2)==1,"User2")
+"####" "#" 0 A_Jumpif(CallACS("CSLT_CheckAbilityInput",3)==1,"User3")
+"####" "#" 0 A_JumpIfInventory("ArrowMode",2,"Ready.Arrow3")
+"####" "#" 0 A_JumpIfInventory("ArrowMode",1,"Ready.Arrow2")
+Goto Ready.Arrow1
+//==
+Ready.Arrow1:
+"####" H 0 A_FireCustomMissile("ArrowAimPath1",0,0,8,0)
+"####" E 1 A_WeaponReady
+goto ready2
+Ready.Arrow2:
+"####" H 0 A_FireCustomMissile("ArrowAimPath2",0,0,8,0)
+"####" F 1 A_WeaponReady
+goto ready2
+Ready.Arrow3:
+"####" H 0 A_FireCustomMissile("ArrowAimPath3",0,0,8,0)
+"####" G 1 A_WeaponReady
+goto ready2
+
+Select:
+//TNT1 AAAAAAAAAAAAAAAAAAAAAA 0 A_Raise
+TNT1 A 0 ACS_NamedExecuteAlways("WepSpeedMod",0,Knife_MoveSpeed*FVM)
+BBOW AAA 0 A_Raise
+BBOW A 1 A_WEAPONREADY(WRF_NOPRIMARY|WRF_NOSECONDARY|WRF_NOBOB)
+Loop
+
+Fire:
+"####" "#" 0 A_JumpIfInventory("ArrowMode",2,"Fire.Arrow3")
+"####" "#" 0 A_JumpIfInventory("ArrowMode",1,"Fire.Arrow2")
+Goto Fire.Arrow1
+
+Fire.Arrow1:
+"####" H 0 A_PlaySoundEx("weapon/pshot","Weapon")
+"####" H 0 A_FireCustomMissile("BubbleArrow",0,0,8,0)
+goto Fire.After
+
+Fire.Arrow2:
+"####" H 0 A_PlaySoundEx("weapon/pshot","Weapon")
+"####" H 0 A_FireCustomMissile("BubbleArrow2",0,0,8,0)
+goto Fire.After
+
+Fire.Arrow3:
+"####" H 0 A_PlaySoundEx("weapon/pshot","Weapon")
+"####" H 0 A_FireCustomMissile("BubbleArrow3",0,0,8,0)
+Goto Fire.After
+
+Fire.After:
+"####" H 0 A_TakeInventory("AbilityCharge_1",1)
+"####" H 0 A_TakeInventory("ArrowMode",9)
+"####" H 0 A_GiveInventory("AmmoStaller")
+"####" H 0 A_GiveInventory("SignatureRecharge_20")
+"####" HHI 5
+"####" M 0 A_Jump(256,"End")
+goto End
+
+AltFire:
+"####" "#" 0 A_PlaySoundEx("weapon/crackerMine","Weapon")
+"####" "#" 0 A_JumpIfInventory("ArrowMode",2,"Altfire.Reset")
+"####" "#" 1 A_GiveInventory("ArrowMode",1)
+goto AltHold
+Altfire.Reset:
+"####" "#" 1 A_TakeInventory("ArrowMode",9)
+goto AltHold
+AltHold:
+"####" "#" 1
+"####" "#" 0 A_Refire
+goto ready2
+
+End:
+"####" M 1 A_TakeInventory("AbilityActiveFlag",9)
+"####" M 0 
+Goto End
+
+}
+}
+//====
+
+actor UseAbility1_Knux : CustomInventory
+{
+states
+{
+Use:
+WEA2 A 0 A_GiveInventory("BubbleArrow_Ability",1)
+fail
+}
+}
+
+actor BubbleArrow_Ability : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_JumpIfInventory("AbilityCharge_1",1,"Pickup2")
+stop
+
+Pickup2:
+TNT1 A 0 ACS_NamedExecuteAlways("RunClassAbility",0,1)
+stop
+}
+}
+//=================
+//=================
+
+actor ArrowAimDot : BasicGuideDot {Scale 0.5}
+
+	actor ArrowAimInstantStarter : GolfBallAim
+	{
+		+CLIENTSIDEONLY
+		reactiontime 3
+		translation "198:198=220:220", "192:192=229:229"
+		States
+		{
+		Spawn:
+			TNT1 A 0
+			TNT1 A 0 ACS_NamedExecuteWithResult("Arc_Limit_Start")
+			TNT1 A 0 A_JumpIf(!CallACS("Arc_ClientSide"),"Perish")
+			TNT1 A 0 A_SetPitch(reactiontime)
+			TNT1 A 0 A_SpawnItemEx("ArrowAimInstantBuffer",0,0,0,momx,momy,momz,0,SXF_TRANSFERTRANSLATION | SXF_ABSOLUTEVELOCITY,0,8800+reactiontime)
+			TNT1 A 1
+			stop
+		}
+	}
+	actor ArrowAimInstantBuffer : GolfBallAim
+	{
+		+CLIENTSIDEONLY
+		States
+		{
+		Spawn:
+			TNT1 A 0
+			TNT1 A 0 A_JumpIf(!CallACS("Arc_ClientSide"),"Perish")
+			TNT1 A 0 A_SpawnItemEx("ArrowAimInstant",0,0,0,momx,momy,momz,0,SXF_TRANSFERTRANSLATION | SXF_ABSOLUTEVELOCITY| SXF_TRANSFERPITCH,0,TID)
+			TNT1 A 1
+			stop
+		}
+	}
+	
+	actor ArrowAimInstant : GolfBallAim
+	{
+		+CLIENTSIDEONLY
+		+BOUNCEONCEILINGS
+		+BOUNCEONWALLS
+		+USEBOUNCESTATE
+		States
+		{
+		Spawn:
+			TNT1 A 0
+			TNT1 A 0 A_JumpIf(CallACS("Arc_Limit"),"Nope")
+			TNT1 A 0 A_JumpIf(!CallACS("Arc_ClientSide"),"Perish")
+			TNT1 A 0 A_SpawnItemEx("BallTrailAim",(10*momx)/-20.0,-(10*momy)/-20.0,(10*momz)/-20.0,0,0,0,0,SXF_ABSOLUTEANGLE | SXF_NOCHECKPOSITION | SXF_TRANSFERTRANSLATION)
+			TNT1 A 0 A_SpawnItemEx("BallTrailAim",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION | SXF_TRANSFERTRANSLATION )
+			TNT1 A 1 A_SpawnItemEx("ArrowAimInstant",0,0,0,momx,momy,momz,0,SXF_TRANSFERTRANSLATION | SXF_ABSOLUTEVELOCITY| SXF_TRANSFERPITCH,0,TID)
+			TNT1 A 1
+			stop
+		Bounce:
+			TNT1 A 0 Thing_ChangeTID(0,TID-1)
+			TNT1 A 0 A_JumpIf(TID <= 8800 ,"End")
+			TNT1 A 0 A_SpawnItemEx("ArrowAimInstant",0,0,0,momx,momy,momz,0,SXF_TRANSFERTRANSLATION | SXF_ABSOLUTEVELOCITY| SXF_TRANSFERPITCH,0,TID)
+			TNT1 A 1
+			stop
+		End:
+			TNT1 A 0 A_stop
+			Goto Death
+		Nope:
+			TNT1 A 1
+			stop
+		}
+	}
+	
+actor ArrowAimPath1 : ArrowAimInstantStarter { Speed 64 Gravity 1.5 reactiontime 1}
+actor ArrowAimPath2 : ArrowAimInstantStarter { Speed 64 Gravity 1.5 reactiontime 2}
+actor ArrowAimPath3 : ArrowAimInstantStarter { Speed 64 Gravity 1.5 reactiontime 3}
+
+ 
+ actor ArrowMode : Inventory
+{
+inventory.amount 1
+inventory.maxamount 3
+}
+
+actor Sticky : Inventory
+{
+inventory.amount 1
+inventory.maxamount 1
+}
+
+actor Detonated : Sticky {}
+actor KnuxNoBubble : Once {}
+actor KnuxBubbleFlag : Once {}
+
+Const int BubbleArrow_Damage = 10;
+Const int BubbleArrow_FalloffRange = FalloffBase;
+Const int BubbleArrow_FalloffRate = S_FLR;
+
+Const int BubbleArrow_HeadShotDamage = 20;
+Const int BubbleArrow_HeadShotFalloffRange = FalloffBase;
+Const int BubbleArrow_HeadShotFalloffRate = S_HFLR;
+
+Const int BubbleArrow_BlastDamage1 = 35;
+Const int BubbleArrow_BlastDamage2 = 15;
+Const int BubbleArrow_BlastRad = 250;
+
+
+actor BubbleArrow : BasicProjectile
+{
+Obituary "$OB_BUBBLEARROW"
++HEXENBOUNCE
+-ALLOWBOUNCEONACTORS
++DONTBLAST
+-BOUNCEONFLOORS
++MBFBOUNCER
++FORCEXYBILLBOARD
++HITTRACER
+
+-NOGRAVITY
+Gravity 1.5
+BounceFactor 0.91
+WallBounceFactor 0.91
+Bouncecount 1
+damagetype "BubbleArrow"
+Speed 64//40
+Damage (5)
+radius 4
+height 4
+Args 0,70
+scale 2.5
+States
+{
+Spawn:
+WABU D 0 ACS_NamedExecuteAlways("GiveActorXrayTID",0,1)
+TNT1 A 0 A_GiveInventory("ProjectileCode",1)
+Spawn2:
+BARW A 5
+BARW A 0 A_SpawnItemEx("BubbleArrowTrailS", 0, 0, 0, Random(-1, 1), Random(-1, 1), Random(1, 3),0,1)
+Loop
+Death:
+BARW C 0 A_PlaySound("weapon/crashland")
+BARW C 0 A_ChangeFlag("NOGRAVITY",true)
+BARW C 0 A_CheckFloor("Death.Floor")
+BARW C 0 A_CheckCeiling("Death.Ceiling")
+Goto Death.Wall
+
+Death.Wall:
+BARW C 1
+BARW C 0 A_SetArg(0,Args[0]+1)
+BARW C 1 A_JumpIf(Args[0] < Args[1],"Death.Wall")
+BARW C 1 A_Jump(256,"Detonate")
+Goto Detonate
+/*
+BARW CCCCCCCCCC 1
+BARW CCCCCCCCCC 1
+BARW CCCCCCCCCC 1
+*/
+
+Death.Floor:
+BARW L 1
+BARW L 0 A_SetArg(0,Args[0]+1)
+BARW L 1 A_JumpIf(Args[0] < Args[1],"Death.Floor")
+BARW L 1 A_Jump(256,"Detonate")
+Goto Detonate
+
+Death.Ceiling:
+BARW M 1
+BARW M 0 A_SetArg(0,Args[0]+1)
+BARW M 1 A_JumpIf(Args[0] < Args[1],"Death.Ceiling")
+BARW M 1 A_Jump(256,"Detonate")
+Goto Detonate
+
+XDeath:
+BARW C 0 A_ChangeFlag("NOGRAVITY",true)
+TNT1 A 0 A_JumpifInventory("KnuxBubbleFlag",1,"Terminate",AAPTR_TRACER)
+//TNT1 A 0 A_PlaySoundEx("weapon/crackerexplode", "Weapon")
+//TNT1 A 0 A_Explode(25, 128, 0,0,96)
+Goto Detonate
+Detonate:
+TNT1 A 0 A_SpawnItemEx("BubbleArrowExplosion")
+TNT1 A 0 A_JumpIf(ACS_NamedExecuteWithResult("TracerHealthGet")>0,"Headshotcheck")
+stop
+
+HeadShotCheck:
+TNT1 A 0 A_JumpIf(Checkclass("PlayerPawn",AAPTR_TRACER,true)&&z>=ACS_NamedExecuteWithResult("TF2_TracerZGet")+40,"DoHeadshot")
+TNT1 A 0 A_SpawnItemEx("TF2BodyShotter",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+TNT1 A 0 A_SpawnItemEx("LazerTagPuff",0,0,0,0,0,0,0,1)
+stop
+DoHeadShot:
+TNT1 A 0 A_SpawnItemEx("TF2HeadShotter",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS)
+TNT1 A 0 A_SpawnItemEx("PowerStrikeFX",0,0,0,0,0,0,0,1)
+stop
+
+
+Terminate:
+TNT1 A 0 
+stop
+}
+}
+
+actor BubbleArrow_BodyShotter : TF2BodyShotter
+{
+Obituary "$OB_BUBBLEARROW"
+damagetype "BubbleArrow"
+args 30
+states
+{
+
+Spawn2:
+TNT1 A 0 A_Explode(CallACS("DamageRate",BubbleArrow_Damage,BubbleArrow_FalloffRange,BubbleArrow_FalloffRate),1,0,0,1)
+TNT1 A 1
+stop
+}
+}
+
+actor BubbleArrow_HeadShotter : TF2HeadShotter
+{
+Obituary "$OB_BUBBLEARROW"
+damagetype "BubbleArrow"
+args 45
+states
+{
+Spawn2:
+TNT1 A 0 A_Explode(CallACS("DamageRate",BubbleArrow_HeadShotDamage,BubbleArrow_HeadShotFalloffRange,BubbleArrow_HeadShotFalloffRate),1,0,0,1)
+TNT1 A 1
+stop
+}
+}
+
+
+actor BubbleArrow2 : BubbleArrow
+{
+Bouncecount 2
+states
+{
+Spawn:
+TNT1 A 0
+WABU D 0 ACS_NamedExecuteAlways("GiveActorXrayTID",0,1)
+TNT1 A 0 A_GiveInventory("ProjectileCode",1)
+Spawn2:
+BARW B 4 
+BARW B 0  A_SpawnItemEx("BubbleArrowTrailS", 0, 0, 0, Random(-1, 1), Random(-1, 1), Random(1, 3),0,1)
+Loop
+}
+}
+
+actor BubbleArrow3 : BubbleArrow
+{
+Bouncecount 3
+states
+{
+Spawn:
+TNT1 A 0
+WABU D 0 ACS_NamedExecuteAlways("GiveActorXrayTID",0,1)
+TNT1 A 0 A_GiveInventory("ProjectileCode",1)
+Spawn2:
+BARW C 2
+BARW C 0 A_SpawnItemEx("BubbleArrowTrail", 0, 0, 0, Random(-1, 1), Random(-1, 1), Random(1, 3),0,1)
+Loop
+}
+}
+
+actor BubbleArrowExplosion : BasicExplosion
+{
+Scale 5.5
+damagetype "BubbleArrow"
+States
+{
+Spawn:
+NAPC A 0 
+TNT1 A 0 A_GiveInventory("ProjectileCode",1)
+NAPC D 0 A_Explode(BubbleArrow_BlastDamage1, BubbleArrow_BlastRad, 1,0,BubbleArrow_BlastRad/2)
+NAPC D 0 A_Explode(BubbleArrow_BlastDamage2, BubbleArrow_BlastRad, 1,0,BubbleArrow_BlastRad)
+NAPC A 0 A_PlaySoundEx("weapon/crackerexplode", "Weapon")
+MXP2 ABCDEFGHIJKLMNOPQRST 1 
+stop
+}
+}
+
+//[+]========================================================================[+]
+//--------------------------------|Effect Actors|------------------------------
+//[+]========================================================================[+]
+
+actor BubbleArrowTrail
+{
+scale 2.5
+-SOLID
++NOGRAVITY
++CLIENTSIDEONLY
+height 0
+radius 0
+States
+{
+Spawn:
+TNT1 A 2
+BARW D 10 
+Death:
+BARW E 3
+stop
+}
+}
+
+actor BubbleArrowTrailS : BubbleArrowTrail
+{
+States
+{
+Spawn:
+TNT1 A 2
+BUBS E 10
+Goto Death
+}
+}

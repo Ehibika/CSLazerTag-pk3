@@ -1,0 +1,147 @@
+actor Ability3_TAssassin : AbilityMasterBase
+{
+Weapon.AmmoUse2 1
+Weapon.AmmoGive2 0
+Inventory.Pickupmessage "$PU_MEGABUSTER"
+Obituary "$OB_MEGABUSTER"
+Tag "Killing Dash Ability"
+weapon.ammotype2 "busterPower"
+inventory.icon "TENBLI"
+Dropitem ""
++WEAPON.ALLOW_WITH_RESPAWN_INVUL
+States
+{
+
+Ready:
+MKNI A 0 
+"####" "#" 0 A_Jumpif(CallACS("CSLT_CheckAbilityInput",1)==1,"User1")
+"####" "#" 0 A_Jumpif(CallACS("CSLT_CheckAbilityInput",2)==1,"User2")
+"####" A 1 A_WeaponReady
+loop
+
+Select:
+TNT1 A 0 ACS_NamedExecuteAlways("WepSpeedMod",0,Knife_MoveSpeed*FVM)
+TNT1 AAAAAAAAAAAAAAAAAAAAAA 0 A_Raise
+"####" B 1 A_Raise
+Loop
+
+Fire:
+MKNI A 0 A_PlaySoundEx("weapon/chargekick","Weapon")
+"####" A 0 A_TakeInventory("AbilityCharge_3",1)
+"####" A 0 A_GiveInventory("KillingDashFlag")
+"####" A 0 SetPlayerProperty(0,1,0)
+//"####" AABBBBBBBBBBBBBBBBBB 1
+"####" A 0 A_ChangeVelocity(35,0,momz,CVF_RELATIVE|CVF_REPLACE)//A_Recoil(-20)
+"####" A 1 A_WeaponReady(WRF_NOPRIMARY)
+"####" A 0 A_ChangeVelocity(35,0,momz,CVF_RELATIVE|CVF_REPLACE)//A_Recoil(-20)
+"####" A 1 A_WeaponReady(WRF_NOPRIMARY)
+"####" B 0 A_ChangeVelocity(35,0,momz,CVF_RELATIVE|CVF_REPLACE)//A_Recoil(-20)
+"####" B 1 A_WeaponReady(WRF_NOPRIMARY)
+"####" B 0 A_ChangeVelocity(35,0,momz,CVF_RELATIVE|CVF_REPLACE)//A_Recoil(-20)
+"####" B 1 A_WeaponReady(WRF_NOPRIMARY)
+"####" B 0 A_ChangeVelocity(35,0,momz,CVF_RELATIVE|CVF_REPLACE)//A_Recoil(-20)
+"####" B 1 A_WeaponReady(WRF_NOPRIMARY)
+"####" B 0 A_ChangeVelocity(35,0,momz,CVF_RELATIVE|CVF_REPLACE)//A_Recoil(-20)
+"####" B 1 A_WeaponReady(WRF_NOPRIMARY)
+"####" B 0 A_ChangeVelocity(35,0,momz,CVF_RELATIVE|CVF_REPLACE)//A_Recoil(-20)
+"####" B 1 A_WeaponReady(WRF_NOPRIMARY)
+"####" B 0 A_ChangeVelocity(35,0,momz,CVF_RELATIVE|CVF_REPLACE)//A_Recoil(-20)
+"####" B 1 A_WeaponReady(WRF_NOPRIMARY)
+"####" B 0 A_ChangeVelocity(35,0,momz,CVF_RELATIVE|CVF_REPLACE)//A_Recoil(-20)
+"####" B 1 A_WeaponReady(WRF_NOPRIMARY)
+"####" B 0 A_ChangeVelocity(35,0,momz,CVF_RELATIVE|CVF_REPLACE)//A_Recoil(-20)
+"####" B 1 A_WeaponReady(WRF_NOPRIMARY)
+"####" B 0 A_ChangeVelocity(35,0,momz,CVF_RELATIVE|CVF_REPLACE)//A_Recoil(-20)
+"####" B 1 A_WeaponReady(WRF_NOPRIMARY)
+"####" B 0 A_ChangeVelocity(35,0,momz,CVF_RELATIVE|CVF_REPLACE)//A_Recoil(-20)
+"####" B 1 A_WeaponReady(WRF_NOPRIMARY)
+"####" B 0 A_ChangeVelocity(35,0,momz,CVF_RELATIVE|CVF_REPLACE)//A_Recoil(-20)
+"####" B 1 A_WeaponReady(WRF_NOPRIMARY)
+"####" B 0 A_ChangeVelocity(35,0,momz,CVF_RELATIVE|CVF_REPLACE)//A_Recoil(-20)
+"####" B 1 A_WeaponReady(WRF_NOPRIMARY)
+"####" B 0 A_ChangeVelocity(35,0,momz,CVF_RELATIVE|CVF_REPLACE)//A_Recoil(-20)
+"####" C 1 A_WeaponReady(WRF_NOPRIMARY)
+"####" C 0 A_ChangeVelocity(35,0,momz,CVF_RELATIVE|CVF_REPLACE)//A_Recoil(-20)
+"####" D 1 A_WeaponReady(WRF_NOPRIMARY)
+"####" D 0 A_ChangeVelocity(35,0,momz,CVF_RELATIVE|CVF_REPLACE)//A_Recoil(-20)
+"####" D 1 A_WeaponReady(WRF_NOPRIMARY)
+"####" D 0 A_ChangeVelocity(35,0,momz,CVF_RELATIVE|CVF_REPLACE)//A_Recoil(-20)
+"####" D 1 A_WeaponReady(WRF_NOPRIMARY)
+"####" D 0 A_ChangeVelocity(35,0,momz,CVF_RELATIVE|CVF_REPLACE)//A_Recoil(-20)
+"####" D 1 A_WeaponReady(WRF_NOPRIMARY)
+"####" D 0 A_ChangeVelocity(35,0,momz,CVF_RELATIVE|CVF_REPLACE)//A_Recoil(-20)
+"####" D 1 A_WeaponReady(WRF_NOPRIMARY)
+"####" C 0 SetPlayerProperty(0,0,0)
+"####" E 22
+"####" A 0 A_TakeInventory("KillingDashFlag")
+"####" E 1 A_TakeInventory("AbilityActiveFlag",9)
+wait
+
+AltFire:
+"####" C 1 A_JumpIfInventory("KillingDashFlag",1,"HeyApple")
+End:
+"####" C 1 A_TakeInventory("AbilityActiveFlag",9)
+"####" C 0 
+Goto End
+HeyApple:
+"####" A 0 A_PlaySoundEx("weapon/SlashClaw","Weapon")
+"####" A 2 //5
+"####" A 0 A_FireCustomMissile("KillingDashScratchMelee",0,0,8,0)
+"####" BCD 1 //2
+"####" E 0 SetPlayerProperty(0,0,0)
+"####" E 42 //17*2.5=42.5
+"####" A 0 A_TakeInventory("KillingDashFlag")
+"####" E 1 A_TakeInventory("AbilityActiveFlag",9)
+wait
+}
+}
+//====
+
+actor UseAbility3_TAssassin : CustomInventory
+{
+states
+{
+Use:
+WEA2 A 0 A_GiveInventory("KillingDashAbility",1)
+fail
+}
+}
+
+actor KillingDashAbility : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_JumpIfInventory("AbilityCharge_3",1,"Pickup2")
+stop
+
+Pickup2:
+TNT1 A 0 ACS_NamedExecuteAlways("RunClassAbility",0,3)
+stop
+}
+}
+//=================
+//=================
+
+actor KillingDash_AbilityCharge : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 ACS_NamedExecuteAlways("GiveAbilityCharge",0,3,Cap_KillingDash)
+stop
+}
+}
+
+actor KillingDashFlag : Once {}
+actor KillingDashScratchMelee : ScratchMelee {Damagetype "KillingDashKnife"}
+actor KillingDashKnifeBackstabItem : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_SpawnItemEX("KillingDashKnifeBackstab")
+stop
+}
+}
+actor KillingDashKnifeBackstab : KnifeBackstab {Damagetype "KillingDashKnifeCrit"}

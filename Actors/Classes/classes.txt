@@ -1,0 +1,102 @@
+/*
+actor MegamanC : ClassBase
+{
+player.startitem "MegaBuster"
+player.startitem "BusterAmmo", 3
+player.startitem "Zapper"
+player.startitem "BusterPower", 100
+
+states
+{
+Spawn:
+PLAY A 0
+PLAY B 1
+PLAY A 1
+Goto Spawn+2
+See:
+PLAY BCDE 5
+Goto Spawn
+Missile:
+PLAY F 5
+PLAY G 4
+goto Spawn
+}
+}
+*/
+
+actor Smoker : ClassBase
+{
+player.displayname "Smoker"
+player.startitem "Gunslinger"
+player.startitem "BusterPower", 100
+player.startitem "SmokeScreenAmmo", 2
+player.startitem "BaseFlagPack", 1
+
+player.startitem "UseAbility1_Smoker", 1
+player.startitem "UseAbility2_Smoker", 1
+
+states
+{
+Spawn:
+SHAM A 0
+SHAM B 1
+SHAM A 1
+Goto Spawn+2
+See:
+SHAM BCDE 5
+Goto Spawn
+Missile:
+SHAM F 5
+SHAM G 4
+goto Spawn
+}
+}
+
+
+actor Molly : ClassBase
+{
+player.displayname "Molly"
+player.startitem "MolotovGun"
+player.startitem "BusterPower", 100
+player.startitem "MolotovAmmo", 2
+player.startitem "BaseFlagPack", 1
+states
+{
+Spawn:
+FLAM A 0
+FLAM B 1
+FLAM A 1
+Goto Spawn+2
+See:
+FLAM BCDE 5
+Goto Spawn
+Missile:
+FLAM F 5
+FLAM G 4
+goto Spawn
+}
+}
+
+actor Flasher : ClassBase
+{
+player.displayname "Flasher"
+player.startitem "FlashBangGun"
+player.startitem "BusterPower", 100
+player.startitem "FlashBangAmmo", 2
+player.startitem "BaseFlagPack", 1
+states
+{
+Spawn:
+FLSM A 0
+FLSM B 1
+FLSM A 1
+Goto Spawn+2
+See:
+FLSM BCDE 5
+Goto Spawn
+Missile:
+FLSM F 5
+FLSM G 4
+goto Spawn
+}
+}

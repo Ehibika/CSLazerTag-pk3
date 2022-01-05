@@ -1,0 +1,37 @@
+actor LightArmor : BasicArmorPickup
+{
+  armor.saveamount 25
+  armor.savepercent 100
+  armor.maxabsorb 25
+}
+
+actor HeavyArmor : BasicArmorPickup
+{
+  armor.saveamount 50
+  armor.savepercent 100
+  armor.maxabsorb 25
+}
+
+actor LT_Armor : Inventory
+{Inventory.Amount 1
+Inventory.MaxAmount 50}
+
+actor GiveLightArmor : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 ACS_NamedExecuteAlways("CSLT_GiveArmor",0,25)
+stop
+}
+}
+
+actor GiveHeavyArmor : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 ACS_NamedExecuteAlways("CSLT_GiveArmor",0,50)
+stop
+}
+}

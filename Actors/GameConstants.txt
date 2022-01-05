@@ -1,0 +1,92 @@
+Const int FVM = 65536; //Fixed Value Multiple
+Const float FVMF = 65536.0;
+//=======|weapon Constants|==========
+const int Aim_OverHead = 35;
+const int Aim_ArcOverHead = 15;
+const int Aim_ArcScale = 20;
+
+const int FlashRang = 2500;
+
+Const int FalloffBase = 1500;
+
+
+Const int S_FLR = 35; //Standard Falloff Rate
+Const int S_HFLR = 60; //Standard Headshot Falloff Rate
+
+Const int F_FLR = 10; //Fash Falloff Rate
+Const int F_HFLR = 30; //Fash Headshot Falloff Rate
+
+Const int L_FLR = 100; //Long Falloff Rate
+Const int L_HFLR = 125; //Long Headshot Falloff Rate
+
+//ShotGunSpread
+Const float SRev = 360;
+
+Const float S_SprAng = 3.2;
+Const float S_SprAngRev = SRev-S_SprAng;
+
+Const float S_SprD_Ang = S_SprAng/1.5;
+Const float S_SprD_AngRev = SRev-(S_SprAng/1.5);
+
+//=======|weapon IDs|==========
+Const int WP_Zapper = 0;
+Const int WP_Scrapper = 1;
+Const int WP_Watchman = 2;
+Const int WP_Scout = 3;
+Const int WP_Pounder = 4;
+Const int WP_Gunslinger = 5;
+//===
+Const int WP_Fighter = 6;
+Const int WP_Warden = 7;
+Const int WP_Tracer = 8;
+Const int WP_Enforcer = 9;
+Const int WP_Toujorprey = 10;
+//===
+Const int WP_Hyperbeam = 11;
+Const int WP_LightCannon = 12;
+
+Const int WP_Muscler = 13;
+Const int WP_Skye = 14;
+//=======|Input Constants|==========
+const int BT_ATTACK	= 1;
+const int BT_USE = 2;
+const int BT_JUMP = 4;
+const int BT_CROUCH	= 8;
+const int BT_TURN180 = 16;
+const int BT_ALTATTACK = 32;
+const int BT_RELOAD	= 64;
+const int BT_ZOOM = 128;
+const int BT_SPEED = 256;
+const int BT_STRAFE	= 512;
+const int BT_MOVERIGHT = 1024;
+const int BT_MOVELEFT = 2048;
+const int BT_BACK = 4096;
+const int BT_FORWARD = 8192;
+const int BT_RIGHT = 16384;
+const int BT_LEFT = 32768;
+const int BT_LOOKUP	= 65536;
+const int BT_LOOKDOWN = 131072;
+const int BT_MOVEUP	= 262144;
+const int BT_MOVEDOWN = 524288;
+const int BT_SHOWSCORES	= 1048576;
+const int BT_USER1 = 2097152;
+const int BT_USER2 = 4194304;
+const int BT_USER3 = 8388608;
+const int BT_USER4 = 16777216;
+
+//=======|Class Chat System|==========
+const int CLT_ABILITY = 0;
+const int CLT_ROUNDSTART = 1;
+const int CLT_CLUTCH = 2;
+const int CLT_CLUTCHCOMMEND = 3;
+const int CLT_LOSING = 4;
+const int CLT_WINNING = 5;
+const int CLT_COMEBACK = 6;
+//=======|RadiusGive Constants|==========
+const int RG_SELF = 1;
+const int RG_TEAM = 2;
+const int RG_ENEMY = 4;
+const int RG_LOS = 8;
+//=======|Targeting Constants|==========
+const int TG_TEAM = 1;
+const int TG_ENEMY = 2;

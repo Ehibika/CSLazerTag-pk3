@@ -1,0 +1,114 @@
+/* ================================================
+ * Each Class is able to bring their own melee weapon, the thing about
+ * Class melees is that they must have identical stats to the in game
+ * knife, this means having the same ammount of frames before and
+ * After the melee hitbox is launched.
+ *
+ * if you also want a visually different hitbox, be sure
+ * to have it's stats be identical to the original.
+ * =================================================*/
+
+actor BlakeMelee : BasicKnife
+{
+Tag "Class Melee"
+inventory.icon "SCLASI"
+States
+{
+SpawnLoop:
+WEAP X 1
+loop
+Ready:
+PHAN A 1 
+"####" "#" 0 A_Jump(256,"Ready.Core")
+Goto Ready.Core
+Deselect:
+TNT1 AAAAAAAAAAAAAAAAAAAAAA 0 A_Lower
+MKNI B 1 A_Lower
+Loop
+Select:
+//TNT1 AAAAAAAAAAAAAAAAAAAAAA 0 A_Raise
+TNT1 A 0 ACS_NamedExecuteAlways("WepSpeedMod",0,Knife_MoveSpeed*FVM)
+PHAN AAA 0 A_Raise
+PHAN A 1 A_WEAPONREADY(WRF_NOPRIMARY|WRF_NOSECONDARY|WRF_NOBOB)
+Loop
+
+Fire:
+"####" A 0 A_PlaySoundEx("weapon/shadow","Weapon")
+"####" B 5
+// ==|5 Frames Before|===
+
+//  These are not allowed ~Bika
+/*
+"####" A 0 A_FireCustomMissile("FailRing",0,1,8,0)
+PHAN F 0 A_FireCustomMissile("FailRing",-8,0,8,0)
+PHAN F 0 A_FireCustomMissile("FailRing",8,0,8,0)
+*/
+
+PHAN F 0 A_FireCustomMissile("FailBlade",0,0,8,0)
+// ==|23 Frames Before|===
+"####" CD 2
+"####" E 19
+"####" A 0 A_Refire
+goto Ready
+}
+}
+
+
+/* 
+ * I'll need to clarify in a future version of the classmaker, but the melee 
+ * can only differ in terms of aesthetics, the sprites can look different but
+ * the stats, damage, projectile range, and all must be identical to the base knife.
+*/
+
+/*
+actor FailRing
+{
+PROJECTILE
++SKYEXPLODE
++DONTSPLASH
++NOEXPLODEFLOOR
++RIPPER
+Damage (9)
+scale 2.5
+-NOGRAVITY
++DOOMBOUNCE
+DamageType "RingBoomerang"
+Obituary "$OB_RINGBOOMERANG"
+wallbouncefactor 7
+bouncefactor 5
+radius 18
+height 18
+Reactiontime 55
+speed 60
+states
+{
+Spawn:
+RING ABCD 0
+RING ABCD 1 A_CountDown
+loop
+Death:
+RING A 0
+RING A 0 A_CustomMissile("ReturningRing",0,0,0,0)
+stop
+}
+}
+*/
+
+
+actor FailBlade : ScratchMelee
+{
+States
+{
+Spawn:
+TNT1 A 0 
+TNT1 A 0 A_GiveInventory("ProjectileCode",1)
+RING ABCD 1
+stop
+
+Death:
+TNT1 A 0 A_GiveInventory("ProjectileCode",1)
+NDFX A 0 A_PlaySoundEx("weapon/slashclawhit","Weapon")
+NDFX A 3 A_SpawnItemEx("ScratchImpactFX",0,0,0,0,0,0,0,1)
+stop
+}
+}

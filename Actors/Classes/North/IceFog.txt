@@ -1,0 +1,403 @@
+
+actor Ability2_North : RemoteAbilityMasterBase
+{
+Weapon.AmmoUse2 1
+Weapon.AmmoGive2 2
+Inventory.Pickupmessage "$PU_MEGABUSTER"
+Obituary "$OB_MEGABUSTER"
+Tag "SmokeScreen Gun"
+weapon.ammotype2 "SmokeScreenAmmo"
+inventory.icon "ICFOGI"
+Dropitem ""
++WEAPON.ALLOW_WITH_RESPAWN_INVUL
+States
+{
+
+Ready:
+NORT C 0 
+"####" C 7 A_PlaySoundEx("weapon/copyvision", "weapon") //A_WeaponReady
+"####" C 0 
+goto Fire
+
+Deselect:
+TNT1 A 0 A_TakeInventory("TargActive",9)
+TNT1 A 0 A_TakeInventory("AbilityActiveFlag",9)
+TNT1 A 0 A_GiveInventory("PlayerVisionHide_Off")
+TNT1 B 0 A_GiveInventory("RemoteKiller")
+TNT1 B 0 A_GiveInventory("RemoteMoveUnLock")
+TNT1 B 0 A_GiveInventory("3PCam_Off")
+TNT1 B 0 ACS_NamedExecuteAlways("ToggleCameraTint",0,0,0)
+TNT1 A 0 ACS_NamedExecuteWithResult("CSLT_Chatline",CLT_ABILITY,6)
+TNT1 AAAAAAAAAAAAAAAAAAAAAA 0 A_Lower
+"####" B 1 A_Lower
+Loop
+
+Fire:
+"####" A 0 A_GiveInventory("RemoteMoveLock")
+"####" A 0 A_GiveInventory("IceFogRCFlag")
+"####" A 0 A_Stop
+"####" A 0 A_SpawnItemEX("IceFog_Remote")
+"####" A 0 ACS_NamedExecuteWithResult("CSLT_Chatline",CLT_ABILITY,Random(3,4))
+"####" A 0 A_Jump(256,"fire.Remote")
+Goto fire.Remote
+
+fire.Remote:
+"####" C 1 A_WeaponReady(WRF_NOPRIMARY|WRF_NOSECONDARY)
+"####" C 0 A_Jumpif(CallACS("CSLT_ButtonCheck",BT_ALTATTACK)==1,"fire.After")
+"####" "#" 0 A_Jumpif(CallACS("CSLT_CheckAbilityInput",1)==1,"User1")
+"####" "#" 0 A_Jumpif(CallACS("CSLT_CheckAbilityInput",3)==1,"User3")
+"####" "#" 0 A_Jumpif(CallACS("CSLT_CheckAbilityInput",4)==1,"User4")
+//==
+"####" C 0 A_JumpifInventory("RemoteKiller",1,"Fire.After")
+"####" C 0 A_JumpifInventory("IceFogRCFlag",1,"fire.Remote")
+Goto Fire.After
+
+Fire.After:
+"####" C 1 A_GiveInventory("PlayerVisionHide_Off")
+NORT C 0
+"####" C 1 A_GiveInventory("RemoteMoveUnLock")
+"####" C 1 A_GiveInventory("3PCam_Off")
+"####" C 0 ACS_NamedExecuteAlways("ToggleCameraTint",0,0,0)
+"####" A 0 ACS_NamedExecuteWithResult("CSLT_Chatline",CLT_ABILITY,6)
+"####" C 0 A_Jump(256,"Fire.End")
+Goto Fire.End
+
+AltFire:
+Fire.End:
+"####" C 1 A_TakeInventory("AbilityActiveFlag",9)
+"####" C 0 
+Goto Fire.End
+}
+}
+//====
+
+actor UseAbility2_North : CustomInventory
+{
+states
+{
+Use:
+WEA2 A 0 A_GiveInventory("IceFogAbility",1)
+fail
+}
+}
+
+actor IceFogAbility : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_JumpIfInventory("AbilityCharge_2",1,"Pickup2")
+stop
+
+Pickup2:
+TNT1 A 0 ACS_NamedExecuteAlways("RunClassAbility",0,2)
+stop
+}
+}
+//=================
+//=================
+actor IceFogRCFlag : Powerup {inventory.amount 1 powerup.duration 35 }
+actor IceFog_RemoteCooldown : Powerup {inventory.amount 1 powerup.duration -5}
+
+Const int IceFogRad = 175;
+Const int IceFog_Forward = 0;//150;
+Const int IceFog_Range = 2000;
+
+Const int IceFog_EntiTID = 4;
+
+
+actor CameraTint_1 : Powerup
+{
+powerup.duration 0x7FFFFFFD
+Powerup.Colormap 0.0, 0.0, 1.0, 0.0, 0.5, 0.5 
+}
+
+actor IceFog_Remote 
+{
+Speed 5
++MISSILE
++THRUACTORS
++NOCLIP
++FLOORHUGGER
++NOEXPLODEFLOOR
+//+SLIDESONWALLS
+//+BOUNCEONWALLS 
++NOGRAVITY
+Health 5
+Damage (0)
+DamageType "IceFog"
+obituary "$OB_IceFog"
+radius 5
+Reactiontime 50
+height 16
+scale 3.5
+Args 0, 60
+States
+{
+Spawn:
+TNT1 A 0 
+TNT1 A 0 A_GiveInventory("ProjectileCode",1)
+TNT1 A 0 ACS_NamedExecuteAlways("CamGrabObject",0)
+TNT1 A 0 ACS_NamedExecuteAlways("RemoteControlActor",0,30.0,IceFog_Range)
+TNT1 A 0 A_SetArg(0,CallACS("Core_GetTarget")-1000)
+//TNT1 A 0 A_TransferPointer(AAPTR_TARGET,AAPTR_DEFAULT,AAPTR_TRACER,AAPTR_DEFAULT)
+TNT1 A 0 ACS_NamedExecuteAlways("ToggleCameraTint",0,1)
+TNT1 A 0 A_GiveToTarget("PlayerVisionHide_On",1)
+
+Spawn2:
+TNT1 A 1 A_JumpIfCloser(IceFog_Range-1,"Spawn3")
+//TNT1 A 0 A_JumpIf(!CallACS("Arc_ClientSide2",args[0]),1)
+TNT1 A 0 A_SpawnItemEx("IceFogRingGuide2",IceFog_Forward,0,0,0,0,0,0,1,0,args[0])
+TNT1 A 0 A_GiveToTarget("IceFogRCFlag",1)
+TBLA A 0
+loop
+Spawn3:
+//TNT1 A 0 A_JumpIf(!CallACS("Arc_ClientSide2",args[0]),1)
+TNT1 A 0 A_SpawnItemEx("IceFogRingGuide",IceFog_Forward,0,0,0,0,0,0,1,0,args[0])
+TNT1 A 1 A_GiveToTarget("IceFogRCFlag",1)
+TBLA A 0
+goto Spawn2
+
+Trigger: //Check PP
+TNT1 A 0 A_JumpifInTargetInventory("AbilityCharge_2",1,"Detonate")
+goto Decline
+
+Detonate: // Cast the attack!
+TNT1 A 0 A_SpawnItemEx("IceFogField",IceFog_Forward,0,-(z-floorz)+0,0,0,0,0,1)
+TNT1 A 0 A_PlaySoundEx("weapon/magiccard","Weapon")
+TNT1 A 0 A_GiveToTarget("IceFog_ChatCue",1)
+TNT1 A 0 A_TakeFromTarget("AbilityCharge_2",1)
+goto PostTrigger
+
+Decline: //Cannot cast the attack
+TNT1 A 0 A_GiveToTarget("DeclineSoundCue",1)
+goto PostTrigger
+
+PostTrigger:
+TNT1 AAAAA 1 A_SpawnItemEx("IceFogRingGuide",IceFog_Forward,0,0,0,0,0,0,1)
+Goto Spawn2
+
+Death:
+TNT1 A 0 
+BSTG AAAAAA 0 //A_SpawnItemEx("RazorLeafParticle", 0, 0, 28, 256/24, 256/24, random2(256/24), random(0, 359),1)
+SPKH ABCD 2
+stop
+}
+}
+
+
+actor IceFog_ChatCue : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 ACS_NamedExecuteWithResult("CSLT_Chatline",CLT_ABILITY,5)
+stop
+}
+}
+
+
+
+actor IceFogRingGuide : BasicHelper
+{
+translation "198:198=220:220", "192:192=229:229"
++CLIENTSIDEONLY
+	reactiontime 15
+	var int user_angle;
+	States
+	{
+		Spawn:
+		TNT1 A 0
+		TNT1 A 0 //A_SetUserVar("user_angle", random(0, 30))
+		TNT1 A 0 A_JumpIf(!CallACS("Arc_ClientSide2",TID+1000),"Perish")
+		SpawnLoop:
+		TNT1 A 0 A_SpawnItemEx("IceFogGuideDot", IceFogRad, 0, -(z-floorz)+24, 0, 0, 0, angle+user_angle, 1061)
+		TNT1 A 0 A_SpawnItemEx("IceFogGuideDot", -IceFogRad, 0, -(z-floorz)+24, 0, 0, 0, angle+user_angle, 1061)
+		TNT1 A 0 A_SetUserVar("user_angle", user_angle + 12)
+		TNT1 A 0 A_Countdown
+		loop
+		Death:
+		TNT1 A 0
+		stop
+	}
+}
+
+actor IceFogRingGuide2 : BasicHelper
+{
+	+CLIENTSIDEONLY
+	reactiontime 15
+	var int user_angle;
+	States
+	{
+		Spawn:
+		TNT1 A 0
+		TNT1 A 0 //A_SetUserVar("user_angle", random(0, 30))
+		TNT1 A 0 A_JumpIf(!CallACS("Arc_ClientSide2",CallACS("Core_GetTarget")),"Perish")
+		SpawnLoop:
+		TNT1 A 0 A_SpawnItemEx("IceFogGuideDot2", IceFogRad, 0, -(z-floorz)+24, 0, 0, 0, angle+user_angle, 1061)
+		TNT1 A 0 A_SpawnItemEx("IceFogGuideDot2", -IceFogRad, 0, -(z-floorz)+24, 0, 0, 0, angle+user_angle, 1061)
+		TNT1 A 0 A_SetUserVar("user_angle", user_angle + 12)
+		TNT1 A 0 A_Countdown
+		loop
+		Death:
+		TNT1 A 0
+		stop
+	}
+}
+
+actor IceFogGuideDot : BasicGuideDot {}
+
+actor IceFogGuideDot2 : BasicGuideDot {StencilColor "#F42A0C"}
+
+
+
+
+actor IceFogField : BasicHelper
+{
+ReactionTime 85
+DamageType "IceFog"
+obituary "$OB_IceFog"
+var int user_angle;
+var int user_Pitch;
+var int user_Tick;
+states
+{
+Spawn:
+TNT1 A 0
+TNT1 D 0 ACS_NamedExecuteAlways("GiveM_EntiTID",0,IceFog_EntiTID,3)
+TNT1 A 2 A_GiveInventory("ProjectileCodeSyncTarget",1)
+TNT1 A 0 A_SpawnItemEx("IceFogRing",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION|SXF_TRANSFERPOINTERS,0,tid)
+TNT1 AAA 5
+Goto Spawnloop
+
+SpawnLoop:
+TNT1 AAAA 0 A_SpawnItemEx("IceBoltFieldFX",IceFogRad,0,Random(0,IceFogRad),0,0,0,random(0,360),SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION|SXF_TRANSFERPOINTERS,0,tid)
+TNT1 A 0 ACS_NamedExecuteAlways("CSLT_RadiusGive",0,RGI_IceBolt,IceBoltArea2,RG_ENEMY|RG_TEAM)
+TNT1 A 5 A_CountDown
+Loop 
+
+Death:
+TNT1 A 1 
+stop
+}
+}
+
+
+actor IceFogRing //: BasicHelper
+{
+translation "198:198=220:220", "192:192=229:229"
+	reactiontime 3
+    var int user_angle;
+    PROJECTILE
+    +NOINTERACTION
+    +NOCLIP
+    //+CLIENTSIDEONLY
+    +NOTARGETSWITCH
+	States
+	{
+		Spawn:
+		TNT1 A 0
+        TNT1 A 0 //A_SetUserVar("user_angle", random(0, 30))
+        TNT1 A 0 A_GiveInventory("ProjectileCode",1)
+        TNT1 A 1 A_SpawnItemEx("IceFogCloud2",0,0,96,0,0,0,0,1061,0,tid)
+        SpawnLoop:
+        TNT1 A 0 A_SpawnItemEx("IceFogCloud2",128,0,0,0,0,0,user_angle,1061|SXF_TRANSFERPOINTERS,0,tid)
+        TNT1 A 0 A_SpawnItemEx("IceFogCloud2",-128,0,0,0,0,0,user_angle,1061|SXF_TRANSFERPOINTERS,0,tid)
+		TNT1 A 1 A_SetUserVar("user_angle", user_angle + 60)
+		TNT1 A 0 A_Countdown
+		loop
+		Death:
+		TNT1 A 0
+		stop
+	}
+}
+
+actor IceFogCloud2 //: BasicClientside
+{
+    +MISSILE
+    +NOGRAVITY
+    +NOINTERACTION
+    +NOCLIP
+    +FORCEXYBILLBOARD
+    //+CLIENTSIDEONLY
+    radius 8
+    height 8
+    Damage (0)
+    scale 3.0
+    Reactiontime 85
+    Renderstyle "Translucent"
+    Alpha 0.95
+States
+{
+Spawn:
+TNT1 A 0 
+TNT1 A 0 A_GiveInventory("ProjectileCode",1)
+TNT1 AA 1 //ACS_NamedExecuteAlways("TeamSmoke",0)
+ICFF ABC 5
+Spawn2:
+ICFF DE 5 A_CountDown
+loop
+Death:
+ICFF FGH 3 A_Fadeout(0.2)
+stop
+}
+}
+
+
+//=============
+actor StakeoutGivePro1000 : CustomInventory
+{
+States
+{
+Pickup:
+TNT1 A 0 A_SpawnItemEX("StakeoutGoPro1000",-5,0,500,0,0,0,180)
+stop
+}
+}
+actor StakeoutGivePro1001 : CustomInventory
+{
+States
+{
+Pickup:
+TNT1 A 0 A_SpawnItemEX("StakeoutGoPro1001",-5,0,500,0,0,0,180)
+stop
+}
+}
+
+actor StakeoutGoPro1000
+{
++MISSILE
+-SOLID
++CLIENTSIDEONLY
++NOINTERACTION
++NOCLIP
++NOGRAVITY
++DONTBLAST
++DONTREFLECT
++THRUACTORS
+renderstyle none
+radius 2
+height 2
+mass 1000
+cameraheight 410
+States
+{
+Spawn:
+PLAY A 0
+PLAY A 0 Thing_ChangeTID(0,mass+6660)
+PLAY A 0 A_SetPitch(90)
+PLAY A 0 ACS_NamedExecuteWithResult("CSLT_Stakeout_GoPro",mass)
+PLAY A 0 //A_Warp(AAPTR_TARGET,1,0,0,180,WARPF_COPYINTERPOLATION|WARPF_NOCHECKPOSITION,"SpawnLoop")
+PLAY A 1 //A_Jump(256,"TimeToDie")
+wait
+SpawnLoop:
+PLAY A 1
+PLAY A 0 //A_Warp(AAPTR_TARGET,1,0,500,180,WARPF_COPYINTERPOLATION|WARPF_NOCHECKPOSITION,"SpawnLoop")
+PLAY A 1 A_Jump(256,"TimeToDie")
+wait
+TimeToDie:
+PLAY A 0
+stop
+}
+}
+actor StakeoutGoPro1001 : StakeoutGoPro1000 {mass 1001}

@@ -1,0 +1,141 @@
+#library "A_Vision"
+#include "zcommon.acs"
+#import "A_Core.acs"
+#import "A_Targeter.acs"
+
+Script "VisionScriptHandler" OPEN CLIENTSIDE
+{
+int conP = ConsolePlayerNumber();
+while(true) {
+	TargeterVision(conP);
+	XRayFunc(conP);
+	delay(1);
+}
+}
+
+
+///X Ray
+
+
+function void XRayFunc(int conP) {
+	int p = conP;
+	int camera = CheckPlayerCamera(conP);
+	if(camera>999&&camera<(1000+MAX_PLAYERS)) { //&&CheckActorInventory(camera,"XRayFlag")>0
+		p = (camera-1000);
+		int team = getPlayerTeam(p);
+		if(team==TEAM_COOP) {
+			//nothing >_>
+		} else if(team!=TEAM_NONE) {
+			XRayEnemyTeamPlayers(team,camera,p);
+			XRayActors(p,camera);
+		} else {
+			XRayEnemyPlayers(p,camera);
+			XRayActors(p,camera);
+		}
+	}
+}
+
+function int getPlayerTeam(int p)
+{
+if (GetCVar("teamplay")==1||GetCVar("teamlms")==1||GetCVar("teampossession")==1
+||GetCVar("teamgame")==1){
+	Return GetPlayerInfo(p,PLAYERINFO_TEAM);
+} else if (GetCVar("cooperative")==1) {
+	Return TEAM_COOP;
+}
+Return TEAM_NONE;
+}
+
+function void XRayEnemyTeamPlayers(int team, int camera, int p)
+{
+int cameraX = GetActorX(camera);
+int cameraY = GetActorY(camera);
+int cameraZ = GetActorViewZ(camera);
+int velX = GetActorVelX(camera);
+int velY = GetActorVelY(camera);
+int velZ = GetActorVelZ(camera);
+for(int i=0;i<MAX_PLAYERS;i++) {
+	if(team!=GetPlayerInfo(i, PLAYERINFO_TEAM) && CheckifTagged(p,i)) XRayPlayer(1000+i,cameraX,cameraY,cameraZ,velX,velY,velZ);
+}
+}
+
+function int GetActorViewZ(int tid)  {
+	return(GetActorZ(tid)+GetActorViewHeight(tid));
+}
+
+function void XRayEnemyPlayers(int p, int camera)
+{
+int cameraX = GetActorX(camera);
+int cameraY = GetActorY(camera);
+int cameraZ = GetActorViewZ(camera);
+int velX = GetActorVelX(camera);
+int velY = GetActorVelY(camera);
+int velZ = GetActorVelZ(camera);
+int i;
+for(i=0;i<p;i++) if(CheckifTagged(p,i)) XRayPlayer(1000+i,cameraX,cameraY,cameraZ,velX,velY,velZ);
+for(i=p+1;i<MAX_PLAYERS;i++) if(CheckifTagged(p,i)) XRayPlayer(1000+i,cameraX,cameraY,cameraZ,velX,velY,velZ);
+}
+
+function void XRayPlayer(int targetTID, int cameraX, int cameraY, int cameraZ, int velX, int velY, int velZ)
+{
+if(GetActorProperty(targetTID,APROP_HEALTH)>0) {
+	int targetX = GetActorX(targetTID);
+	int targetY = GetActorY(targetTID);
+	int targetZ = GetActorCenterZ(targetTID);
+	
+	int xDist = targetX - cameraX;
+	int yDist = targetY - cameraY;
+	int angle = vectorangle(xDist,yDist);
+	int dist = VectorLength(xDist,yDist);
+	int zDist = targetZ - cameraZ;
+	int pitch = vectorangle(dist, zDist);
+	
+	//XRayPlayer2(cameraX,cameraY,cameraZ,angle,pitch,16);
+	//XRayPlayer2(cameraX,cameraY,cameraZ,angle,pitch,32);
+	for(int i = 0; i<5; i++) XRayPlayer2(cameraX,cameraY,cameraZ,velX,velY,velZ,angle,pitch,16*(i+1),0.6-0.1*i,1.0+2.0*i);
+}
+}
+
+function void XRayPlayer2(int cameraX, int cameraY, int cameraZ, int velX, int velY, int velZ, int angle, int pitch, int dist, int scaleMult, int alphaMult)
+{
+	int u = UniqueTID();
+	//SpawnForced("XRayMarker",cameraX+cos(angle)*dist,cameraY+sin(angle)*dist,cameraZ);
+	SpawnForced("XRayMarker",cameraX+fixedmul(cos(angle),cos(pitch))*dist-velx,cameraY+fixedmul(sin(angle),cos(pitch))*dist-vely,cameraZ+sin(pitch)*dist-velz*2,u);
+	//SetActorVelocity(u,velX/2,velY/2,velZ/2,0,0);
+	SetActorVelocity(u,velX,velY,velZ,0,0);
+	PropMultFunc(u,APROP_ScaleX,scaleMult);
+	PropMultFunc(u,APROP_ScaleY,scaleMult);
+	PropMultFunc(u,APROP_Alpha,alphaMult);
+	Thing_ChangeTID(u,0);
+}
+
+
+function void XRayActors(int p, int camera)
+{
+int cameraX = GetActorX(camera);
+int cameraY = GetActorY(camera);
+int cameraZ = GetActorViewZ(camera);
+int velX = GetActorVelX(camera);
+int velY = GetActorVelY(camera);
+int velZ = GetActorVelZ(camera);
+int i;
+if(ThingCount(T_NONE,XRAYActorTID+p) && !CheckSight(P+1000,XRAYActorTID+p,0)) XRayPlayer(XRAYActorTID+P,cameraX,cameraY,cameraZ,velX,velY,velZ);
+
+//for(i=0;i<p;i++) if(!CheckSight(P+1000,i+XRAYActorTID,0)) XRayPlayer(XRAYActorTID+i,cameraX,cameraY,cameraZ,velX,velY,velZ);
+//for(i=p+1;i<MAX_PLAYERS;i++) if(!CheckSight(P+1000,i+XRAYActorTID,0))XRayPlayer(XRAYActorTID+i,cameraX,cameraY,cameraZ,velX,velY,velZ);
+}
+
+
+
+function void PropMultFunc(int tid, int prop, int mult) {
+	SetActorProperty(tid,prop,FixedMul(GetActorProperty(tid,prop),mult));
+}
+
+function int GetActorCenterZ(int tid)  {
+	return(GetActorZ(tid) + GetActorProperty(tid,APROP_Height)/2);
+}
+
+Function bool CheckifTagged(int p, int i)
+{
+return (CheckActorInventory(i+1000,"XrayTagFlag") && !CheckSight(P+1000,i+1000,0));
+}

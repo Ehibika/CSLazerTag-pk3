@@ -1,0 +1,215 @@
+LISTMENU "MainMenu"
+{
+	IfGame(Doom, Chex)
+	{
+		StaticPatch 94, 2, "M_DOOM"
+		Position 97, 72
+		IfOption(ReadThis)
+		{
+			Position 97, 64
+		}
+	}
+	IfGame(Strife)
+	{
+		StaticPatch 84, 2, "M_STRIFE"
+		Position 97, 45
+	}
+	IfGame(Heretic)
+	{
+		StaticPatch 88, 0, "M_HTIC"
+		StaticPatch 40, 10, "M_SKL01"
+		StaticPatch 232, 10, "M_SKL00"
+		Position 110, 56
+	}
+	IfGame(Hexen)
+	{
+		StaticPatch 88, 0, "M_HTIC"
+		StaticPatch 37, 80, "FBULB0"
+		StaticPatch 278, 80, "FBULA0"
+		Position 110, 56
+	}
+	
+	IfGame(Doom, Strife, Chex)
+	{
+		Font "DBIGFONT", "MenuWhite"
+		TextItem "SinglePlayer", "s", "PlayerclassMenu"
+		TextItem "Multiplayer", "m", "ZA_MultiplayerOptions" // [Lego]
+		TextItem "Player Setup", "p", "PlayerMenu"
+		Font "DBIGFONT", "MenuRed"
+		TextItem "Shop", "h", "ShopMenu" // [Jax]
+		Font "DBIGFONT", "MenuWhite"
+		TextItem "Options", "o", "OptionsMenu"
+		TextItem "Quit Game", "q", "QuitMenu"
+	}
+	
+	IfGame(Heretic, Hexen)
+	{
+		TextItem "$MNU_NEWGAME", "n", "PlayerclassMenu"
+		TextItem "$MNU_OPTIONS", "o", "OptionsMenu"
+		TextItem "$MNU_GAMEFILES", "g", "GameFilesMenu"
+		TextItem "$MNU_INFO", "i", "ReadThisMenu"
+		TextItem "$MNU_QUITGAME", "q", "QuitMenu"
+	}
+}
+
+
+OptionMenu "ShopMenu"
+{
+    Title "Shop"
+//Submenu "$SHOP_GEAR", "ItemMenu"
+Command "$SHOP_CLASS", "OpenClassShop"
+Submenu "$SHOP_Settings", "CSLTOptions"
+
+Command "$SHOP_Scrapper", "BuyScrapper"
+StaticText "$SHOPDESC_Scrapper"
+StaticText ""
+
+Command "$SHOP_Watchman", "BuyWatchman"
+StaticText "$SHOPDESC_Watchman"
+StaticText ""
+
+Command "$SHOP_Scout", "BuyScout"
+StaticText "$SHOPDESC_Scout"
+StaticText ""
+
+Command "$SHOP_Pounder", "BuyPounder"
+StaticText "$SHOPDESC_Pounder"
+StaticText ""
+
+Command "$SHOP_Gunslinger", "BuyGunslinger"
+StaticText "$SHOPDESC_Gunslinger"
+		StaticText "$SHOP_BORDER"
+
+Command "$SHOP_Tracer", "BuyTracer"
+StaticText "$SHOPDESC_Tracer"
+StaticText ""
+
+Command "$SHOP_Skye", "BuySkye"
+StaticText "$SHOPDESC_Skye"
+StaticText ""
+
+Command "$SHOP_Muscler", "BuyMuscler"
+StaticText "$SHOPDESC_Muscler"
+StaticText ""
+
+		StaticText "$SHOP_BORDER"
+Command "$SHOP_Fighter", "BuyFighter"
+StaticText "$SHOPDESC_Fighter"
+StaticText ""
+
+Command "$SHOP_Warden", "BuyWarden"
+StaticText "$SHOPDESC_Warden"
+StaticText ""
+
+Command "$SHOP_Enforcer", "BuyEnforcer"
+StaticText "$SHOPDESC_Enforcer"
+StaticText ""
+
+Command "$SHOP_Toujorprey", "BuyToujorprey"
+StaticText "$SHOPDESC_Toujorprey"
+StaticText ""
+		StaticText "$SHOP_BORDER"
+Command "$SHOP_Hyperbeam", "BuyHyperbeam"
+StaticText "$SHOPDESC_Hyperbeam"
+StaticText ""
+
+Command "$SHOP_LightCannon", "BuyLightCannon"
+StaticText "$SHOPDESC_LightCannon"
+StaticText ""
+
+	
+}
+
+OptionMenu "LowWepMenu"
+{
+Title "Tier 1 Blasters"
+Command "$SHOP_Scrapper", "BuyScrapper"
+StaticText "$SHOPDESC_Scrapper"
+StaticText ""
+
+Command "$SHOP_Watchman", "BuyScout"
+StaticText "$SHOPDESC_Watchman"
+StaticText ""
+
+Command "$SHOP_Scout", "BuyScout"
+StaticText "$SHOPDESC_Scout"
+StaticText ""
+
+Command "$SHOP_Pounder", "BuyPounder"
+StaticText "$SHOPDESC_Pounder"
+StaticText ""
+
+Command "$SHOP_Gunslinger", "BuyGunslinger"
+StaticText "$SHOPDESC_Gunslinger"
+}
+
+
+OptionMenu "MidWepMenu"
+{
+Title "Tier 2 Blasters"
+Command "$SHOP_Fighter", "BuyFighter"
+StaticText "$SHOPDESC_Fighter"
+StaticText ""
+
+Command "$SHOP_Warden", "BuyWarden"
+StaticText "$SHOPDESC_Warden"
+StaticText ""
+
+Command "$SHOP_Tracer", "BuyTracer"
+StaticText "$SHOPDESC_Tracer"
+StaticText ""
+
+Command "$SHOP_Enforcer", "BuyEnforcer"
+StaticText "$SHOPDESC_Enforcer"
+StaticText ""
+
+Command "$SHOP_Toujorprey", "BuyToujorprey"
+StaticText "$SHOPDESC_Toujorprey"
+StaticText ""
+}
+
+OptionMenu "HighWepMenu"
+{
+Title "Tier 3 Blasters"
+Command "$SHOP_Hyperbeam", "BuyHyperbeam"
+StaticText "$SHOPDESC_Hyperbeam"
+StaticText ""
+
+Command "$SHOP_LightCannon", "BuyLightCannon"
+StaticText "$SHOPDESC_LightCannon"
+StaticText ""
+
+}
+
+OptionMenu "ItemMenu"
+{
+Title "Item Shop"
+Command "$SHOP_LightArmor", "BuyLightArmor"
+StaticText "$SHOPDESC_LightArmor"
+StaticText ""
+
+Command "$SHOP_HeavyArmor", "BuyHeavyArmor"
+StaticText "$SHOPDESC_HeavyArmor"
+StaticText ""
+
+Command "$SHOP_LazerBattery", "BuyLazerBattery"
+StaticText "$SHOPDESC_LazerBattery"
+StaticText ""
+}
+
+
+OptionMenu "CSLTOptions"
+{
+    Title "CSLT Options Menu"
+		StaticText "$SHOP_BORDER"
+	StaticText"$CSLT_OPTEXT1"
+	Control 	"Ability 1",			"+User1"	
+	Control 	"Ability 2",			"+User2"	
+	Control 	"Ability 3",			"+User3"	
+	StaticText"$CSLT_OPTEXT2"
+	Control 	"Reload (Ability 1)",			"+Reload"	
+	Control 	"Zoom (Ability 2)",			"+Reload"	
+	StaticText"$CSLT_OPTEXT3"
+	control "Open The Shop", "OpenMainShop"
+	control "Open The Class Shop", "OpenClassShop"
+}

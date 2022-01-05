@@ -1,0 +1,61 @@
+/* -=- Shop Database -=-
+ * Variables and functions for A_Shop
+ *
+ * 
+
+*/
+
+#library "DB_Shop"
+#include "zcommon.acs"
+
+
+#LIBDEFINE SHOP_MAX_PLAYERS 64
+#LIBDEFINE SHOP_MAX_SLOTS 10
+#LIBDEFINE MAX_TEAMS 4
+#LIBDEFINE MAX_SHOP 24
+
+#LIBDEFINE PLAYERSTARTCASH 800
+#LIBDEFINE WINAWARD 3000
+#LIBDEFINE LOSEAWARD 1900
+#LIBDEFINE LOSESTREAKAWARD 500
+#LIBDEFINE LOSESTREAKCAP 3
+#LIBDEFINE FRAGAWARD 200
+#LIBDEFINE CASHCAP 9000
+
+bool thePlayerPlayed[SHOP_MAX_PLAYERS];
+int thePlayerTeam[SHOP_MAX_PLAYERS];
+bool theTeamPlayed[MAX_TEAMS];
+
+str ShopItemList[MAX_SHOP][4] = {
+    {"Zapper", "Zapper", 3.0 ,"NOSELL"},
+    {"Scrapper", "Scrapper", 3.0 ,"NOSELL"},
+    {"Watchman", "Watchman", 3.0,""},
+    {"Scout", "Scout", 3.0,""},
+    {"Pounder", "Pounder", 3.0,""},
+    {"Gunslinger", "Gunslinger", 5.0,""},
+	//===
+	{"Fighter", "Fighter", 5.0,""},
+	{"Warden", "Warden", 5.0,""},
+	{"Tracer", "Tracer", 5.0,""},
+	{"Enforcer", "Enforcer", 5.0,""},
+	{"Toujorprey", "Toujorprey", 5.0,""},
+	//===
+	{"Hyperbeam", "Hyperbeam", 5.0,""},
+	{"LightCannon", "LightCannon", 5.0,""},
+	{"Muscler", "Muscler", 5.0,""},
+	{"Skye", "Skye", 5.0,""},
+
+	{"LT_Armor", "LT_Armor", 5.0,""},
+	{"LazerBattery", "LazerBattery", 5.0,""},
+	
+	{"AbilityCharge_1", "AbilityCharge_1", 5.0,""},
+	{"AbilityCharge_2", "AbilityCharge_2", 5.0,""},
+	{"AbilityCharge_3", "AbilityCharge_3", 5.0,""},
+	{"AbilityResource_1", "AbilityResource_1", 5.0,""},
+	{"AbilityResource_2", "AbilityResource_2", 5.0,""},
+	{"AbilityResource_3", "AbilityResource_3", 5.0,""},
+	{"UltimateCharge", "UltimateCharge", 5.0,""},
+
+};
+
+#LIBDEFINE ITEMSPAWNERTID 74000

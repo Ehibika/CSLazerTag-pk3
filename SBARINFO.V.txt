@@ -1,0 +1,296 @@
+//VERTICAL BARS
+height 0;
+
+statusbar fullscreen, forcescaled, fullscreenoffsets
+{
+
+InInventory not NoHealthBar, 1
+{
+//=====
+
+// ===|Frames|===
+	InInventory LightTeamFlag, 1
+		{
+		DrawImage "AHUDB", -80+center, -32;
+		DrawImage "ABILHUDB", -95+center, -32;
+
+		DrawImage "ABILHUDB", -35+center, -32; //Ability 1
+		DrawImage "ABILHUDB", -14+center, -32; //Ability 2
+		DrawImage "ABILHUDB", 7+center, -32; //Ability 3
+		InInventory HasUltimate, 1{DrawImage "ABILHUDB", 28+center, -32;} //Ultimate
+		}
+	InInventory WilyTeamFlag, 1
+			{
+		DrawImage "AHUDR", -80+center, -32;
+		DrawImage "ABILHUDR", -95+center, -32;
+
+		DrawImage "ABILHUDR", -35+center, -32; //Ability 1
+		DrawImage "ABILHUDR", -14+center, -32; //Ability 2
+		DrawImage "ABILHUDR", 7+center, -32; //Ability 3
+		InInventory HasUltimate, 1{DrawImage "ABILHUDR", 28+center, -32;} //Ultimate
+		}
+	InInventory CossackTeamFlag, 1
+		{
+		DrawImage "AHUDG", -80+center, -32;
+		DrawImage "ABILHUDG", -95+center, -32;
+
+		DrawImage "ABILHUDG", -35+center, -32; //Ability 1
+		DrawImage "ABILHUDG", -14+center, -32; //Ability 2
+		DrawImage "ABILHUDG", 7+center, -32; //Ability 3
+		InInventory HasUltimate, 1{DrawImage "ABILHUDG", 28+center, -32;} //Ultimate
+		}
+	InInventory KingTeamFlag, 1
+		{
+		DrawImage "AHUDY", -80+center, -32;
+		DrawImage "ABILHUDY", -95+center, -32;
+
+		DrawImage "ABILHUDY", -35+center, -32; //Ability 1
+		DrawImage "ABILHUDY", -14+center, -32; //Ability 2
+		DrawImage "ABILHUDY", 7+center, -32; //Ability 3
+		InInventory HasUltimate, 1{DrawImage "ABILHUDY", 28+center, -32;} //Ultimate
+		}
+
+// ===|Health|===
+DrawImage "HLTHI", -80+center, -40;
+DrawNumber 3, "8BDMAFONT", red, Health, alignment(left), -70+center, -40;
+InInventory LT_Armor, 1
+	{
+	DrawImage "ARMRI", -80+center, -47;
+	DrawNumber 3, "8BDMAFONT", blue, LT_Armor, alignment(left), -70+center, -47;
+	}
+
+// ===|Ammo|===
+//DrawImage "AHUDB", -80+center, -32;
+Drawbar "NAMFLS1", "NBARE", AntiBusterPower, horizontal, -77+center, -28;
+Drawbar "NAMMOB", "NEMPTY", Ammo1, horizontal, -77+center, -28;
+//DrawImage "ABILHUD3", -95+center, -32;
+DrawImage weaponicon, -92+center, -29;
+DrawSelectedInventory INDEXFONT ,-107+center, -29, -94+center, -29, white;
+
+
+
+//DrawNumber 3, "8BDMAFONT", Untranslated, AbilityCharge_1, alignment(left), 114, -50;
+
+// ===|Abilities|===
+
+//Ability 1
+//DrawImage "ABILHUD3", -35+center, -32;
+InInventory SignatureRecharging, 1{DrawNumber 3, "8BDMAFONT", Untranslated, SignatureTimer, alignment(left), -34+center, -40;}
+InInventory SignatureKillRecharge, 1
+	{
+	InInventory SignatureKillCap, 1{DrawImage "ABILBAR1", -35+center, -40;}
+	InInventory SignatureKillCap, 2{DrawImage "ABILBAR2", -35+center, -40;}
+	InInventory SignatureKillCap, 3{DrawImage "ABILBAR3", -35+center, -40;}
+	InInventory SignatureKillCount, 1{DrawImage "ABKLCNT1", -35+center, -40;}
+	InInventory SignatureKillCount, 2{DrawImage "ABKLCNT2", -35+center, -40;}
+	InInventory SignatureKillCount, 3{DrawImage "ABKLCNT3", -35+center, -40;}
+	}
+
+DrawImage "MEGABALI", -32+center, -29;
+InInventory AbilityChargeCap_1, 1{DrawImage "ABILBAR1", -35+center, -18;}
+InInventory AbilityChargeCap_1, 2{DrawImage "ABILBAR2", -35+center, -18;}
+InInventory AbilityChargeCap_1, 3{DrawImage "ABILBAR3", -35+center, -18;}
+InInventory AbilityChargeCap_1, 4{DrawImage "ABILBAR4", -35+center, -18;}
+InInventory AbilityChargeCap_1, 5{DrawImage "ABILBAR5", -35+center, -18;}
+InInventory AbilityCharge_1, 1{DrawImage "ABILCNT1", -35+center, -18;}
+InInventory AbilityCharge_1, 2{DrawImage "ABILCNT2", -35+center, -18;}
+InInventory AbilityCharge_1, 3{DrawImage "ABILCNT3", -35+center, -18;}
+InInventory AbilityCharge_1, 4{DrawImage "ABILCNT4", -35+center, -18;}
+InInventory AbilityCharge_1, 5{DrawImage "ABILCNT5", -35+center, -18;}
+
+//Ability 2
+//DrawImage "ABILHUD3", -14+center, -32;
+DrawImage "MEGABALI", -11+center, -29;
+InInventory AbilityChargeCap_2, 1{DrawImage "ABILBAR1", -14+center, -18;}
+InInventory AbilityChargeCap_2, 2{DrawImage "ABILBAR2", -14+center, -18;}
+InInventory AbilityChargeCap_2, 3{DrawImage "ABILBAR3", -14+center, -18;}
+InInventory AbilityChargeCap_2, 4{DrawImage "ABILBAR4", -14+center, -18;}
+InInventory AbilityChargeCap_2, 5{DrawImage "ABILBAR5", -14+center, -18;}
+InInventory AbilityCharge_2, 1{DrawImage "ABILCNT1", -14+center, -18;}
+InInventory AbilityCharge_2, 2{DrawImage "ABILCNT2", -14+center, -18;}
+InInventory AbilityCharge_2, 3{DrawImage "ABILCNT3", -14+center, -18;}
+InInventory AbilityCharge_2, 4{DrawImage "ABILCNT4", -14+center, -18;}
+InInventory AbilityCharge_2, 5{DrawImage "ABILCNT5", -14+center, -18;}
+
+//Ability 3
+//DrawImage "ABILHUD3", 7+center, -32;
+DrawImage "MEGABALI", 10+center, -29;
+InInventory AbilityChargeCap_3, 1{DrawImage "ABILBAR1", 7+center, -18;}
+InInventory AbilityChargeCap_3, 2{DrawImage "ABILBAR2", 7+center, -18;}
+InInventory AbilityChargeCap_3, 3{DrawImage "ABILBAR3", 7+center, -18;}
+InInventory AbilityChargeCap_3, 4{DrawImage "ABILBAR4", 7+center, -18;}
+InInventory AbilityChargeCap_3, 5{DrawImage "ABILBAR5", 7+center, -18;}
+InInventory AbilityCharge_3, 1{DrawImage "ABILCNT1", 7+center, -18;}
+InInventory AbilityCharge_3, 2{DrawImage "ABILCNT2", 7+center, -18;}
+InInventory AbilityCharge_3, 3{DrawImage "ABILCNT3", 7+center, -18;}
+InInventory AbilityCharge_3, 4{DrawImage "ABILCNT4", 7+center, -18;}
+InInventory AbilityCharge_3, 5{DrawImage "ABILCNT5", 7+center, -18;}
+
+//Ultimate
+InInventory HasUltimate, 1
+	{
+	//DrawImage "ABILHUD3", 28+center, -32;
+	DrawImage "MEGABALI", 31+center, -29;
+	InInventory UltimateChargeCap, 6{DrawImage "ULTBAR6", 43+center, -29;}
+	InInventory UltimateChargeCap, 7{DrawImage "ULTBAR7", 43+center, -29;}
+	InInventory UltimateChargeCap, 8{DrawImage "ULTBAR8", 43+center, -29;}
+	InInventory UltimateChargeCap, 9{DrawImage "ULTBAR9", 43+center, -29;}
+	InInventory UltimateChargeCap, 10{DrawImage "ULTBAR10", 43+center, -29;}
+
+	InInventory UltimateCharge, 1{DrawImage "ULTCNT1", 43+center, -29;}
+	InInventory UltimateCharge, 2{DrawImage "ULTCNT2", 43+center, -29;}
+	InInventory UltimateCharge, 3{DrawImage "ULTCNT3", 43+center, -29;}
+	InInventory UltimateCharge, 4{DrawImage "ULTCNT4", 43+center, -29;}
+	InInventory UltimateCharge, 5{DrawImage "ULTCNT5", 43+center, -29;}
+	InInventory UltimateCharge, 6{DrawImage "ULTCNT6", 43+center, -29;}
+	InInventory UltimateCharge, 7{DrawImage "ULTCNT7", 43+center, -29;}
+	InInventory UltimateCharge, 8{DrawImage "ULTCNT8", 43+center, -29;}
+	InInventory UltimateCharge, 9{DrawImage "ULTCNT9", 43+center, -29;}
+	InInventory UltimateCharge, 1{DrawImage "ULTCNT1", 43+center, -29;}
+	}
+/*
+DrawImage "ABILHUD3", 7+center, -32;
+DrawImage "MEGABALI", 10+center, -29;
+DrawImage "ABILBAR2", 7+center, -18;
+DrawImage "ABILCNT2", 7+center, -18;
+
+DrawImage "ABILHUD3", 28+center, -32;
+DrawImage "MEGABALI", 31+center, -29;
+DrawImage "ULTBAR6", 43+center, -29;
+DrawImage "ULTCNT6", 43+center, -29;
+*/
+//=====================================================
+
+// ===|Class Huds|===
+InInventory IsMegaman, 1
+	{
+	DrawImage "CHARSI", -32+center, -29; //Ability 1
+	DrawImage "RCOIL", -11+center, -29; //Ability 2
+	DrawImage "BOMBSI", 10+center, -29; //Ability 3
+	}
+
+InInventory IsNorth, 1
+	{
+	DrawImage "ICBOLTI", -32+CENTER, -29; //Ability 1
+	DrawImage "ICFOGI", -11+CENTER, -29; //Ability 2
+	DrawImage "AUROVI", 10+CENTER, -29; //Ability 3
+	}
+
+InInventory IsCinder, 1
+	{
+	DrawImage "BURNRI", -32+CENTER, -29; //Ability 1
+	DrawImage "ATOMI", -11+CENTER, -29; //Ability 2
+	DrawImage "FLMBSI", 10+CENTER, -29; //Ability 3
+	}
+
+InInventory IsEsper, 1
+	{
+	DrawImage "GRABBI", -32+CENTER, -29; //Ability 1
+	DrawImage "BARWALI", -11+CENTER, -29; //Ability 2
+	DrawImage "CENTSI", 10+CENTER, -29; //Ability 3
+	
+	}
+
+InInventory IsSneaker, 1
+	{
+	DrawImage "CARBOX2", -32+CENTER, -29; //Ability 1
+	DrawImage "SMKGSI", -11+CENTER, -29; //Ability 2
+	DrawImage "STNMSI", 10+CENTER, -29; //Ability 3
+	
+	}
+
+InInventory IsAssassin, 1
+	{
+	DrawImage "SHADI", -32+CENTER, -29; //Ability 1
+	DrawImage "NROPSI", -11+CENTER, -29; //Ability 2
+	DrawImage "TENBLI", 10+CENTER, -29; //Ability 3
+	
+	}
+
+InInventory IsGrim, 1
+	{
+	DrawImage "SKLBSI", -32+CENTER, -29; //Ability 1
+	DrawImage "LASERSI", -11+CENTER, -29; //Ability 2
+	DrawImage "COPYVI", 10+CENTER, -29; //Ability 3
+	
+	}
+
+InInventory IsGrand, 1
+	{
+	DrawImage "FLSHBOMI", -32+CENTER, -29; //Ability 1
+	DrawImage "NAPAI", -11+CENTER, -29; //Ability 2
+	DrawImage "BALLSI", 10+CENTER, -29; //Ability 3
+	
+	}
+
+InInventory IsBlake, 1
+	{
+	DrawImage "BDASWI", -32+center, -29; //Ability 1
+	DrawImage "CRASSI", -11+center, -29; //Ability 2
+	DrawImage "CENTSI", 10+center, -29; //Ability 3
+	}
+	
+InInventory IsKnux, 1
+	{
+	DrawImage "BUBARI", -32+center, -29; //Ability 1
+	DrawImage "BUBBOUI", -11+center, -29; //Ability 2
+	DrawImage "BUBMINI", 10+center, -29; //Ability 3
+	}
+
+InInventory IsStakeout, 1
+	{
+	DrawImage "STKOUTA1", -32+center, -29; //Ability 1
+	DrawImage "STKOUTA2", -11+center, -29; //Ability 2
+	DrawImage "STKOUTA3", 10+center, -29; //Ability 3
+	}
+	
+/*
+isSelected "SmokeScreenGun" 
+	{
+	DrawImage "MEGABALI", 32, 64;
+	DrawNumber 3, "8BDMAFONT", Untranslated, Ammo2, alignment(right), 32, 70;
+	}
+	
+isSelected "MolotovGun" 
+	{
+	DrawImage "MEGABALI", 32, 64;
+	DrawNumber 3, "8BDMAFONT", Untranslated, Ammo2, alignment(right), 48, 64;
+	}
+	
+isSelected "FlashBangGun" 
+	{
+	DrawImage "MEGABALI", 32, 64;
+	DrawNumber 3, "8BDMAFONT", Untranslated, Ammo2, alignment(right), 48, 64;
+	}
+*/
+
+/*
+InInventory Ability1_ChargeFlag, 1
+	{DrawImage "MEGABALI", 38, 64;
+	DrawNumber 3, "8BDMAFONT", Untranslated, AbilityCharge_1, alignment(right), 50, 64;
+	}
+InInventory Ability1_ResourceFlag, 1
+	{DrawImage "MEGABALI", 38, 64;
+	Drawbar"BARAMMO1", "BAREMPTY", AbilityResource_1, vertical, 38, 8;
+	}	
+	//===
+InInventory Ability2_ChargeFlag, 1
+	{DrawImage "MEGABALI", 52, 64;
+	DrawNumber 3, "8BDMAFONT", Untranslated, AbilityCharge_2, alignment(right), 64, 64;
+	}
+InInventory Ability2_ResourceFlag, 1
+	{DrawImage "MEGABALI", 52, 64;
+	Drawbar"BARAMMO1", "BAREMPTY", AbilityResource_2, vertical, 52, 8;
+	}
+	//===
+InInventory Ability3_ChargeFlag, 1
+	{DrawImage "MEGABALI", 66, 64;
+	DrawNumber 3, "8BDMAFONT", Untranslated, AbilityCharge_3, alignment(right), 78, 64;
+	}
+InInventory Ability3_ResourceFlag, 1
+	{DrawImage "MEGABALI", 66, 64;
+	Drawbar"BARAMMO1", "BAREMPTY", AbilityResource_3, vertical, 66, 8;
+	}
+*/
+
+}}

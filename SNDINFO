@@ -1,0 +1,65 @@
+//BusterGuns
+weapon/HardBuster1 SKULSHOT
+weapon/HardBuster2 FMS
+weapon/HardBuster3 HRDBST2
+weapon/HardBuster4 DAR1SHOT
+weapon/HardBuster5 DAR3SHOT
+weapon/HardBuster6 DAR3SHO2
+
+weapon/RapidBuster NEDLSHOT
+weapon/RapidBuster2 BNSHOT
+weapon/RapidBuster3 RAPSHOT1
+
+weapon/BasherShot VULCAN1
+classes/SkullShieldBuzz SKULBAR4
+weapon/basshot BASSHOT
+
+weapon/AssaultBuster ABSHOT3
+weapon/GrenadeLauncher PROJLAN1
+
+weapon/AutoReload1 armret $limit weapon/AutoReload1 0//fakerel2
+weapon/AutoReload2 S_M9_I1 $limit weapon/AutoReload2 0
+weapon/AutoReload3 S_M9_I2 $limit weapon/AutoReload3 0
+weapon/AutoFirework S_AUTO_1 $limit weapon/AutoFirework 0
+
+
+support/HealPulse HEALPULS
+
+support/BarrierStart SHLDSTRT
+support/Reflect SHLDRFCT
+support/LightScreen SHLDLTSC
+support/ShieldDown SHLDDOWN
+
+Support/Heal1 Recov1 
+Support/Heal2 Recov2 
+Support/Heal3 Recov3 
+Support/Heal4 Recov4 
+support/Heal5 MOONL2
+$volume Support/Heal1 0.5
+Support/Barrier BARUP
+Support/Barrier2 BARRUP
+weapon/rollheal ROLLHEA1
+weapon/rollhealing ROLLHEA2
+weapon/rollheal2 HEAL01
+support/Negative NEGSTAT
+support/Healdiode1 HEALDIO1
+support/Healdiode2 HEALDIO2
+support/Failure Help
+
+Body/ArmorPain ROCKHURT
+
+Move/Confusion PSILOVE1
+Move/Psychic1 PSILOVE2
+Move/Psychic2 PSILOVE3
+Move/Extrasensory PSILOVE4
+Move/Extrasensory1 STORM1
+Move/Extrasensory2 STORM2
+Move/Extrasensory3 STORM3
+Move/Extrasensory4 STORM4
+Move/FutureSight FUTRSGT
+
+weapon/bushrustle	SEARBUSH
+weapon/tripodflip 	BBERECT
+
+Move/Blizzard BLIZZARD
+$attenuation Move/Blizzard 0.5

@@ -1,0 +1,171 @@
+actor North : ClassBase
+{
+Player.displayname "North"
+Player.startitem "IsNorth"
+
+Player.startitem "BusterPower", 1000
+player.startitem "SetupShop"
+player.startitem "LoadShopInventory"
+
+Player.startitem "North_ClassSet"
+
+
+states
+{
+Spawn:
+SHMN A 0
+SHMN B 1
+SHMN A 1
+Goto Spawn+2
+See:
+SHMN BCDE 5
+Goto Spawn
+Missile:
+SHMN F 5
+SHMN G 4
+goto Spawn
+}
+}
+
+Actor IsNorth : Once{}
+Const int Cap_IceBolt = 2;
+Const int Cap_IceFog = 4;
+Const int Cap_AuroraVeil = 2;
+Const int Cap_SnowStorm = 6;
+
+actor NorthStarterSet : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("Zapper",1)
+TNT1 A 0 ACS_NamedExecuteAlways("GiveSignatureCharge",0,Cap_IceBolt)
+TNT1 A 0
+Done:
+TNT1 A 0
+stop
+}
+}
+
+actor North_Melee : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("BasicKnife",1)
+TNT1 A 0
+Done:
+TNT1 A 0
+stop
+}
+}
+
+
+actor North_ClassSet : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("UseAbility1_North",1)
+TNT1 A 0 A_GiveInventory("Ability1_ChargeFlag",1)
+TNT1 A 0 A_GiveInventory("AbilityChargeCap_1",Cap_IceBolt)
+//==
+TNT1 A 0 A_GiveInventory("UseAbility2_North",1)
+TNT1 A 0 A_GiveInventory("Ability2_ChargeFlag",1)
+TNT1 A 0 A_GiveInventory("AbilityChargeCap_2",Cap_IceFog)
+//==
+TNT1 A 0 A_GiveInventory("UseAbility3_North",1)
+TNT1 A 0 A_GiveInventory("Ability3_ChargeFlag",1)
+TNT1 A 0 A_GiveInventory("AbilityChargeCap_3",Cap_AuroraVeil)
+//==
+TNT1 A 0 A_GiveInventory("HasUltimate",1)
+TNT1 A 0 A_GiveInventory("UseAbility4_North",1)
+TNT1 A 0 A_GiveInventory("UltimateChargeCap",Cap_SnowStorm)
+TNT1 A 0
+
+Done:
+TNT1 A 0
+stop
+}
+}
+
+
+
+//=========|Class Shop|============
+
+actor North_ClassShop : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("BuyIceBolt",1)
+TNT1 A 0 A_GiveInventory("BuyIceFog",1)
+TNT1 A 0 A_GiveInventory("BuyAuroraVeil",1)
+stop
+}
+}
+
+
+Const int Cost_IceBolt = 350;
+Const int Cost_IceFog = 200;
+Const int Cost_AuroraVeil = 200;
+
+actor BuyIceBolt : BuyThing
+{
+states
+{
+Use1:
+TNT1 A 0 A_JumpIf(CallACS("CashCheck",Cost_IceBolt),"Use2")
+goto NoMoney
+CostPay:
+TNT1 A 0 ACS_NamedExecuteWithResult("CashPay",Cost_IceBolt)
+goto BuySuccess
+//===
+Use2:
+TNT1 A 0 A_JumpIfInventory("AbilityCharge_1",Cap_IceBolt,"FullCapacity")
+TNT1 A 0 A_GiveInventory("AbilityCharge_1",1)
+TNT1 A 0 ACS_NamedExecuteAlways("Write_Inventory",0)
+
+goto CostPay
+}
+}
+
+actor BuyIceFog : BuyThing
+{
+states
+{
+Use1:
+TNT1 A 0 A_JumpIf(CallACS("CashCheck",Cost_IceFog),"Use2")
+goto NoMoney
+CostPay:
+TNT1 A 0 ACS_NamedExecuteWithResult("CashPay",Cost_IceFog)
+goto BuySuccess
+//===
+Use2:
+TNT1 A 0 A_JumpIfInventory("AbilityCharge_2",Cap_IceFog,"FullCapacity")
+TNT1 A 0 A_GiveInventory("AbilityCharge_2",1)
+TNT1 A 0 ACS_NamedExecuteAlways("Write_Inventory",0)
+
+goto CostPay
+}
+}
+
+actor BuyAuroraVeil : BuyThing
+{
+states
+{
+Use1:
+TNT1 A 0 A_JumpIf(CallACS("CashCheck",Cost_AuroraVeil),"Use2")
+goto NoMoney
+CostPay:
+TNT1 A 0 ACS_NamedExecuteWithResult("CashPay",Cost_AuroraVeil)
+goto BuySuccess
+//===
+Use2:
+TNT1 A 0 A_JumpIfInventory("AbilityCharge_3",Cap_AuroraVeil,"FullCapacity")
+TNT1 A 0 A_GiveInventory("AbilityCharge_3",1)
+TNT1 A 0 ACS_NamedExecuteAlways("Write_Inventory",0)
+
+goto CostPay
+}
+}

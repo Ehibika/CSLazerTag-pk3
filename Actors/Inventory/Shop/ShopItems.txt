@@ -1,0 +1,87 @@
+actor ItemShop : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("BuyLightArmor",1)
+TNT1 A 0 A_GiveInventory("BuyHeavyArmor",1)
+TNT1 A 0 A_GiveInventory("BuyLazerBattery",1)
+stop
+}
+}
+
+actor CSLT_TakeItems : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_TakeInventory("LT_Armor",99)
+TNT1 A 0 A_TakeInventory("LazerBattery",9)
+stop
+}
+}
+
+Const int Cost_LightArmor = 400;
+Const int Cost_HeavyArmor = 1000;
+Const int Cost_LazerBattery = 300;
+
+
+actor BuyLightArmor : BuyThing
+{
+states
+{
+Use1:
+TNT1 A 0 A_JumpIf(CallACS("CashCheck",Cost_LightArmor),"Use2")
+goto NoMoney
+CostPay:
+TNT1 A 0 ACS_NamedExecuteWithResult("CashPay",Cost_LightArmor)
+goto BuySuccess
+//===
+Use2:
+TNT1 A 0 A_JumpIfInventory("LT_Armor",25,"FullCapacity")
+TNT1 A 0 A_GiveInventory("GiveLightArmor",1)
+TNT1 A 0 ACS_NamedExecuteAlways("Write_Inventory",0,5)
+
+goto CostPay
+}
+}
+
+actor BuyHeavyArmor : BuyThing
+{
+states
+{
+Use1:
+TNT1 A 0 A_JumpIf(CallACS("CashCheck",Cost_HeavyArmor),"Use2")
+goto NoMoney
+CostPay:
+TNT1 A 0 ACS_NamedExecuteWithResult("CashPay",Cost_HeavyArmor)
+goto BuySuccess
+//===
+Use2:
+TNT1 A 0 A_JumpIfInventory("LT_Armor",50,"FullCapacity")
+TNT1 A 0 A_GiveInventory("GiveHeavyArmor",1)
+TNT1 A 0 ACS_NamedExecuteAlways("Write_Inventory",0,5)
+
+goto CostPay
+}
+}
+
+actor BuyLazerBattery : BuyThing
+{
+states
+{
+Use1:
+TNT1 A 0 A_JumpIf(CallACS("CashCheck",Cost_LazerBattery),"Use2")
+goto NoMoney
+CostPay:
+TNT1 A 0 ACS_NamedExecuteWithResult("CashPay",Cost_LazerBattery)
+goto BuySuccess
+//===
+Use2:
+TNT1 A 0 A_JumpIfInventory("LazerBattery",3,"FullCapacity")
+TNT1 A 0 A_GiveInventory("LazerBattery",1)
+TNT1 A 0 ACS_NamedExecuteAlways("Write_Inventory",0,5)
+
+goto CostPay
+}
+}

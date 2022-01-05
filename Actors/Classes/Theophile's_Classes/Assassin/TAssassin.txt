@@ -1,0 +1,161 @@
+actor TAssassin : ClassBase
+{
+player.displayname "Assassin"
+player.startitem "IsAssassin"
+player.startitem "BusterPower", 100
+player.startitem "SetupShop"
+player.startitem "LoadShopInventory"
+
+player.startitem "TAssassin_ClassSet"
+
+
+states
+{
+Spawn:
+SHAM A 0
+SHAM B 1
+SHAM A 1
+Goto Spawn+2
+See:
+SHAM BCDE 5
+Goto Spawn
+Missile:
+SHAM F 5
+SHAM G 4
+goto Spawn
+}
+}
+
+Actor IsAssassin : Once{}
+Const int Cap_WeakenShuriken = 2;
+Const int Cap_NinjaRope = 2;
+Const int Cap_KillingDash = 1;
+
+actor TAssassinStarterSet : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("Zapper",1)
+TNT1 A 0 ACS_NamedExecuteAlways("GiveSignatureCharge",0,Cap_WeakenShuriken)
+TNT1 A 0
+Done:
+TNT1 A 0
+stop
+}
+}
+
+actor TAssassin_Melee : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("BasicKnife",1)
+TNT1 A 0
+Done:
+TNT1 A 0
+stop
+}
+}
+
+actor TAssassin_ClassSet : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("UseAbility1_TAssassin",1)
+TNT1 A 0 A_GiveInventory("Ability1_ChargeFlag",1)
+TNT1 A 0 A_GiveInventory("AbilityChargeCap_1",Cap_WeakenShuriken)
+//==
+TNT1 A 0 A_GiveInventory("UseAbility2_TAssassin",1)
+TNT1 A 0 A_GiveInventory("Ability2_ChargeFlag",1)
+TNT1 A 0 A_GiveInventory("AbilityChargeCap_2",Cap_NinjaRope)
+//==
+TNT1 A 0 A_GiveInventory("UseAbility3_TAssassin",1)
+TNT1 A 0 A_GiveInventory("Ability3_ChargeFlag",1)
+TNT1 A 0 A_GiveInventory("AbilityChargeCap_3",Cap_KillingDash)
+TNT1 A 0
+Done:
+TNT1 A 0
+stop
+}
+}
+
+//=========|Class Shop|============
+
+actor TAssassin_ClassShop : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("BuyWeakenShuriken",1)
+TNT1 A 0 A_GiveInventory("BuyNinjaRope",1)
+TNT1 A 0 A_GiveInventory("BuyKillingDash",1)
+stop
+}
+}
+
+
+Const int Cost_WeakenShuriken = 250;
+Const int Cost_NinjaRope = 250;
+Const int Cost_KillingDash = 350;
+
+actor BuyWeakenShuriken : BuyThing
+{
+states
+{
+Use1:
+TNT1 A 0 A_JumpIf(CallACS("CashCheck",Cost_WeakenShuriken),"Use2")
+goto NoMoney
+CostPay:
+TNT1 A 0 ACS_NamedExecuteWithResult("CashPay",Cost_WeakenShuriken)
+goto BuySuccess
+//===
+Use2:
+TNT1 A 0 A_JumpIfInventory("AbilityCharge_1",Cap_WeakenShuriken,"FullCapacity")
+TNT1 A 0 A_GiveInventory("AbilityCharge_1",1)
+TNT1 A 0 ACS_NamedExecuteAlways("Write_Inventory",0)
+
+goto CostPay
+}
+}
+
+actor BuyNinjaRope : BuyThing
+{
+states
+{
+Use1:
+TNT1 A 0 A_JumpIf(CallACS("CashCheck",Cost_NinjaRope),"Use2")
+goto NoMoney
+CostPay:
+TNT1 A 0 ACS_NamedExecuteWithResult("CashPay",Cost_NinjaRope)
+goto BuySuccess
+//===
+Use2:
+TNT1 A 0 A_JumpIfInventory("AbilityCharge_2",Cap_NinjaRope,"FullCapacity")
+TNT1 A 0 A_GiveInventory("AbilityCharge_2",1)
+TNT1 A 0 ACS_NamedExecuteAlways("Write_Inventory",0)
+
+goto CostPay
+}
+}
+
+actor BuyKillingDash : BuyThing
+{
+states
+{
+Use1:
+TNT1 A 0 A_JumpIf(CallACS("CashCheck",Cost_KillingDash),"Use2")
+goto NoMoney
+CostPay:
+TNT1 A 0 ACS_NamedExecuteWithResult("CashPay",Cost_KillingDash)
+goto BuySuccess
+//===
+Use2:
+TNT1 A 0 A_JumpIfInventory("AbilityCharge_3",Cap_KillingDash,"FullCapacity")
+TNT1 A 0 A_GiveInventory("AbilityCharge_3",1)
+TNT1 A 0 ACS_NamedExecuteAlways("Write_Inventory",0)
+
+goto CostPay
+}
+}

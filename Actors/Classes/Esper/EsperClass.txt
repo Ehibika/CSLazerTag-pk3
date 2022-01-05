@@ -1,0 +1,162 @@
+actor Esper : ClassBase
+{
+Player.displayname "Esper"
+player.startitem "IsEsper"
+player.startitem "BusterPower", 1000
+player.startitem "SetupShop"
+player.startitem "LoadShopInventory"
+
+player.startitem "Esper_ClassSet"
+
+states
+{
+Spawn:
+ROLL A 0
+ROLL B 1
+ROLL A 1
+Goto Spawn+2
+See:
+ROLL BCDE 5
+Goto Spawn
+Missile:
+ROLL F 5
+ROLL G 4
+goto Spawn
+}
+}
+
+Actor IsEsper : Once{}
+Const int Cap_EsperHeal = 1;
+Const int Cap_Barrier = 1;
+Const int Cap_PsycheBomb = 3;
+
+actor EsperStarterSet : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("Zapper",1)
+TNT1 A 0 ACS_NamedExecuteAlways("GiveSignatureCharge",0,Cap_EsperHeal)
+TNT1 A 0
+Done:
+TNT1 A 0
+stop
+}
+}
+
+actor Esper_Melee : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("BasicKnife",1)
+TNT1 A 0
+Done:
+TNT1 A 0
+stop
+}
+}
+
+
+actor Esper_ClassSet : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("UseAbility1_Esper",1)
+TNT1 A 0 A_GiveInventory("Ability1_ChargeFlag",1)
+TNT1 A 0 A_GiveInventory("AbilityChargeCap_1",Cap_EsperHeal)
+//==
+TNT1 A 0 A_GiveInventory("UseAbility2_Esper",1)
+TNT1 A 0 A_GiveInventory("Ability2_ChargeFlag",1)
+TNT1 A 0 A_GiveInventory("AbilityChargeCap_2",Cap_Barrier)
+//==
+TNT1 A 0 A_GiveInventory("UseAbility3_Esper",1)
+TNT1 A 0 A_GiveInventory("Ability3_ChargeFlag",1)
+TNT1 A 0 A_GiveInventory("AbilityChargeCap_3",Cap_PsycheBomb)
+TNT1 A 0
+Done:
+TNT1 A 0
+stop
+}
+}
+
+//=========|Class Shop|============
+
+actor Esper_ClassShop : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("BuyEsperHeal",1)
+TNT1 A 0 A_GiveInventory("BuyBarrier",1)
+TNT1 A 0 A_GiveInventory("BuyPsycheBomb",1)
+stop
+}
+}
+
+
+Const int Cost_EsperHeal = 300;
+Const int Cost_Barrier = 500;
+Const int Cost_PsycheBomb = 200;
+
+actor BuyEsperHeal : BuyThing
+{
+states
+{
+Use1:
+TNT1 A 0 A_JumpIf(CallACS("CashCheck",Cost_EsperHeal),"Use2")
+goto NoMoney
+CostPay:
+TNT1 A 0 ACS_NamedExecuteWithResult("CashPay",Cost_EsperHeal)
+goto BuySuccess
+//===
+Use2:
+TNT1 A 0 A_JumpIfInventory("AbilityCharge_1",Cap_EsperHeal,"FullCapacity")
+TNT1 A 0 A_GiveInventory("AbilityCharge_1",1)
+TNT1 A 0 ACS_NamedExecuteAlways("Write_Inventory",0)
+
+goto CostPay
+}
+}
+
+actor BuyBarrier : BuyThing
+{
+states
+{
+Use1:
+TNT1 A 0 A_JumpIf(CallACS("CashCheck",Cost_Barrier),"Use2")
+goto NoMoney
+CostPay:
+TNT1 A 0 ACS_NamedExecuteWithResult("CashPay",Cost_Barrier)
+goto BuySuccess
+//===
+Use2:
+TNT1 A 0 A_JumpIfInventory("AbilityCharge_2",Cap_Barrier,"FullCapacity")
+TNT1 A 0 A_GiveInventory("AbilityCharge_2",1)
+TNT1 A 0 ACS_NamedExecuteAlways("Write_Inventory",0)
+
+goto CostPay
+}
+}
+
+
+actor BuyPsycheBomb : BuyThing
+{
+states
+{
+Use1:
+TNT1 A 0 A_JumpIf(CallACS("CashCheck",Cost_PsycheBomb),"Use2")
+goto NoMoney
+CostPay:
+TNT1 A 0 ACS_NamedExecuteWithResult("CashPay",Cost_PsycheBomb)
+goto BuySuccess
+//===
+Use2:
+TNT1 A 0 A_JumpIfInventory("AbilityCharge_3",Cap_PsycheBomb,"FullCapacity")
+TNT1 A 0 A_GiveInventory("AbilityCharge_3",1)
+TNT1 A 0 ACS_NamedExecuteAlways("Write_Inventory",0)
+
+goto CostPay
+}
+}

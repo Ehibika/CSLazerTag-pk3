@@ -1,0 +1,15 @@
+DefaultGameSettings
+{
+sv_unblockallies = true
+sv_shootthroughallies = true
+sv_dontpushallies = true
+
+}
+
+TeamLMS
+{
+    GameSettings
+    {
+        SV_WeaponDrop = false
+    }
+}

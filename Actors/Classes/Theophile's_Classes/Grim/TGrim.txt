@@ -1,0 +1,166 @@
+actor TGrim : ClassBase
+{
+player.displayname "Grim"
+player.startitem "IsGrim"
+player.startitem "BusterPower", 100
+player.startitem "SetupShop"
+player.startitem "LoadShopInventory"
+
+player.startitem "TGrim_ClassSet"
+
+
+states
+{
+Spawn:
+SKUL A 0
+SKUL B 1
+SKUL A 1
+Goto Spawn+2
+See:
+SKUL BCDE 5
+Goto Spawn
+Missile:
+SKUL F 5
+SKUL G 4
+goto Spawn
+}
+}
+
+Actor IsGrim : Once{}
+Const int Cap_HeadWheel = 5;
+Const int Cap_DecomposeBeam = 2;
+Const int Cap_Necromancy = 3;
+
+Const int Grim_SigKillCap = 1;
+
+actor TGrimStarterSet : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("Zapper",1)
+TNT1 A 0 ACS_NamedExecuteAlways("GiveSignatureCharge",0,Cap_HeadWheel)
+TNT1 A 0
+Done:
+TNT1 A 0
+stop
+}
+}
+
+actor TGrim_Melee : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("BasicKnife",1)
+TNT1 A 0
+Done:
+TNT1 A 0
+stop
+}
+}
+
+actor TGrim_ClassSet : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("UseAbility1_TGrim",1)
+TNT1 A 0 A_GiveInventory("Ability1_ChargeFlag",1)
+TNT1 A 0 A_GiveInventory("AbilityChargeCap_1",Cap_HeadWheel)
+
+TNT1 A 0 A_GiveInventory("SignatureKillRecharge",1)
+TNT1 A 0 A_GiveInventory("SignatureKillCap",Grim_SigKillCap)
+//==
+TNT1 A 0 A_GiveInventory("UseAbility2_TGrim",1)
+TNT1 A 0 A_GiveInventory("Ability2_ChargeFlag",1)
+TNT1 A 0 A_GiveInventory("AbilityChargeCap_2",Cap_DecomposeBeam)
+//==
+TNT1 A 0 A_GiveInventory("UseAbility3_TGrim",1)
+TNT1 A 0 A_GiveInventory("Ability3_ChargeFlag",1)
+TNT1 A 0 A_GiveInventory("AbilityChargeCap_3",Cap_Necromancy)
+TNT1 A 0
+Done:
+TNT1 A 0
+stop
+}
+}
+
+//=========|Class Shop|============
+
+actor TGrim_ClassShop : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("BuyHeadWheel",1)
+TNT1 A 0 A_GiveInventory("BuyDecomposeBeam",1)
+TNT1 A 0 A_GiveInventory("BuyNecromancy",1)
+stop
+}
+}
+
+
+Const int Cost_HeadWheel = 100;
+Const int Cost_DecomposeBeam = 200;
+Const int Cost_Necromancy = 999;
+
+actor BuyHeadWheel : BuyThing
+{
+states
+{
+Use1:
+TNT1 A 0 A_JumpIf(CallACS("CashCheck",Cost_HeadWheel),"Use2")
+goto NoMoney
+CostPay:
+TNT1 A 0 ACS_NamedExecuteWithResult("CashPay",Cost_HeadWheel)
+goto BuySuccess
+//===
+Use2:
+TNT1 A 0 A_JumpIfInventory("AbilityCharge_1",Cap_HeadWheel,"FullCapacity")
+TNT1 A 0 A_GiveInventory("AbilityCharge_1",1)
+TNT1 A 0 ACS_NamedExecuteAlways("Write_Inventory",0)
+
+goto CostPay
+}
+}
+
+actor BuyDecomposeBeam : BuyThing
+{
+states
+{
+Use1:
+TNT1 A 0 A_JumpIf(CallACS("CashCheck",Cost_DecomposeBeam),"Use2")
+goto NoMoney
+CostPay:
+TNT1 A 0 ACS_NamedExecuteWithResult("CashPay",Cost_DecomposeBeam)
+goto BuySuccess
+//===
+Use2:
+TNT1 A 0 A_JumpIfInventory("AbilityCharge_2",Cap_DecomposeBeam,"FullCapacity")
+TNT1 A 0 A_GiveInventory("AbilityCharge_2",1)
+TNT1 A 0 ACS_NamedExecuteAlways("Write_Inventory",0)
+
+goto CostPay
+}
+}
+
+actor BuyNecromancy : BuyThing
+{
+states
+{
+Use1:
+TNT1 A 0 A_JumpIf(CallACS("CashCheck",Cost_Necromancy),"Use2")
+goto NoMoney
+CostPay:
+TNT1 A 0 ACS_NamedExecuteWithResult("CashPay",Cost_Necromancy)
+goto BuySuccess
+//===
+Use2:
+TNT1 A 0 A_JumpIfInventory("AbilityCharge_3",Cap_Necromancy,"FullCapacity")
+TNT1 A 0 A_GiveInventory("AbilityCharge_3",1)
+TNT1 A 0 ACS_NamedExecuteAlways("Write_Inventory",0)
+
+goto CostPay
+}
+}

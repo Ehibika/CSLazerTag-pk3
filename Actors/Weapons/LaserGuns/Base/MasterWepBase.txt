@@ -1,0 +1,195 @@
+actor WepMasterBase : Weapon
+{
+weapon.ammotype "BusterPower"
+weapon.ammotype2 "BusterPower"
+//$NotAngled
+Weapon.SlotNumber 1
+Weapon.SlotPriority 0
++WEAPON.AMMO_OPTIONAL
++WEAPON.ALT_AMMO_OPTIONAL
++WEAPON.ALT_USES_BOTH
++WEAPON.DONTBOB
+inventory.pickupsound "weapon/weaponup"
+Scale 2.0
+States
+{
+Spawn:
+WEAP X 1
+stop
+Ready:
+BUST B 1 
+"####" "#" 0 A_Jump(256,"Ready.Core")
+Goto Ready.Wep
+/*
+Ready.Wep:
+BUST B 1 
+"####" "#" 0 A_Jump(256,"Ready.Core")
+Goto Ready.Core
+*/
+Ready.Core:
+"####" "#" 0 
+"####" "#" 1 A_WeaponReady
+"####" "#" 0 A_Jumpif(CallACS("CSLT_CheckAbilityInput",1)==1,"User1")
+"####" "#" 0 A_Jumpif(CallACS("CSLT_CheckAbilityInput",2)==1,"User2")
+"####" "#" 0 A_Jumpif(CallACS("CSLT_CheckAbilityInput",3)==1,"User3")
+"####" "#" 0 A_Jumpif(CallACS("CSLT_CheckAbilityInput",4)==1,"User4")
+Goto Ready.Core
+Deselect:
+TNT1 A 0 A_TakeInventory("TargActive",9)
+TNT1 A 0 A_TakeInventory("AbilityActiveFlag",9)
+TNT1 AAAAAAAAAAAAAAAAAAAAAA 0 A_Lower
+"####" B 1 A_Lower
+Loop
+Select:
+TNT1 AAAAAAAAAAAAAAAAAAAAAA 0 A_Raise
+"####" B 1 A_Raise
+Loop
+
+Fire:
+"####" "#" 1 
+"####" "#" 1 A_Jump(256,"Ready")
+goto Ready
+
+AltFire:
+"####" "#" 1 
+"####" "#" 1 A_Jump(256,"Ready")
+goto Ready
+
+User1:
+"####" "#" 0 ACS_NamedExecuteWithResult("UseClassAbility",1)
+"####" "#" 1 A_Jump(256,"User1.ChangeWait")
+goto User1.ChangeWait
+
+User1.ChangeWait:
+"####" "#####" 1 A_WeaponReady(WRF_NOPRIMARY|WRF_NOSECONDARY)
+"####" "#" 1 A_Jump(256,"Ready")
+goto Ready
+
+User2:
+"####" "#" 0 ACS_NamedExecuteWithResult("UseClassAbility",2)
+"####" "#" 1 A_Jump(256,"User2.ChangeWait")
+goto User2.ChangeWait
+
+User2.ChangeWait:
+"####" "#####" 1 A_WeaponReady(WRF_NOPRIMARY|WRF_NOSECONDARY)
+"####" "#" 1 A_Jump(256,"Ready")
+goto Ready
+
+User3:
+"####" "#" 0 ACS_NamedExecuteWithResult("UseClassAbility",3)
+"####" "#" 1 A_Jump(256,"User3.ChangeWait")
+goto User3.ChangeWait
+User3.ChangeWait:
+"####" "#####" 1 A_WeaponReady(WRF_NOPRIMARY|WRF_NOSECONDARY)
+"####" "#" 1 A_Jump(256,"Ready")
+goto Ready
+
+User4:
+"####" "#" 0 ACS_NamedExecuteWithResult("UseClassAbility",4)
+"####" "#" 1 A_Jump(256,"User4.ChangeWait")
+goto User4.ChangeWait
+User4.ChangeWait:
+"####" "#####" 1 A_WeaponReady(WRF_NOPRIMARY|WRF_NOSECONDARY)
+"####" "#" 1 A_Jump(256,"Ready")
+goto Ready
+
+NoAmmo:
+"####" "#" 0
+"####" "#" 1 A_Jump(256,"Ready")
+goto Ready
+
+Flash:
+TNT1 A 1
+stop
+NoFlash:
+TNT1 A 1
+stop
+}
+}
+
+
+actor AbilityMasterBase : WepMasterBase
+{Weapon.SlotNumber 2
+States
+{
+Select:
+TNT1 A 0 ACS_NamedExecuteAlways("WepSpeedMod",0,1.0*FVM)
+TNT1 AAAAAAAAAAAAAAAAAAAAAA 0 A_Raise
+"####" B 1 A_Raise
+Loop
+}
+}
+
+
+actor RemoteAbilityMasterBase : AbilityMasterBase
+{
+States
+{
+Deselect:
+TNT1 A 0 A_TakeInventory("TargActive",9)
+TNT1 A 0 A_TakeInventory("AbilityActiveFlag",9)
+TNT1 A 0 A_GiveInventory("PlayerVisionHide_Off")
+TNT1 B 0 A_GiveInventory("RemoteKiller")
+TNT1 B 0 A_GiveInventory("RemoteMoveUnLock")
+TNT1 B 0 A_GiveInventory("3PCam_Off")
+TNT1 B 0 ACS_NamedExecuteAlways("ToggleCameraTint",0,0,0)
+TNT1 AAAAAAAAAAAAAAAAAAAAAA 0 A_Lower
+"####" B 1 A_Lower
+Loop
+
+Select:
+TNT1 A 0 ACS_NamedExecuteAlways("WepSpeedMod",0,1.0*FVM)
+TNT1 AAAAAAAAAAAAAAAAAAAAAA 0 A_Raise
+"####" B 1 A_Raise
+Loop
+
+User1:
+"####" "#" 0 A_TakeInventory("TargActive",9)
+"####" "#" 0 A_GiveInventory("PlayerVisionHide_Off")
+"####" "#" 0 A_GiveInventory("RemoteKiller")
+"####" "#" 0 A_GiveInventory("RemoteMoveUnLock")
+"####" "#" 0 A_GiveInventory("3PCam_Off")
+"####" "#" 2 ACS_NamedExecuteAlways("ToggleCameraTint",0,0,0)
+
+"####" "#" 0 ACS_NamedExecuteWithResult("UseClassAbility",1)
+"####" "#" 1 A_Jump(256,"User1.ChangeWait")
+goto User1.ChangeWait
+
+
+User2:
+"####" "#" 0 A_TakeInventory("TargActive",9)
+"####" "#" 0 A_GiveInventory("PlayerVisionHide_Off")
+"####" "#" 0 A_GiveInventory("RemoteKiller")
+"####" "#" 0 A_GiveInventory("RemoteMoveUnLock")
+"####" "#" 0 A_GiveInventory("3PCam_Off")
+"####" "#" 2 ACS_NamedExecuteAlways("ToggleCameraTint",0,0,0)
+
+"####" "#" 0 ACS_NamedExecuteWithResult("UseClassAbility",2)
+"####" "#" 1 A_Jump(256,"User2.ChangeWait")
+goto User2.ChangeWait
+
+User3:
+"####" "#" 0 A_TakeInventory("TargActive",9)
+"####" "#" 0 A_GiveInventory("PlayerVisionHide_Off")
+"####" "#" 0 A_GiveInventory("RemoteKiller")
+"####" "#" 0 A_GiveInventory("RemoteMoveUnLock")
+"####" "#" 0 A_GiveInventory("3PCam_Off")
+"####" "#" 2 ACS_NamedExecuteAlways("ToggleCameraTint",0,0,0)
+
+"####" "#" 0 ACS_NamedExecuteWithResult("UseClassAbility",3)
+"####" "#" 1 A_Jump(256,"User3.ChangeWait")
+goto User3.ChangeWait
+
+User4:
+"####" "#" 0 A_TakeInventory("TargActive",9)
+"####" "#" 0 A_GiveInventory("PlayerVisionHide_Off")
+"####" "#" 0 A_GiveInventory("RemoteKiller")
+"####" "#" 0 A_GiveInventory("RemoteMoveUnLock")
+"####" "#" 0 A_GiveInventory("3PCam_Off")
+"####" "#" 2 ACS_NamedExecuteAlways("ToggleCameraTint",0,0,0)
+
+"####" "#" 0 ACS_NamedExecuteWithResult("UseClassAbility",4)
+"####" "#" 1 A_Jump(256,"User4.ChangeWait")
+goto User4.ChangeWait
+}
+}

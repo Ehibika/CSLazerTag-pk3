@@ -1,0 +1,31 @@
+actor StakeoutMelee : BasicKnife
+{
+Tag "Knife"
+inventory.icon "STKOUTA0"
+States
+{
+Ready:
+STU0 B 1 
+"####" "#" 0 A_Jump(256,"Ready.Core")
+Goto Ready.Core
+Deselect:
+TNT1 AAAAAAAAAAAAAAAAAAAAAA 0 A_Lower
+STU0 B 1 A_Lower
+Loop
+Select:
+//TNT1 AAAAAAAAAAAAAAAAAAAAAA 0 A_Raise
+TNT1 A 0 ACS_NamedExecuteAlways("WepSpeedMod",0,Knife_MoveSpeed*FVM)
+STU0 BBB 0 A_Raise
+STU0 B 1 A_WEAPONREADY(WRF_NOPRIMARY|WRF_NOSECONDARY|WRF_NOBOB)
+Loop
+
+Fire:
+"####" A 0 A_PlaySoundEx("weapon/SlashClaw","Weapon")
+"####" A 5
+"####" A 0 A_FireCustomMissile("ScratchMelee",0,0,8,0)
+"####" BCD 2
+"####" Z 17
+"####" A 0 A_Refire
+goto Ready
+}
+}

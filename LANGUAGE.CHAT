@@ -1,0 +1,93 @@
+[enu default]
+
+//==========|MegaMan|==============
+MEGAMANC_ABILITY_0 = "\cuRush! Here Boy!"; //Rush Call
+MEGAMANC_ABILITY_1 = "\cuGive me a boost, Rush!"; //Rush Call
+
+MEGAMANC_ABILITY_2 = "\cuHyperbomb Out!"; //Hyper Bomb
+MEGAMANC_ABILITY_3 = "\cuBombs Away!"; //Hyper Bomb
+
+MEGAMANC_ROUNDSTART_0 = "\cuFor Doctor Light!";
+MEGAMANC_ROUNDSTART_1 = "\cuReady!";
+
+MEGAMANC_CLUTCH_0 = "\cuThat was Close! but I did it!";
+
+MEGAMANC_CLUTCHCOMMEND_0 = "\cuWay To Go!";
+
+MEGAMANC_LOSING_0 = "\cuWe Just Gotta Fight!";
+
+MEGAMANC_WINNING_0 = "\cuAlmost there! let's keep going!";
+
+MEGAMANC_COMEBACK_0 = "\cuYeah! We're turning this around!";
+//==========|MegaMan|==============
+NORTH_ABILITY_0 = "\c[Ice]Ice Bolt..."; //Ice Bolt
+NORTH_ABILITY_1 = "\c[Ice]Watch out, Chilling the area..."; //Ice Bolt
+NORTH_ABILITY_2 = "\c[Ice]Cooling thing down over here."; //Ice Bolt
+
+NORTH_ABILITY_3 = "\c[Ice]Beware, I'm Conjuring Ice Fogs..."; //Ice Fog
+NORTH_ABILITY_4 = "\c[Ice]Fogging things up, Watch out..."; //Ice Fog
+
+NORTH_ABILITY_5 = "\c[Ice]Ice Fog Down..."; //Ice Fog
+NORTH_ABILITY_6 = "\c[Ice]Alright, I'm Finished..."; //Ice Fog
+
+NORTH_ABILITY_7 = "\c[Ice]Conjuring an aurora..."; //Ice Fog
+NORTH_ABILITY_8 = "\c[Ice]I'll cover us behind a veil of lights..."; //Ice Fog
+NORTH_ABILITY_9 = "\c[Ice]Preparing an Aurora Veil..."; //Ice Fog
+
+NORTH_ABILITY_10 = "\c[Ice]Behold..."; //Aurora Veil
+NORTH_ABILITY_11 = "\c[Ice]Stunning, isn't it?"; //Aurora Veil
+NORTH_ABILITY_12 = "\c[Ice]That should hold their attention..."; //Aurora Veil
+NORTH_ABILITY_13 = "\c[Ice]Nevermind..."; //Aurora Veil
+
+NORTH_ABILITY_14 = "\c[Ice]They won't get past this.."; //Snow Storm
+NORTH_ABILITY_15 = "\c[Ice]Freeze! All of you!!"; //Snow Storm (Foe)
+
+
+NORTH_ROUNDSTART_0 = "\c[Ice]Things are about to get Very cold...";
+NORTH_ROUNDSTART_1 = "\c[Ice]Stay close everyone...";
+
+NORTH_CLUTCH_0 = "\c[Ice]I've Faced Flurries worse than this...";
+
+NORTH_CLUTCHCOMMEND_0 = "\c[Ice]You've pulled through for all of us, good job.";
+
+NORTH_LOSING_0 = "\c[Ice]Perhaps we should stockpile our resources...";
+
+NORTH_WINNING_0 = "\c[Ice]Don't slow down, we need to keep this momentum.";
+
+NORTH_COMEBACK_0 = "\c[Ice]Our forcast has improved, let's keep this going.";
+//==========|Stakeout|==============
+STAKEOUT_ABILITY_0 = "\cuSay cheese."; //C cast
+STAKEOUT_ABILITY_1 = "\cuA lovely photo."; //C pop solo
+STAKEOUT_ABILITY_2 = "\cuA group photo!"; //C pop group
+STAKEOUT_ABILITY_3 = "\cuMy drone's off the air."; //C broken
+STAKEOUT_ABILITY_4 = "\cuCamera drone down."; //C broken
+STAKEOUT_ABILITY_5 = "\cuThat's a nice angle."; //E placed
+STAKEOUT_ABILITY_6 = "\cuThis'll do fine."; //E placed
+STAKEOUT_ABILITY_7 = "\cuThat goes there."; //E placed
+STAKEOUT_ABILITY_8 = "\cuThis goes here."; //E placed
+STAKEOUT_ABILITY_9 = "\cuAuto tripod destroyed."; //E broken
+STAKEOUT_ABILITY_10 = "\cuTripod down."; //E broken
+STAKEOUT_ABILITY_11 = "\cuCaught them!"; //E popped
+STAKEOUT_ABILITY_12 = "\cuCaught in high definition."; //E popped
+STAKEOUT_ABILITY_13 = "\cuTime to make a diversion."; //Q cast
+STAKEOUT_ABILITY_14 = "\cuSprouting bushes."; //Q cast
+STAKEOUT_ABILITY_15 = "\cuBlocking vision."; //Q cast
+STAKEOUT_ABILITY_16 = "\cuI've bought us some time."; //Q cast
+STAKEOUT_ABILITY_17 = "\cuSteady now."; //E triggered
+STAKEOUT_ABILITY_18 = "\cuToo late to run."; //E triggered
+STAKEOUT_ABILITY_19 = "\cuNothing escapes my view."; //X cast enemy
+STAKEOUT_ABILITY_20 = "\cuI've got eyes behind us."; //X cast ally
+
+STAKEOUT_ROUNDSTART_0 = "\cuLet's wrap this up quick, I have side jobs to make here.";
+STAKEOUT_ROUNDSTART_1 = "\cuI'll handle the distraction, you all handle the shooting.";
+
+STAKEOUT_CLUTCH_0 = "\cuPatience is all it takes.";
+
+STAKEOUT_CLUTCHCOMMEND_0 = "\cuKeep that up and you'll be in the headlines.";
+
+STAKEOUT_LOSING_0 = "\cuAs patient as I am, now it's time to strike, lest we lose our opportunity to.";
+
+STAKEOUT_WINNING_0 = "\cuPeople get desperate to hide their failures. Don't let them.";
+
+STAKEOUT_COMEBACK_0 = "\cuEvery feel-good story starts with some loss, let us get our wins now.";
+STAKEOUT_COMEBACK_1 = "\cuThey're overconfident. Let that be their downfall.";

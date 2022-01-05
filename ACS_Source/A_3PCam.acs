@@ -1,0 +1,227 @@
+/* -=- Third Person Camera -=-
+ * Code that handles the 3rd person camera for this mod
+ *
+ * Credit goes to solarsnowfall for the original build
+
+*/
+
+#library "A_3PCam"
+#import "A_Core.acs"
+#import "DB_3PCam.acs"
+#include "zcommon.acs"
+#include "8bdmlib.acs"
+
+/*
+Script "3rdCameraEnter" ENTER 
+{
+	//log(s:"Enter");
+	//if(PlayerNumber() != ConsolePlayerNumber()){log(s:"Failed Console Check"); Terminate;}
+	//cam_mode[PlayerNumber ()] = ON;
+	if(PlayerIsBot(PlayerNumber())){Terminate;}
+	SetCVar(strparam(s:"PlayerCam_",i:PlayerNumber()),ON);
+	//ACS_NamedExecuteAlways("ClientCameraToggle",0,ON);
+}
+
+Script "3rdCameraRespawn" RESPAWN 
+{
+	//log(s:"Reconnect");
+	//if(PlayerNumber() != ConsolePlayerNumber()){Terminate;}
+	if(PlayerIsBot(PlayerNumber())){Terminate;}
+		if(GetCVar(strparam(s:"PlayerCam_",i:PlayerNumber())) == ON)//(cam_mode[PlayerNumber ()] == ON)
+			{
+			//log(i:PlayerNumber());
+			//cam_mode[PlayerNumber ()] = OFF;
+			SetCVar(strparam(s:"PlayerCam_",i:PlayerNumber()),OFF);
+			ACS_NamedExecuteAlways("ClientCameraToggle",0,OFF);
+			Delay(1);
+			}
+	//cam_mode[PlayerNumber ()] = ON;
+	SetCVar(strparam(s:"PlayerCam_",i:PlayerNumber()),ON);
+	ACS_NamedExecuteAlways("ClientCameraToggle",0,ON);
+}
+*/
+Script "ClientCameraToggle" (int Toggle) ClientSide
+{
+if(PlayerNumber() != ConsolePlayerNumber()){Terminate;}
+Switch(Toggle)
+	{
+	Case ON:
+	//SetCvar("PlayerCamNum",ConsolePlayerNumber());
+	//SetCVar(strparam(s:"PlayerCam_",i:PlayerNumber()),ON);
+	cam_mode[PlayerNumber()] = ON;
+	ACS_NamedExecuteAlways ("3rdCameraHandler", 0, PlayerNumber ());
+
+	Break;
+	Case OFF:
+	//SetCVar(strparam(s:"PlayerCam_",i:PlayerNumber()),OFF); 
+	cam_mode[PlayerNumber()] = OFF;
+	Thing_Remove (C_TID + PlayerNumber ());
+	Break;
+	}
+}
+
+
+Script "3rdCameraHandler" (int p_num) ClientSide
+{
+	//Log(f:GetCamSetting(0,0));
+	Int Clamp_R = GetCamSetting(0);//GetCvar("sv_CameraZoom");
+	int r = GetCamSetting(0);//MAX_R-(Clamp_R);
+
+	Int HostTID;
+
+	//if (p_num != GetCvar("PlayerCamNum")){p_num = GetCvar("PlayerCamNum");}
+	//int test = 0.0;
+	while (cam_mode[p_num] == ON)//(GetCVar(strparam(s:"PlayerCam_",i:p_num)) == ON)//
+	{	
+
+		if(ThingCount(T_NONE,R_TID+p_num)){HostTID = R_TID+p_num;}
+		else{HostTID = 0;}
+		//test += 0.01;
+		//if(test > 1.0){test = 0.0;}
+
+		int RoofDist = GetActorCeilingZ (HostTID) - GetActorZ (HostTID);
+		int PlayerHeight = 30.0;
+		int a = GetActorAngle (0) + Fixedmul(AOFFSET,GetCamSetting(3));
+		int p = GetActorPitch (0) + Fixedmul(POFFSET,GetCamSetting(1));
+		int x = GetActorX (HostTID) ;
+		int y = GetActorY (HostTID) ;
+			int h = (CAMHEIGHT_CLAMP*GetCamSetting(2));
+		int z = GetActorZ (HostTID) + VIEW_HEIGHT + h;
+		int xyr = r * cos (p) >> 16;
+		
+		if (z > GetActorCeilingZ(HostTID) - (PlayerHeight)){z = GetActorCeilingZ(HostTID) - (PlayerHeight);}
+		//log(f:RoofDist);
+		//log(f:cos(a));
+		//log(f:test);
+		int Y_CamOffset =  Fixedmul(CAMANGLE_CLAMP,GetCamSetting(3));//sin(a + 0.22) * 64;//Fixedmul(60.0,sin(a));
+		int X_CamOffset =  Fixedmul(CAMANGLE_CLAMP,GetCamSetting(3));//cos(a + 0.22) * 64;//Fixedmul(60.0,cos(a));
+		//GetUserCvar(p_num,"SV_CameraAng")
+
+			//SetFont("SCSRC0");
+			//HudMessage(s:"A"; HUDMSG_FADEOUT, 700, CR_red,0.52, 0.52, 2.0,0.5);
+			//GiveInventory("ReticulePickup",1);
+		if (!ThingCountName ("ChaseCam", C_TID+p_num))
+		{
+			while (!Spawn ("ChaseCam", x-cos(a)*xyr, y-sin(a)*xyr, z+sin(p)*r, C_TID+p_num, a >> 8) && r > 0)
+			{
+				r -= ADJUSTIN_R;
+				xyr = cos (p) * r >> 16;
+			}
+			
+			if (ThingCountName ("ChaseCam", C_TID + p_num))
+				ChangeCamera (C_TID + p_num, 0, 0);
+			else
+			{
+				//cam_mode[p_num] = OFF;
+				SetCVar(strparam(s:"PlayerCam_",i:p_num),OFF);
+				print (s:"Camera script failed to initialize.");
+			}
+		}
+	        else
+		{ //Warp(1000+i, x, y, PlayerZ, 0, WARPF_MOVEPTR|WARPF_ABSOLUTEPOSITION|WARPF_USECALLERANGLE);
+			while (!Warp(C_TID+p_num, (x-cos(a + X_CamOffset)*xyr), (y-sin(a+Y_CamOffset)*xyr), z+sin(p)*r, 0, WARPF_MOVEPTR|WARPF_ABSOLUTEPOSITION|WARPF_USECALLERANGLE|WARPF_INTERPOLATE) && r > 0)
+			{
+				r -= ADJUSTIN_R;
+				xyr = cos (p) * r >> 16;
+			}
+			
+			//if()
+			While(!CheckSight(C_TID+p_num,0,0) && r > 0 && HostTID == 0)
+			{
+				if(Playernumber() == ConsolePlayerNumber())
+				{
+				r -= ADJUSTIN_R;
+				xyr = cos (p) * r >> 16;
+				}
+			}
+			/*
+			While(xyzDistance(C_TID,p_num+1000) > MAXCamDist && r > 0)
+			{
+				r -= ADJUST_R;
+				xyr = cos (p) * r >> 16;
+			}
+			*/
+			
+			SetActorAngle (C_TID + p_num, a);
+			SetActorPitch (C_TID + p_num, p);
+			
+			if (r < GetCamSetting(0))   r += ADJUST_R;  //MAX_R-(Clamp_R)
+			
+			if(Clamp_R != GetCamSetting(0))
+				{
+				Clamp_R = GetCamSetting(0);
+				r = Clamp_R;//MAX_R-(Clamp_R);
+				}
+		}
+		
+		if(CheckPlayerCamera(p_num) != C_TID + p_num &&  CheckPlayerCamera(p_num) != 0)
+		{
+		//Gimmie Back my Camera!
+		ChangeCamera (C_TID + p_num, 0, 0);
+		}
+		
+		delay (1);
+	}
+	//log(s:"Camera OFf");
+	
+}
+
+Script "3rdCameraDisconnect" (int p_num) DISCONNECT
+{
+	//log(s:"Disconnect");
+       //cam_mode[p_num] = OFF;
+	   SetCVar(strparam(s:"PlayerCam_",i:p_num),OFF);
+       Thing_Remove (C_TID + p_num);
+}
+
+
+function bool IsPlayer(int tid) {
+	return ((ClassifyActor(tid)&ACTOR_PLAYER)>0);
+}
+
+
+
+Script "CamGrabObject" (void)
+{
+	int HostPnum = ACS_NamedExecuteWithResult("Core_GetTarget")-1000;
+	if(!ThingCount(T_NONE,R_TID+HostPnum)){Thing_ChangeTID(0,R_TID+HostPnum); /*08og(i:ActivatorTID());*/}
+
+}
+
+
+Script "ToggleCameraTint" (int TintNum)
+{
+
+int FiringPlayer;
+If(ActivatorTID() <= 999 || ActivatorTID() > 1064)
+	{
+	FiringPlayer= ACS_ExecuteWithResult(257, 0); //Returns the target of the activator
+	}
+else
+	{
+	FiringPlayer=ActivatorTID();
+	}
+	SetActivator(FiringPlayer);
+	Switch(TintNum)
+		{
+		Case 0 : FadeTo(150,150,150,0.0,0.0); break;
+		Case 1 : FadeTo(0,255,255,0.4,0.0); break; //FadeTo(0,75,75,0.5,0.05);
+		Case 1 : FadeTo(245, 66, 239,0.4,0.0); break;
+		}
+	
+	//if(CheckActorInventory(C_TID+HostPnum,TintItem)){Log(s:"Got it");}
+	//else{Log(s:"Dont Got it");}
+}
+
+Script "HidePlayersFromView" (int Toggle) Clientside
+{
+	if(PlayerNumber() != ConsolePlayerNumber()){/*log(s:"Failed Console Check");*/ Terminate;}
+	for(int p = 0;p < ServerMax; p++)
+	{
+		Switch(Toggle)
+		{
+		Case 0 :SetActorProperty(p+1000, APROP_RenderStyle, STYLE_Normal);break;
+		Case 1 :SetActorProperty(p+1000, APROP_RenderStyle, STYLE_None);break;
+		}
+	}
+}

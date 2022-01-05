@@ -1,0 +1,367 @@
+
+//Megaman
+OptionMenu "MegamanC_ClassShop"
+{
+Command "$SHOP_CombatSlide", "BuyCombatSlide"
+StaticText "$SHOPDESC_CombatSlide"
+StaticText ""
+StaticText ""
+Command "$SHOP_RushCall", "BuyRushCall"
+StaticText "$SHOPDESC_RushCall"
+StaticText ""
+StaticText ""
+Title "Megaman's Utility"
+Command "$SHOP_HyperBomb", "BuyHyperBomb"
+StaticText "$SHOPDESC_HyperBomb"
+StaticText ""
+StaticText ""
+//=========================
+		StaticText "$SHOP_BORDER"
+Command "$SHOP_LightArmor", "BuyLightArmor"
+StaticText "$SHOPDESC_LightArmor"
+StaticText ""
+
+Command "$SHOP_HeavyArmor", "BuyHeavyArmor"
+StaticText "$SHOPDESC_HeavyArmor"
+StaticText ""
+
+Command "$SHOP_LazerBattery", "BuyLazerBattery"
+StaticText "$SHOPDESC_LazerBattery"
+StaticText ""
+
+}
+
+OptionMenu "North_ClassShop"
+{
+Title "North's Utility"
+Command "$SHOP_IceBolt", "BuyIceBolt"
+StaticText "$SHOPDESC_IceBolt"
+StaticText ""
+StaticText ""
+Command "$SHOP_IceFog", "BuyIceFog"
+StaticText "$SHOPDESC_IceFog"
+StaticText ""
+StaticText ""
+Command "$SHOP_AuroraVeil", "BuyAuroraVeil"
+StaticText "$SHOPDESC_AuroraVeil"
+StaticText ""
+StaticText ""
+StaticText ""
+//=========================
+		StaticText "$SHOP_BORDER"
+StaticText "$SHOP_SnowStorm"
+StaticText "$SHOPDESC_SnowStorm"
+StaticText ""
+StaticText ""
+StaticText ""
+//=========================
+		StaticText "$SHOP_BORDER"
+Command "$SHOP_LightArmor", "BuyLightArmor"
+StaticText "$SHOPDESC_LightArmor"
+StaticText ""
+
+Command "$SHOP_HeavyArmor", "BuyHeavyArmor"
+StaticText "$SHOPDESC_HeavyArmor"
+StaticText ""
+
+Command "$SHOP_LazerBattery", "BuyLazerBattery"
+StaticText "$SHOPDESC_LazerBattery"
+StaticText ""
+}
+
+OptionMenu "Cinder_ClassShop"
+{
+Title "Cinder's Utility"
+Command "$SHOP_FlashWisp", "BuyFlashWisp"
+StaticText "$SHOPDESC_FlashWisp"
+StaticText ""
+StaticText ""
+Command "$SHOP_FireSpirit", "BuyFireSpirit"
+StaticText "$SHOPDESC_FireSpirit"
+StaticText ""
+StaticText ""
+Command "$SHOP_FireField", "BuyFireField"
+StaticText "$SHOPDESC_FireField"
+ //=========================
+		StaticText "$SHOP_BORDER"
+Command "$SHOP_LightArmor", "BuyLightArmor"
+StaticText "$SHOPDESC_LightArmor"
+StaticText ""
+
+Command "$SHOP_HeavyArmor", "BuyHeavyArmor"
+StaticText "$SHOPDESC_HeavyArmor"
+StaticText ""
+
+Command "$SHOP_LazerBattery", "BuyLazerBattery"
+StaticText "$SHOPDESC_LazerBattery"
+StaticText ""
+}
+
+
+OptionMenu "Esper_ClassShop"
+{
+Title "Esper's Utility"
+Command "$SHOP_EsperHeal", "BuyEsperHeal"
+StaticText "$SHOPDESC_EsperHeal"
+StaticText ""
+StaticText ""
+StaticText ""
+Command "$SHOP_Barrier", "BuyBarrier"
+StaticText "$SHOPDESC_Barrier"
+StaticText ""
+StaticText ""
+StaticText ""
+Command "$SHOP_PsycheBomb", "BuyPsycheBomb"
+StaticText "$SHOPDESC_PsycheBomb"
+StaticText ""
+ //=========================
+		StaticText "$SHOP_BORDER"
+Command "$SHOP_LightArmor", "BuyLightArmor"
+StaticText "$SHOPDESC_LightArmor"
+StaticText ""
+
+Command "$SHOP_HeavyArmor", "BuyHeavyArmor"
+StaticText "$SHOPDESC_HeavyArmor"
+StaticText ""
+
+Command "$SHOP_LazerBattery", "BuyLazerBattery"
+StaticText "$SHOPDESC_LazerBattery"
+StaticText ""
+}
+
+
+//Théophile's Classes
+
+OptionMenu "TSneaker_ClassShop"
+{
+Title "Sneaker's Utility"
+Command "$SHOP_CardboardBox", "BuyCardboardBox"
+StaticText "$SHOPDESC_CardboardBox"
+StaticText ""
+StaticText ""
+StaticText ""
+Command "$SHOP_SmokeGrenade", "BuySmokeGrenade"
+StaticText "$SHOPDESC_SmokeGrenade"
+StaticText ""
+StaticText ""
+StaticText ""
+Command "$SHOP_StunMine", "BuyStunMine"
+StaticText "$SHOPDESC_StunMine"
+StaticText ""
+StaticText ""
+//=========================
+		StaticText "$SHOP_BORDER"
+Command "$SHOP_LightArmor", "BuyLightArmor"
+StaticText "$SHOPDESC_LightArmor"
+StaticText ""
+
+Command "$SHOP_HeavyArmor", "BuyHeavyArmor"
+StaticText "$SHOPDESC_HeavyArmor"
+StaticText ""
+
+Command "$SHOP_LazerBattery", "BuyLazerBattery"
+StaticText "$SHOPDESC_LazerBattery"
+StaticText ""
+}
+
+OptionMenu "TAssassin_ClassShop"
+{
+Title "Assassin's Utility"
+Command "$SHOP_WeakenShuriken", "BuyWeakenShuriken"
+StaticText "$SHOPDESC_WeakenShuriken"
+StaticText ""
+StaticText ""
+StaticText ""
+Command "$SHOP_NinjaRope", "BuyNinjaRope"
+StaticText "$SHOPDESC_NinjaRope"
+StaticText ""
+StaticText ""
+StaticText ""
+Command "$SHOP_KillingDash", "BuyKillingDash"
+StaticText "$SHOPDESC_KillingDash"
+StaticText ""
+StaticText ""
+StaticText ""
+StaticText ""
+//=========================
+		StaticText "$SHOP_BORDER"
+Command "$SHOP_LightArmor", "BuyLightArmor"
+StaticText "$SHOPDESC_LightArmor"
+StaticText ""
+
+Command "$SHOP_HeavyArmor", "BuyHeavyArmor"
+StaticText "$SHOPDESC_HeavyArmor"
+StaticText ""
+
+Command "$SHOP_LazerBattery", "BuyLazerBattery"
+StaticText "$SHOPDESC_LazerBattery"
+StaticText ""
+}
+
+OptionMenu "TGrim_ClassShop"
+{
+Title "Grim's Utility"
+Command "$SHOP_HeadWheel", "BuyHeadWheel"
+StaticText "$SHOPDESC_HeadWheel"
+StaticText ""
+StaticText ""
+StaticText ""
+Command "$SHOP_DecomposeBeam", "BuyDecomposeBeam"
+StaticText "$SHOPDESC_DecomposeBeam"
+StaticText ""
+StaticText ""
+StaticText ""
+Command "$SHOP_Necromancy", ""
+StaticText "$SHOPDESC_Necromancy"
+StaticText ""
+StaticText ""
+StaticText ""
+StaticText ""
+//=========================
+		StaticText "$SHOP_BORDER"
+Command "$SHOP_LightArmor", "BuyLightArmor"
+StaticText "$SHOPDESC_LightArmor"
+StaticText ""
+
+Command "$SHOP_HeavyArmor", "BuyHeavyArmor"
+StaticText "$SHOPDESC_HeavyArmor"
+StaticText ""
+
+Command "$SHOP_LazerBattery", "BuyLazerBattery"
+StaticText "$SHOPDESC_LazerBattery"
+StaticText ""
+}
+
+OptionMenu "TGrand_ClassShop"
+{
+Title "Grand's Utility"
+Command "$SHOP_GrandBomb", "BuyGrandBomb"
+StaticText "$SHOPDESC_GrandBomb"
+StaticText ""
+StaticText ""
+StaticText ""
+Command "$SHOP_BatteryDepleter", "BuyBatteryDepleter"
+StaticText "$SHOPDESC_BatteryDepleter"
+StaticText ""
+StaticText ""
+StaticText ""
+Command "$SHOP_BulletGrenade", "BuyBulletGrenade"
+StaticText "$SHOPDESC_BulletGrenade"
+StaticText ""
+StaticText ""
+StaticText ""
+StaticText ""
+//=========================
+		StaticText "$SHOP_BORDER"
+Command "$SHOP_LightArmor", "BuyLightArmor"
+StaticText "$SHOPDESC_LightArmor"
+StaticText ""
+
+Command "$SHOP_HeavyArmor", "BuyHeavyArmor"
+StaticText "$SHOPDESC_HeavyArmor"
+StaticText ""
+
+Command "$SHOP_LazerBattery", "BuyLazerBattery"
+StaticText "$SHOPDESC_LazerBattery"
+StaticText ""
+}
+
+OptionMenu "Blake_ClassShop"
+{
+Title "Blake's Utility"
+
+Command "$SHOP_BombSlide", "BuyBombSlide"
+StaticText "$SHOPDESC_BombSlide"
+StaticText ""
+StaticText ""
+Command "$SHOP_BombLay", "BuyBombLay"
+StaticText "$SHOPDESC_BombLay"
+StaticText ""
+StaticText ""
+Command "$SHOP_BlakeOut", "BuyBlakeOut"
+StaticText "$SHOPDESC_BlakeOut"
+StaticText ""
+StaticText ""
+ //=========================
+		StaticText "$SHOP_BORDER"
+Command "$SHOP_LightArmor", "BuyLightArmor"
+StaticText "$SHOPDESC_LightArmor"
+StaticText ""
+
+Command "$SHOP_HeavyArmor", "BuyHeavyArmor"
+StaticText "$SHOPDESC_HeavyArmor"
+StaticText ""
+
+Command "$SHOP_LazerBattery", "BuyLazerBattery"
+StaticText "$SHOPDESC_LazerBattery"
+StaticText ""
+}
+
+OptionMenu "Knux_ClassShop"
+{
+Title "Knux's Utility"
+
+Command "$SHOP_BubbleArrow", "BuyBubbleArrow"
+StaticText "$SHOPDESC_BubbleArrow"
+StaticText ""
+StaticText ""
+Command "$SHOP_BubbleBouncer", "BuyBubbleBouncer"
+StaticText "$SHOPDESC_BubbleBouncer"
+StaticText ""
+StaticText ""
+StaticText ""
+StaticText ""
+Command "$SHOP_BubbleMine", "BuyBubbleMine"
+StaticText "$SHOPDESC_BubbleMine"
+StaticText ""
+StaticText ""
+StaticText ""
+StaticText ""
+ //=========================
+		StaticText "$SHOP_BORDER"
+Command "$SHOP_LightArmor", "BuyLightArmor"
+StaticText "$SHOPDESC_LightArmor"
+StaticText ""
+
+Command "$SHOP_HeavyArmor", "BuyHeavyArmor"
+StaticText "$SHOPDESC_HeavyArmor"
+StaticText ""
+
+Command "$SHOP_LazerBattery", "BuyLazerBattery"
+StaticText "$SHOPDESC_LazerBattery"
+StaticText ""
+}
+
+OptionMenu "Stakeout_ClassShop"
+{
+Title "Stakeout's Utility"
+
+Command "$SHOP_CAMERADRONE", "BuyCameraDrone"
+StaticText "$SHOPDESC_CAMERADRONE"
+StaticText ""
+StaticText ""
+StaticText ""
+Command "$SHOP_HOLOGRAPHICBUSH", "BuyHolographicBush"
+StaticText "$SHOPDESC_HOLOGRAPHICBUSH"
+StaticText ""
+StaticText ""
+Command "$SHOP_AUTOTRIPOD", "BuyAutoTripod"
+StaticText "$SHOPDESC_AUTOTRIPOD"
+StaticText ""
+StaticText ""
+StaticText ""
+ //=========================
+		StaticText "$SHOP_BORDER"
+StaticText ""
+Command "$SHOP_LightArmor", "BuyLightArmor"
+StaticText "$SHOPDESC_LightArmor"
+StaticText ""
+
+Command "$SHOP_HeavyArmor", "BuyHeavyArmor"
+StaticText "$SHOPDESC_HeavyArmor"
+StaticText ""
+
+Command "$SHOP_LazerBattery", "BuyLazerBattery"
+StaticText "$SHOPDESC_LazerBattery"
+StaticText ""
+}

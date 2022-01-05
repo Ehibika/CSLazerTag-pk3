@@ -1,0 +1,163 @@
+//Stuff from Teamsneaking.
+
+actor TSneaker : ClassBase
+{
+player.displayname "Sneaker"
+player.startitem "IsSneaker"
+player.startitem "BusterPower", 100
+player.startitem "SetupShop"
+player.startitem "LoadShopInventory"
+
+player.startitem "TSneaker_ClassSet"
+
+
+states
+{
+Spawn:
+SNAM A 0
+SNAM B 1
+SNAM A 1
+Goto Spawn+2
+See:
+SNAM BCDE 5
+Goto Spawn
+Missile:
+SNAM F 5
+SNAM G 4
+goto Spawn
+}
+}
+
+Actor IsSneaker : Once{}
+Const int Cap_CardboardBox = 3;
+Const int Cap_SmokeGrenade = 3;
+Const int Cap_StunMine = 2;
+
+actor TSneakerStarterSet : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("Zapper",1)
+TNT1 A 0 ACS_NamedExecuteAlways("GiveSignatureCharge",0,Cap_CardboardBox)
+TNT1 A 0
+Done:
+TNT1 A 0
+stop
+}
+}
+
+actor TSneaker_Melee : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("BasicKnife",1)
+TNT1 A 0
+Done:
+TNT1 A 0
+stop
+}
+}
+
+actor TSneaker_ClassSet : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("UseAbility1_TSneaker",1)
+TNT1 A 0 A_GiveInventory("Ability1_ChargeFlag",1)
+TNT1 A 0 A_GiveInventory("AbilityChargeCap_1",Cap_CardboardBox)
+//==
+TNT1 A 0 A_GiveInventory("UseAbility2_TSneaker",1)
+TNT1 A 0 A_GiveInventory("Ability2_ChargeFlag",1)
+TNT1 A 0 A_GiveInventory("AbilityChargeCap_2",Cap_SmokeGrenade)
+//==
+TNT1 A 0 A_GiveInventory("UseAbility3_TSneaker",1)
+TNT1 A 0 A_GiveInventory("Ability3_ChargeFlag",1)
+TNT1 A 0 A_GiveInventory("AbilityChargeCap_3",Cap_StunMine)
+TNT1 A 0
+Done:
+TNT1 A 0
+stop
+}
+}
+
+//=========|Class Shop|============
+
+actor TSneaker_ClassShop : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("BuyCardboardBox",1)
+TNT1 A 0 A_GiveInventory("BuySmokeGrenade",1)
+TNT1 A 0 A_GiveInventory("BuyStunMine",1)
+stop
+}
+}
+
+
+Const int Cost_CardboardBox = 200;
+Const int Cost_SmokeGrenade = 300;
+Const int Cost_StunMine = 350;
+
+actor BuyCardboardBox : BuyThing
+{
+states
+{
+Use1:
+TNT1 A 0 A_JumpIf(CallACS("CashCheck",Cost_CardboardBox),"Use2")
+goto NoMoney
+CostPay:
+TNT1 A 0 ACS_NamedExecuteWithResult("CashPay",Cost_CardboardBox)
+goto BuySuccess
+//===
+Use2:
+TNT1 A 0 A_JumpIfInventory("AbilityCharge_1",Cap_CardboardBox,"FullCapacity")
+TNT1 A 0 A_GiveInventory("AbilityCharge_1",1)
+TNT1 A 0 ACS_NamedExecuteAlways("Write_Inventory",0)
+
+goto CostPay
+}
+}
+
+actor BuySmokeGrenade : BuyThing
+{
+states
+{
+Use1:
+TNT1 A 0 A_JumpIf(CallACS("CashCheck",Cost_SmokeGrenade),"Use2")
+goto NoMoney
+CostPay:
+TNT1 A 0 ACS_NamedExecuteWithResult("CashPay",Cost_SmokeGrenade)
+goto BuySuccess
+//===
+Use2:
+TNT1 A 0 A_JumpIfInventory("AbilityCharge_2",Cap_SmokeGrenade,"FullCapacity")
+TNT1 A 0 A_GiveInventory("AbilityCharge_2",1)
+TNT1 A 0 ACS_NamedExecuteAlways("Write_Inventory",0)
+
+goto CostPay
+}
+}
+
+actor BuyStunMine : BuyThing
+{
+states
+{
+Use1:
+TNT1 A 0 A_JumpIf(CallACS("CashCheck",Cost_StunMine),"Use2")
+goto NoMoney
+CostPay:
+TNT1 A 0 ACS_NamedExecuteWithResult("CashPay",Cost_StunMine)
+goto BuySuccess
+//===
+Use2:
+TNT1 A 0 A_JumpIfInventory("AbilityCharge_3",Cap_StunMine,"FullCapacity")
+TNT1 A 0 A_GiveInventory("AbilityCharge_3",1)
+TNT1 A 0 ACS_NamedExecuteAlways("Write_Inventory",0)
+
+goto CostPay
+}
+}

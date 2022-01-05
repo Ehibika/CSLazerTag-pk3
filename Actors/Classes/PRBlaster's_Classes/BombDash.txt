@@ -1,0 +1,59 @@
+
+
+actor Ability1_Blake : AbilityMasterBase
+{
+Tag "Bomb Dash"
+inventory.icon "BDASWI"
+States
+{
+
+Ready:
+HSPR A 0 
+"####" A 1 
+goto Fire
+Fire:
+HSPR A 1
+BDAS A 0 A_PlaySoundEx("weapon/breakdash","Weapon")
+BDAS FGGGGG 1 A_GiveInventory("BreakDashSpeed", 2)
+BDAS F 2
+BDAS A 0 A_TakeInventory("AbilityCharge_1",1)
+BDAS A 0 A_GiveInventory("AmmoStaller")
+BDAS A 0 A_Jump(256,"End")
+goto End
+
+AltFire:
+"####" "#" 1
+End:
+"####" "#" 1 A_TakeInventory("AbilityActiveFlag",9)
+"####" "#" 0 
+Goto End
+
+
+ 
+}
+}
+
+actor UseAbility1_Blake : CustomInventory
+{
+states
+{
+Use:
+WEA2 A 0 A_GiveInventory("BombSlide_Ability",1)
+fail
+}
+}
+
+
+actor BombSlide_Ability : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_JumpIfInventory("AbilityCharge_1",1,"Pickup2")
+stop
+
+Pickup2:
+TNT1 A 0 ACS_NamedExecuteAlways("RunClassAbility",0,1)
+stop
+}
+}

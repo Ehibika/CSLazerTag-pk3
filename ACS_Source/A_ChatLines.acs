@@ -1,0 +1,284 @@
+#library "A_CHATLINE"
+#include "zcommon.acs"
+
+#DEFINE CLT_ABILITY 0
+#DEFINE CLT_ROUNDSTART 1
+#DEFINE CLT_CLUTCH 2
+#DEFINE CLT_CLUTCHCOMMEND 3
+#DEFINE CLT_LOSING 4
+#DEFINE CLT_WINNING 5
+#DEFINE CLT_COMEBACK 6
+
+#DEFINE CLT_MAX_CAP 100
+int CLT_Max = 0;
+str CLT_Character_Max[CLT_MAX_CAP];
+int CLT_RoundStart_Max_Int[CLT_MAX_CAP];
+int CLT_Clutch_Max_Int[CLT_MAX_CAP] ;
+int CLT_ClutchCommend_Max_Int[CLT_MAX_CAP];
+int CLT_Losing_Max_Int[CLT_MAX_CAP];
+int CLT_Winning_Max_Int[CLT_MAX_CAP];
+int CLT_Comeback_Max_Int[CLT_MAX_CAP];
+
+Script "CreateCharacterChatLineLimits_S" (void)
+{
+CreateCharacterChatLineLimits(
+GetCvarString("cslt_clt_character"),
+GetCvar("cslt_clt_roundstart"),
+GetCvar("cslt_clt_clutch"),
+GetCvar("cslt_clt_clutchcommend"),
+GetCvar("cslt_clt_losing"),
+GetCvar("cslt_clt_winning"),
+GetCvar("cslt_clt_comeback"),
+);
+}
+
+function void CreateCharacterChatLineLimits(str character, int roundStart, int clutch, int clutchCommend, int losing, int winning, int comeback){
+	int indexToUse = CLT_Max;
+	
+	if(CLT_Max<CLT_MAX_CAP){
+		CLT_Character_Max[indexToUse] = character;
+		CLT_RoundStart_Max_Int[indexToUse] = roundStart;
+		CLT_Clutch_Max_Int[indexToUse] = clutch;
+		CLT_ClutchCommend_Max_Int[indexToUse] = clutchCommend;
+		CLT_Losing_Max_Int[indexToUse] = losing;
+		CLT_Winning_Max_Int[indexToUse] = winning;
+		CLT_Comeback_Max_Int[indexToUse] = comeback;
+		CLT_Max++;
+		} 
+	else{
+		PrintBold(s:"Limit too low, need more character slots");
+		}
+	}
+
+int lightTeamPlayers[64];
+int wilyTeamPlayers[64];
+
+script "CSLT_Chatline_OPEN" OPEN
+{
+if(GetCvar("sv_maxteams")>2){terminate;}
+
+int lightPlayers;
+int wilyPlayers;
+int cap;
+
+while(GetGamemodeState()!=3){
+	Delay(1);
+	}
+	
+lightPlayers = GetTeamProperty(0,TPROP_NumLivePlayers);
+wilyPlayers = GetTeamProperty(1,TPROP_NumLivePlayers);
+
+int wonPrevious = -1;
+
+if(lightPlayers > 0){
+	wonPrevious = 0;
+	}
+else{
+	wonPrevious = 1;
+	}
+	
+int lightTeamClutch = -1;
+int wilyTeamClutch = -1;
+
+if(lightPlayers == 1){
+	for(int i = 0; i < 64; i++){
+		if(PlayerInGame(i) && (GetPlayerInfo(i,PLAYERINFO_TEAM) == 0) && (GetActorProperty(i+1000,APROP_Health) > 0)){
+			SetActivatorToPlayer(i);
+			cap = grabCap(CLT_CLUTCH);
+			if(cap>=0){ACS_NamedExecuteWithResult("CSLT_Chatline",CLT_CLUTCH,random(0,cap));}
+			lightTeamClutch = i;
+			break;
+			}
+		}
+	}
+if(wilyPlayers == 1){
+	for(i = 0; i < 64; i++){
+		if(PlayerInGame(i) && (GetPlayerInfo(i,PLAYERINFO_TEAM) == 1) && (GetActorProperty(i+1000,APROP_Health) > 0)){
+			SetActivatorToPlayer(i);
+			cap = grabCap(CLT_CLUTCH);
+			if(cap>=0){ACS_NamedExecuteWithResult("CSLT_Chatline",CLT_CLUTCH,random(0,cap));}
+			wilyTeamClutch = i;
+			break;
+			}
+		}
+	}
+
+SetActivator(-1);
+Delay(175);
+
+int lightTeamNum = -1;
+for(i = 0; i < 64; i++){
+	if((PlayerIsSpectator(i) != 1) && (GetPlayerInfo(i,PLAYERINFO_TEAM) == 0)){
+		lightTeamNum++;
+		lightTeamPlayers[lightTeamNum] = i;
+		}
+	}
+int lightTeamChosen = lightTeamPlayers[random(0,lightTeamNum)];
+
+int wilyTeamNum = -1;
+for(i = 0; i < 64; i++){
+	if((PlayerIsSpectator(i) != 1) && (GetPlayerInfo(i,PLAYERINFO_TEAM) == 1)){
+		wilyTeamNum++;
+		wilyTeamPlayers[wilyTeamNum] = i;
+		}
+	}
+int wilyTeamChosen = wilyTeamPlayers[random(0,wilyTeamNum)];
+
+int lightTeamType = CLT_ROUNDSTART;
+int wilyTeamType = CLT_ROUNDSTART;
+int gameStateCheck = random(0,100);
+
+if(lightTeamNum >= 0){
+	if(lightTeamClutch >= 0 && (lightTeamClutch != lightTeamChosen)){
+		lightTeamType = CLT_CLUTCHCOMMEND;
+		}
+	else{
+		if(gameStateCheck>=75){
+			if(GetTeamProperty(0,TPROP_WinCount) > GetTeamProperty(1,TPROP_WinCount)){
+				lightTeamType = CLT_WINNING;
+				}
+			else if(GetTeamProperty(0,TPROP_WinCount) < GetTeamProperty(1,TPROP_WinCount)){
+				if(wonPrevious == 0){
+					lightTeamType = CLT_COMEBACK;
+					}
+				else{
+					lightTeamType = CLT_LOSING;
+					}
+				}
+			}
+		}
+	SetActivatorToPlayer(lightTeamChosen);
+	cap = grabCap(lightTeamType);
+	if(cap>=0){ACS_NamedExecuteWithResult("CSLT_Chatline",lightTeamType,random(0,cap));}
+	else if(grabCap(CLT_ROUNDSTART)>=0){ACS_NamedExecuteWithResult("CSLT_Chatline",CLT_ROUNDSTART,random(0,grabCap(CLT_ROUNDSTART)));}
+	}
+
+if(wilyTeamNum >= 0){
+	if(wilyTeamClutch >= 0 && (wilyTeamClutch != wilyTeamChosen)){
+		wilyTeamType = CLT_CLUTCHCOMMEND;
+		}
+	else{
+		if(gameStateCheck>=75){
+			if(GetTeamProperty(1,TPROP_WinCount) > GetTeamProperty(0,TPROP_WinCount)){
+				wilyTeamType = CLT_WINNING;
+				}
+			else if(GetTeamProperty(1,TPROP_WinCount) < GetTeamProperty(0,TPROP_WinCount)){
+				if(wonPrevious == 1){
+					wilyTeamType = CLT_COMEBACK;
+					}
+				else{
+					wilyTeamType = CLT_LOSING;
+					}
+				}
+			}
+		}
+	SetActivatorToPlayer(wilyTeamChosen);
+	cap = grabCap(wilyTeamType);
+	if(cap>=0){ACS_NamedExecuteWithResult("CSLT_Chatline",wilyTeamType,random(0,cap));}
+	else if(grabCap(CLT_ROUNDSTART)>=0){ACS_NamedExecuteWithResult("CSLT_Chatline",CLT_ROUNDSTART,random(0,grabCap(CLT_ROUNDSTART)));}
+	}
+}
+
+function int grabCap (int type){
+	int i = 0;
+	str player = GetActorClass(0);
+	switch(type){
+		case CLT_ROUNDSTART:
+			for(i = 0; i < CLT_Max; i++){
+				if(StrIcmp(player,CLT_Character_Max[i])==0){
+					return CLT_RoundStart_Max_Int[i];
+					}
+				}
+			break;
+		case CLT_CLUTCH:
+			for(i = 0; i < CLT_Max; i++){
+				if(StrIcmp(player,CLT_Character_Max[i])==0){
+					return CLT_Clutch_Max_Int[i];
+					}
+				}
+			break;
+		case CLT_CLUTCHCOMMEND:
+			for(i = 0; i < CLT_Max; i++){
+				if(StrIcmp(player,CLT_Character_Max[i])==0){
+					return CLT_ClutchCommend_Max_Int[i];
+					}
+				}
+			break;
+		case CLT_LOSING:
+			for(i = 0; i < CLT_Max; i++){
+				if(StrIcmp(player,CLT_Character_Max[i])==0){
+					return CLT_Losing_Max_Int[i];
+					}
+				}
+			break;
+		case CLT_WINNING:
+			for(i = 0; i < CLT_Max; i++){
+				if(StrIcmp(player,CLT_Character_Max[i])==0){
+					return CLT_Winning_Max_Int[i];
+					}
+				}
+			break;
+		case CLT_COMEBACK:
+			for(i = 0; i < CLT_Max; i++){
+				if(StrIcmp(player,CLT_Character_Max[i])==0){
+					return CLT_Comeback_Max_Int[i];
+					}
+				}
+			break;
+		default:
+			return -1;
+			break;
+		}
+	return -1;
+	}
+	
+script "CSLT_Chatline_TargetWrapper" (int type, int num, int showOnlyEnemies)
+{
+SetActivatorToTarget(0);
+ACS_NamedExecuteWithResult("CSLT_Chatline",type,num, showOnlyEnemies);
+}
+
+script "CSLT_Chatline_TracerWrapper" (int type, int num, int showOnlyEnemies)
+{
+SetActivator(0,AAPTR_TRACER);
+ACS_NamedExecuteWithResult("CSLT_Chatline",type,num,showOnlyEnemies);
+}
+
+script "CSLT_Chatline" (int type, int num, int showOnlyEnemies) CLIENTSIDE
+{
+bool enemyCheck = GetPlayerInfo(ConsolePlayerNumber(),PLAYERINFO_TEAM)!=GetPlayerInfo(PlayerNumber(),PLAYERINFO_TEAM) && showOnlyEnemies;
+bool allyCheck = GetPlayerInfo(ConsolePlayerNumber(),PLAYERINFO_TEAM)==GetPlayerInfo(PlayerNumber(),PLAYERINFO_TEAM);
+bool both = enemyCheck || allyCheck;
+if(both || PlayerIsSpectator(ConsolePlayerNumber())==1){
+	str name = GetActorClass(0);
+	str context = "";
+	switch(type){
+		case CLT_ABILITY:
+			context = "ABILITY";
+			break;
+		case CLT_ROUNDSTART:
+			context = "ROUNDSTART";
+			break;
+		case CLT_CLUTCH:
+			context = "CLUTCH";
+			break;
+		case CLT_CLUTCHCOMMEND:
+			context = "CLUTCHCOMMEND";
+			break;
+		case CLT_LOSING:
+			context = "LOSING";
+			break;
+		case CLT_WINNING:
+			context = "WINNING";
+			break;
+		case CLT_COMEBACK:
+			context = "COMEBACK";
+			break;
+		default:
+			context = "WHAT";
+			break;
+		}
+	AmbientSound("misc/chat",127);
+	Log(s:StrParam(n:0, s:"\cd: ", l:StrParam(s:name, s:"_", s:context, s:"_", i:num)));
+	}
+}

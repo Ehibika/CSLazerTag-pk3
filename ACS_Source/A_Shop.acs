@@ -1,0 +1,323 @@
+#library "A_Shop"
+#include "zcommon.acs"
+#import "DB_Shop.acs"
+
+
+
+script "ShopEvents" (int type, int arg1, int arg2) EVENT
+{
+
+    if(GetCvar("lastmanstanding")==1||GetCvar("teamlms")==1){
+    Switch(type)
+        {
+        Case 0: ACS_NamedExecuteWithResult("GivePlayerCash",0,FRAGAWARD); ACS_NamedExecuteWithResult("GiveUltimateCharge"); GiveActorInventory(arg1+1000,"GiveUltimateCharge",1); break;
+        }
+    }
+}
+
+//#region ==Shop Display Functions ==
+#region ==Shop Display Functions ==
+Script "DisplayCashAndSlots" OPEN CLIENTSIDE
+{
+int conP = ConsolePlayerNumber();
+while(true) {
+	DisplayCashAndSlotsFunc(conP);
+	delay(1);
+}
+}
+
+function int getConPlayerView(int conP)
+{
+	int camera = CheckPlayerCamera(conP);
+	if(camera>999&&camera<(1000+SHOP_MAX_PLAYERS)) return (camera-1000);
+	return conP;
+}
+
+#DEFINE MSGID 1000
+
+//#DEFINE XHUDSIZE 320
+//#DEFINE YHUDSIZE 240
+//#DEFINE XOFFSET 20.0
+//#DEFINE YOFFSET 180.0
+
+//#DEFINE XHUDSIZE 640
+//#DEFINE YHUDSIZE 480
+
+#DEFINE XHUDSIZE 480
+#DEFINE YHUDSIZE 360
+#DEFINE XOFFSET 24.0
+#DEFINE YOFFSET 240.0
+
+function void DisplayCashAndSlotsFunc(int conP) {
+	SetHudSize(XHUDSIZE, YHUDSIZE, 0);
+	//SetFont("CONFONT");
+	int camP = getConPlayerView(conP);
+	//HudMessage(s:"Cash: ", i:GetPlayerCash(camP); HUDMSG_PLAIN, 77, CR_WHITE, 0.5, 0.75, 0.1);
+	HudMessage(s:"\cFCash: \cJ", i:GetPlayerCash(camP); HUDMSG_PLAIN, MSGID, CR_WHITE, XOFFSET+0.1, YOFFSET+0.2, 0.1);
+	//HudMessage(s:"Slots: ", i:GetSlotCount(camP),s:"/",i:SHOP_MAX_SLOTS; HUDMSG_PLAIN, MSGID+1, CR_WHITE, XOFFSET+0.1, YOFFSET+0.1, 0.1);
+}
+
+function int GetPlayerCash(int p)
+{
+return GetCvar(StrParam(s:"PLAYER",i:p,s:"_CASH"));
+}
+
+function int GetSlotCount(int p)
+{
+int slotCount = 0;
+for(int i = 0; i<SHOP_MAX_SLOTS; i++) if(GetCvar(StrParam(s:"PLAYER",i:p,s:"_SLOT",i:i))!=-1) slotCount++;
+return slotCount;
+}
+#endregion
+//#Endregion
+
+//#region == Player Cash Functions ==
+#region == Player Cash Functions ==
+
+script "InitializeCash" OPEN
+{
+if(!GetCVar("CASH_INIT")) {
+	ResetAllCash();
+	SetCvar("CASH_INIT",true);
+}
+}
+
+script "RESET_ALL_CASH" (void)
+{
+ResetAllCash();
+}
+
+script "RESET_PLAYER_CASH" (int p)
+{
+ResetPlayerCash(p);
+}
+
+function void ResetAllCash(void)
+{
+for(int i = 0; i < SHOP_MAX_PLAYERS; i++) ResetPlayerCash(i);
+}
+
+function void ResetPlayerCash(int p)
+{
+SetCvar(StrParam(s:"PLAYER",i:p,s:"_CASH"),PLAYERSTARTCASH);
+}
+
+script "CashCheck" (int cost)
+{
+SetResultValue(GetCvar(StrParam(s:"PLAYER",i:PlayerNumber(),s:"_CASH"))>=cost);
+}
+
+script "CashPay" (int cost)
+{
+AdjustCvar(StrParam(s:"PLAYER",i:PlayerNumber(),s:"_CASH"),-cost);
+}
+
+function void AdjustCvar(str cvar, int amount)
+{
+SetCvar(cvar,GetCvar(cvar)+amount);
+}
+
+script "GivePlayerCash" (int p, int wage)
+{
+Int CurCash = GetCvar(StrParam(s:"PLAYER",i:p,s:"_CASH"));
+
+if(CurCash+Wage > CASHCAP)
+	{SetCvar(StrParam(s:"PLAYER",i:p,s:"_CASH"),CASHCAP);}
+	else{AdjustCvar(StrParam(s:"PLAYER",i:p,s:"_CASH"),wage);}
+
+}
+
+
+
+script "CashGameOver" UNLOADING
+{
+ACS_NamedExecuteWithResult("RESET_ALL_CASH");
+SetCvar("TLMS_WinTeam",-1);
+SetCvar("TLMS_WinTeamStreak",0);
+}
+
+script "CashPlayerSpec" (int p) DISCONNECT
+{
+ACS_NamedExecuteWithResult("RESET_PLAYER_CASH",p);
+}
+
+#Endregion
+//#Endregion
+
+//#region == Shop Scripts ==
+#region == Shop Scripts ==
+
+
+script "SHOP_SETUP" (void)
+{
+while(GetGameModeState()==GAMESTATE_INPROGRESS&&PlayerHealth()>0) delay(1);
+if(PlayerHealth()>0) 
+	{
+	GiveInventory("Shop",1);
+	
+	Str ClassName,ClassShop;
+	ClassName = GetActorClass(0);
+	ClassShop = StrParam(s:ClassName,s:"_ClassShop");
+	GiveInventory(ClassShop,1);
+	}
+}
+
+script "OpenClassShop" (void) Clientside
+{
+if(PlayerNumber() != ConsolePlayerNumber()){Terminate;}
+Str ClassName,Command;
+
+ClassName = GetActorClass(0);
+Command = StrParam(s:"OpenMenu ",s:ClassName,s:"_ClassShop");
+ConsoleCommand(Command);
+}
+
+script "ShopFailSound" (void)
+{
+LocalAmbientSound("weapon/noammo",128);
+}
+
+script "ShopSuccessSound" (void)
+{
+LocalAmbientSound("weapon/weaponup",128);
+}
+
+Script "ShopOpenMsg" (void) CLIENTSIDE
+{
+if(ActivatorTID()==CheckPlayerCamera(ConsolePlayerNumber())) Log(l:"SHOP_OPEN");
+}
+
+Script "ShopBuyMsg" (void) CLIENTSIDE
+{
+if(ActivatorTID()==CheckPlayerCamera(ConsolePlayerNumber())) Log(l:"SHOP_BUY");
+}
+
+Script "ShopBuyFailMoneyMsg" (void) CLIENTSIDE
+{
+if(ActivatorTID()==CheckPlayerCamera(ConsolePlayerNumber())) Log(l:"SHOP_BUYFAIL_MONEY");
+}
+
+Script "ShopBuyFailPossessMsg" (void) CLIENTSIDE
+{
+if(ActivatorTID()==CheckPlayerCamera(ConsolePlayerNumber())) Log(l:"SHOP_BUYFAIL_POSSESS");
+}
+
+Script "ShopBuyFailSpaceMsg" (void) CLIENTSIDE
+{
+if(ActivatorTID()==CheckPlayerCamera(ConsolePlayerNumber())) Log(l:"SHOP_BUYFAIL_SPACE");
+}
+
+#Endregion
+//#Endregion
+
+
+//#region == Cash Gameplay functions==
+#region == Cash Gameplay functions==
+
+
+script "PlayerJoin_E" ENTER
+{
+delay(1);
+int p = PlayerNumber();
+thePlayerPlayed[p] = true;
+int t = GetPlayerInfo(p,PLAYERINFO_TEAM);
+
+if(t>-1&&t<MAX_TEAMS) {
+	thePlayerTeam[p] = t;
+	theTeamPlayed[t] = true;
+}
+
+}
+
+
+script "MatchStart" OPEN
+{
+delay(1);
+if(GetCvar("teamlms")) ACS_NamedExecuteAlways("MatchMonitorTeam",0);
+else if(GetCvar("lastmanstanding")) ACS_NamedExecuteAlways("MatchMonitorSolo",0);
+}
+
+script "MatchMonitorTeam" (void)
+{
+while(GetGameModeState()!=GAMESTATE_INRESULTSEQUENCE) delay(1);
+int v = FindVictorTeam(GetCvar("sv_maxteams"));
+if(v>-1) TeamFunc(v,SHOP_MAX_PLAYERS,MAX_TEAMS);
+}
+
+script "MatchMonitorSolo" (void)
+{
+while(GetGameModeState()!=GAMESTATE_INRESULTSEQUENCE) delay(1);
+int theMaxPlayers = SHOP_MAX_PLAYERS;
+int v = FindVictor(theMaxPlayers);
+if(v>-1) SoloFunc(v,theMaxPlayers);
+}
+
+function int FindVictorTeam (int theMaxTeams)  {
+for(int i = 0; i<theMaxTeams; i++) if(GetTeamProperty(i,TPROP_NumLivePlayers)>0) return i;
+return -1;
+}
+
+function void TeamFunc(int v, int theMaxPlayers, int theMaxTeams)  {
+WinStreakHandler(v);
+for(int i = 0; i<theMaxPlayers; i++) {
+	if(thePlayerPlayed[i]) {
+		if(thePlayerTeam[i]==v) WinnerFunc(i);
+		else LoserFunc(i);
+	}
+}
+}
+
+function void WinStreakHandler(int WinTeam)
+{
+	if(GetCvar("TLMS_WinTeam") == WinTeam)
+		{
+		SetCvar("TLMS_WinTeamStreak",GetCvar("TLMS_WinTeamStreak")+1);
+		}
+	else
+		{
+		SetCvar("TLMS_WinTeam",WinTeam);
+		SetCvar("TLMS_WinTeamStreak",0);
+		}
+}
+
+function int GetStreak (void)
+{
+ int output = GetCvar("TLMS_WinTeamStreak");
+ if(output > LOSESTREAKCAP){output = LOSESTREAKCAP;}
+ return output;
+}
+
+function int FindVictor (int theMaxPlayers)  {
+for(int i = 0; i<theMaxPlayers; i++) if(thePlayerPlayed[i]&&GetActorProperty(1000+i,APROP_HEALTH)>0) return i;
+return -1;
+}
+
+function void SoloFunc(int v, int theMaxPlayers)  {
+int i;
+for(i = 0; i<v; i++) if(thePlayerPlayed[i]) LoserFunc(i);
+WinnerFunc(v);
+for(i=v+1; i<theMaxPlayers; i++) if(thePlayerPlayed[i]) LoserFunc(i);
+}
+
+function void LoserFunc(int p)  {
+	//PrintBold(s:"loser ",i:p);
+	LoserAwardFunc(p);
+}
+
+function void WinnerFunc(int p)  {
+	//PrintBold(s:"winner ",i:p);
+	WinnerAwardFunc(p);
+}
+
+function void WinnerAwardFunc(int p)  {
+	ACS_NamedExecuteWithResult("GivePlayerCash",p,WINAWARD);
+	//if(GetActorProperty(1000+p,APROP_HEALTH)<1) ACS_NamedExecuteWithResult("CLEAR_PERSISTENT_LOADOUT",p);
+}
+
+function void LoserAwardFunc(int p)  {
+	ACS_NamedExecuteWithResult("GivePlayerCash",p,LOSEAWARD+(LOSESTREAKAWARD*(GetStreak()-1)));
+	//if(GetActorProperty(1000+p,APROP_HEALTH)<1) ACS_NamedExecuteWithResult("CLEAR_PERSISTENT_LOADOUT",p);
+}
+
+#endregion
+//#endregion

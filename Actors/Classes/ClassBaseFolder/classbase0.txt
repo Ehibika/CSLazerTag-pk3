@@ -1,0 +1,101 @@
+actor ClassBase0 : PlayerPawn
+{
+player.displayname "megaman"
+player.soundclass "megaman"
+player.damagescreencolor "yellow"
+player.forwardmove 1.2, 0.6
+player.sidemove 1.2 0.6
+player.jumpz 10
+Player.MaxHealth 100
+player.colorrange 0 0
+player.startitem "MegaBuster"
+player.startitem "BusterAmmo", 3
+player.startitem "BaseFlagPack", 1
+mass 9999
+gravity 0.8
++NODAMAGETHRUST
++DONTBLAST
++NOBLOOD
++QUICKTORETALIATE
++THRUSPECIES
++USEDAMAGEEVENTSCRIPT 
+damagefactor "Dummy", 0.0
+Player.MaxSkinSizeFactor 0, 0
+scale 2.5
+bloodtype "MegamanBlood"
+var int user_hp;
+
+var int User_STargTID;
+var int User_angleDistRegister;
+var int User_STargRange;
+var int user_wepangle;
+var int user_weppitch;
+var int user_wepangle2;
+
+var int User_TempShotVar;
+States
+{
+SuperSpawn:
+"----" A 1 A_Jump(256,"Spawn")
+wait
+SuperClassPain:
+"----" A 1 A_Jump(256,"ClassPain")
+wait
+SuperClassDeath:
+"----" A 1 A_Jump(256,"ClassDeath")
+wait
+
+MegamanPain:
+"----" A 0 ACS_NamedExecuteWithResult("core_decdmg_begin")
+"----" A 0 A_GiveInventory("ClassPainPickup", 1)
+"----" A 0 A_Pain
+"----" A 1 A_SpawnItemEx("PainFX",-5,0,3,0,0,0)
+"----" A 1 A_Recoil(1)
+"----" AAAAAAAAA 2 A_SpawnItemEx("PainFX",-5,0,3,0,0,0)
+"----" A 1
+goto SuperSpawn
+
+MegamanDeath:
+"----" A 0 ACS_NamedExecuteWithResult("core_decdmg_begin")
+"----" AAAAAAAAAAAAAAAAAAAA 1 A_JumpIfInventory("CriticalDeath",1,"MegamanGib")
+MegamanExplode:
+TNT1 A 0 A_SpawnItemEx("FakeDeathFX", 0, 0, 32)
+MegamanFall:
+TNT1 A 0 A_PlayerScream
+MegamanErase:
+TNT1 A 1 A_CheckPlayerDone
+wait
+MegamanGib:
+TNT1 A 0 A_GiveInventory("CriticalDeathGiver", 1)
+TNT1 A 0 A_SpawnItemEx("FakeDeathFX", 0, 0, 32)
+goto MegamanErase
+
+// SINGLEPLAYER STUFF
+TheEnd: // Used in the original ending
+"####" G 4
+loop
+WalkForward: 
+"####" BBBBBCCCCCDDDDDEEEEE 1 A_Recoil(-0.8)
+loop
+CreditWalk: 
+"####" BCDE 8
+loop
+CreditRun:
+"####" BCDE 5
+loop
+DozerCarry:
+"####" BBBBCCCCDDDDEEEEBBBBCCCCDDDDBBBBCCCCDDDD 1 A_Recoil(-1)
+"####" F 10 A_Stop
+"####" F -1
+stop
+DozerThrow:
+"####" F 0 A_ChangeFlag("THRUACTORS",1)
+"####" F 20 ThrustThingZ(0, 60, 0, 1)
+"####" G 20
+"####" A -1
+stop
+EndlessPain:
+"####" H -1
+stop
+}
+}

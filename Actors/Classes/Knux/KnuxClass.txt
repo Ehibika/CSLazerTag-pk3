@@ -1,0 +1,161 @@
+
+actor Knux : ClassBase
+{
+Player.displayname "Knux"
+player.startitem "IsKnux"
+player.startitem "BusterPower", 1000
+player.startitem "SetupShop"
+player.startitem "LoadShopInventory"
+
+player.startitem "Knux_ClassSet"
+
+
+states
+{
+Spawn:
+HUNT A 0
+HUNT B 1
+HUNT A 1
+Goto Spawn+2
+See:
+HUNT BCDE 5
+Goto Spawn
+Missile:
+HUNT F 5
+HUNT G 4
+goto Spawn
+}
+}
+
+Actor IsKnux : Once{}
+ 
+Const int Cap_BubbleArrow = 3;
+Const int Cap_BubbleBouncer = 3;
+Const int Cap_BubbleMine = 2;
+ 
+actor KnuxStarterSet : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("Zapper",1)
+TNT1 A 0 ACS_NamedExecuteAlways("GiveSignatureCharge",0,Cap_BubbleArrow)
+TNT1 A 0
+Done:
+TNT1 A 0
+stop
+}
+}
+
+actor Knux_Melee : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("KnuxMelee",1)
+TNT1 A 0
+Done:
+TNT1 A 0
+stop
+}
+}
+ 
+actor Knux_ClassSet : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("UseAbility1_Knux",1)
+TNT1 A 0 A_GiveInventory("Ability1_ChargeFlag",1)
+TNT1 A 0 A_GiveInventory("AbilityChargeCap_1",Cap_BubbleArrow)
+
+//==
+TNT1 A 0 A_GiveInventory("UseAbility2_Knux",1)
+TNT1 A 0 A_GiveInventory("Ability2_ChargeFlag",1)
+TNT1 A 0 A_GiveInventory("AbilityChargeCap_2",Cap_BubbleBouncer)
+//==
+TNT1 A 0 A_GiveInventory("UseAbility3_Knux",1)
+TNT1 A 0 A_GiveInventory("Ability3_ChargeFlag",1)
+TNT1 A 0 A_GiveInventory("AbilityChargeCap_3",Cap_BubbleMine)
+TNT1 A 0
+Done:
+TNT1 A 0
+stop
+}
+}
+
+actor Knux_ClassShop : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("BuyBubbleArrow",1)
+TNT1 A 0 A_GiveInventory("BuyBubbleBouncer",1)
+TNT1 A 0 A_GiveInventory("BuyBubbleMine",1)
+stop
+}
+}
+
+Const int Cost_BubbleArrow = 200;
+Const int Cost_BubbleBouncer = 200;
+Const int Cost_BubbleMine = 250;
+
+actor BuyBubbleArrow : BuyThing
+{
+states
+{
+Use1:
+TNT1 A 0 A_JumpIf(CallACS("CashCheck",Cost_BubbleArrow),"Use2")
+goto NoMoney
+CostPay:
+TNT1 A 0 ACS_NamedExecuteWithResult("CashPay",Cost_BubbleArrow)
+goto BuySuccess
+//===
+Use2:
+TNT1 A 0 A_JumpIfInventory("AbilityCharge_1",Cap_BubbleArrow,"FullCapacity")
+TNT1 A 0 A_GiveInventory("AbilityCharge_1",1)
+TNT1 A 0 ACS_NamedExecuteAlways("Write_Inventory",0)
+
+goto CostPay
+}
+}
+
+actor BuyBubbleBouncer : BuyThing
+{
+states
+{
+Use1:
+TNT1 A 0 A_JumpIf(CallACS("CashCheck",Cost_BubbleBouncer),"Use2")
+goto NoMoney
+CostPay:
+TNT1 A 0 ACS_NamedExecuteWithResult("CashPay",Cost_BubbleBouncer)
+goto BuySuccess
+//===
+Use2:
+TNT1 A 0 A_JumpIfInventory("AbilityCharge_2",Cap_BubbleBouncer,"FullCapacity")
+TNT1 A 0 A_GiveInventory("AbilityCharge_2",1)
+TNT1 A 0 ACS_NamedExecuteAlways("Write_Inventory",0)
+
+goto CostPay
+}
+}
+
+actor BuyBubbleMine : BuyThing
+{
+states
+{
+Use1:
+TNT1 A 0 A_JumpIf(CallACS("CashCheck",Cost_BubbleMine),"Use2")
+goto NoMoney
+CostPay:
+TNT1 A 0 ACS_NamedExecuteWithResult("CashPay",Cost_BubbleMine)
+goto BuySuccess
+//===
+Use2:
+TNT1 A 0 A_JumpIfInventory("AbilityCharge_3",Cap_BubbleMine,"FullCapacity")
+TNT1 A 0 A_GiveInventory("AbilityCharge_3",1)
+TNT1 A 0 ACS_NamedExecuteAlways("Write_Inventory",0)
+
+goto CostPay
+}
+}

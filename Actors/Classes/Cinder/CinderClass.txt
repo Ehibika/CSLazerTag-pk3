@@ -1,0 +1,164 @@
+actor Cinder : ClassBase
+{
+Player.displayname "Cinder"
+Player.startitem "IsCinder"
+
+Player.startitem "BusterPower", 1000
+player.startitem "SetupShop"
+player.startitem "LoadShopInventory"
+
+Player.startitem "Cinder_ClassSet"
+
+
+states
+{
+Spawn:
+FLAM A 0
+FLAM B 1
+FLAM A 1
+Goto Spawn+2
+See:
+FLAM BCDE 5
+Goto Spawn
+Missile:
+FLAM F 5
+FLAM G 4
+goto Spawn
+}
+}
+
+Actor IsCinder : Once{}
+Const int Cap_FlashWisp = 2;
+Const int Cap_FireSpirit = 2;
+Const int Cap_FireField = 2;
+
+actor CinderStarterSet : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("Zapper",1)
+TNT1 A 0 ACS_NamedExecuteAlways("GiveSignatureCharge",0,Cap_FlashWisp)
+TNT1 A 0
+Done:
+TNT1 A 0
+stop
+}
+}
+
+actor Cinder_Melee : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("BasicKnife",1)
+TNT1 A 0
+Done:
+TNT1 A 0
+stop
+}
+}
+
+
+actor Cinder_ClassSet : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("UseAbility1_Cinder",1)
+TNT1 A 0 A_GiveInventory("Ability1_ChargeFlag",1)
+TNT1 A 0 A_GiveInventory("AbilityChargeCap_1",Cap_FlashWisp)
+//==
+TNT1 A 0 A_GiveInventory("UseAbility2_Cinder",1)
+TNT1 A 0 A_GiveInventory("Ability2_ChargeFlag",1)
+TNT1 A 0 A_GiveInventory("AbilityChargeCap_2",Cap_FireSpirit)
+//==
+TNT1 A 0 A_GiveInventory("UseAbility3_Cinder",1)
+TNT1 A 0 A_GiveInventory("Ability3_ChargeFlag",1)
+TNT1 A 0 A_GiveInventory("AbilityChargeCap_3",Cap_FireField)
+TNT1 A 0
+Done:
+TNT1 A 0
+stop
+}
+}
+
+//=========|Class Shop|============
+
+actor Cinder_ClassShop : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_GiveInventory("BuyFlashWisp",1)
+TNT1 A 0 A_GiveInventory("BuyFireSpirit",1)
+TNT1 A 0 A_GiveInventory("BuyFireField",1)
+stop
+}
+}
+
+
+Const int Cost_FlashWisp = 200;
+Const int Cost_FireSpirit = 400;
+Const int Cost_FireField = 300;
+
+actor BuyFlashWisp : BuyThing
+{
+states
+{
+Use1:
+TNT1 A 0 A_JumpIf(CallACS("CashCheck",Cost_FlashWisp),"Use2")
+goto NoMoney
+CostPay:
+TNT1 A 0 ACS_NamedExecuteWithResult("CashPay",Cost_FlashWisp)
+goto BuySuccess
+//===
+Use2:
+TNT1 A 0 A_JumpIfInventory("AbilityCharge_1",Cap_FlashWisp,"FullCapacity")
+TNT1 A 0 A_GiveInventory("AbilityCharge_1",1)
+TNT1 A 0 ACS_NamedExecuteAlways("Write_Inventory",0)
+
+goto CostPay
+}
+}
+
+actor BuyFireSpirit : BuyThing
+{
+states
+{
+Use1:
+TNT1 A 0 A_JumpIf(CallACS("CashCheck",Cost_FireSpirit),"Use2")
+goto NoMoney
+CostPay:
+TNT1 A 0 ACS_NamedExecuteWithResult("CashPay",Cost_FireSpirit)
+goto BuySuccess
+//===
+Use2:
+TNT1 A 0 A_JumpIfInventory("AbilityCharge_2",Cap_FireSpirit,"FullCapacity")
+TNT1 A 0 A_GiveInventory("AbilityCharge_2",1)
+TNT1 A 0 ACS_NamedExecuteAlways("Write_Inventory",0)
+
+goto CostPay
+}
+}
+
+
+actor BuyFireField : BuyThing
+{
+states
+{
+Use1:
+TNT1 A 0 A_JumpIf(CallACS("CashCheck",Cost_FireField),"Use2")
+goto NoMoney
+CostPay:
+TNT1 A 0 ACS_NamedExecuteWithResult("CashPay",Cost_FireField)
+goto BuySuccess
+//===
+Use2:
+TNT1 A 0 A_JumpIfInventory("AbilityCharge_3",Cap_FireField,"FullCapacity")
+TNT1 A 0 A_GiveInventory("AbilityCharge_3",1)
+TNT1 A 0 ACS_NamedExecuteAlways("Write_Inventory",0)
+
+goto CostPay
+}
+}

@@ -1,0 +1,99 @@
+addkeysection "Extra Controls" ExtraKeys
+addmenukey "Zoom" +Zoom
+addmenukey "Reload" +Reload
+
+addmenukey "Ability 1" +User1
+addmenukey "Ability 2" +User2
+addmenukey "Ability 3" +User3
+addmenukey "Ability 4" +User4
+
+clearplayerclasses
+addplayerclass MegamanC
+addplayerclass North
+addplayerclass Cinder
+addplayerclass Esper
+addplayerclass TSneaker
+addplayerclass TAssassin
+addplayerclass TGrim
+addplayerclass TGrand
+addplayerclass Blake
+addplayerclass Knux
+addplayerclass Stakeout
+
+alias !cslt_justjoin "closemenu;join"
+
+alias OpenMainShop "CloseMenu; OpenMenu ShopMenu;"
+alias OpenClassShop "CloseMenu; Use OpenClassShop"
+
+alias BuyScrapper "CloseMenu; Use BuyScrapper; OpenMenu ShopMenu;"
+alias BuyWatchman "CloseMenu; Use BuyWatchman; OpenMenu ShopMenu;"
+alias BuyScout "CloseMenu; Use BuyScout; OpenMenu ShopMenu;"
+alias BuyPounder "CloseMenu; Use BuyPounder; OpenMenu ShopMenu;"
+alias BuyGunslinger "CloseMenu; Use BuyGunslinger; OpenMenu ShopMenu;"
+//===
+alias BuyFighter "CloseMenu; Use BuyFighter; OpenMenu ShopMenu;"
+alias BuyWarden "CloseMenu; Use BuyWarden; OpenMenu ShopMenu;"
+alias BuyTracer "CloseMenu; Use BuyTracer; OpenMenu ShopMenu;"
+alias BuyEnforcer "CloseMenu; Use BuyEnforcer; OpenMenu ShopMenu;"
+alias BuyToujorprey "CloseMenu; Use BuyToujorprey; OpenMenu ShopMenu;"
+//===
+alias BuyHyperbeam "CloseMenu; Use BuyHyperbeam; OpenMenu ShopMenu;"
+alias BuyLightCannon "CloseMenu; Use BuyLightCannon; OpenMenu ShopMenu;"
+//===
+alias BuyMuscler "CloseMenu; Use BuyMuscler; OpenMenu ShopMenu;"
+alias BuySkye "CloseMenu; Use BuySkye; OpenMenu ShopMenu;"
+
+
+alias BuyLightArmor "CloseMenu; Use BuyLightArmor; OpenMenu ShopMenu;"
+alias BuyHeavyArmor "CloseMenu; Use BuyHeavyArmor; OpenMenu ShopMenu;"
+alias BuyLazerBattery "CloseMenu; Use BuyLazerBattery; OpenMenu ShopMenu;"
+
+//====|ClassShops|====
+alias BuyHyperBomb "CloseMenu; Use BuyHyperBomb; OpenMenu MegamanC_ClassShop"
+alias BuyRushCall "CloseMenu; Use BuyRushCall; OpenMenu MegamanC_ClassShop"
+alias BuyCombatSlide "CloseMenu; Use BuyCombatSlide; OpenMenu MegamanC_ClassShop"
+
+
+alias BuyIceBolt "CloseMenu; Use BuyIceBolt; OpenMenu North_ClassShop;"
+alias BuyIceFog "CloseMenu; Use BuyIceFog; OpenMenu North_ClassShop;"
+alias BuyAuroraVeil "CloseMenu; Use BuyAuroraVeil; OpenMenu North_ClassShop;"
+
+alias BuyFlashWisp "CloseMenu; Use BuyFlashWisp; OpenMenu Cinder_ClassShop;"
+alias BuyFireSpirit "CloseMenu; Use BuyFireSpirit; OpenMenu Cinder_ClassShop;"
+alias BuyFireField "CloseMenu; Use BuyFireField; OpenMenu Cinder_ClassShop;"
+
+alias BuyEsperHeal "CloseMenu; Use BuyEsperHeal; OpenMenu Esper_ClassShop;"
+alias BuyBarrier "CloseMenu; Use BuyBarrier; OpenMenu Esper_ClassShop;"
+alias BuyPsycheBomb "CloseMenu; Use BuyPsycheBomb; OpenMenu Esper_ClassShop;"
+
+//====|Théophile's Class Shops|====
+alias BuyCardboardBox "CloseMenu; Use BuyCardboardBox; OpenMenu TSneaker_ClassShop"
+alias BuySmokeGrenade "CloseMenu; Use BuySmokeGrenade; OpenMenu TSneaker_ClassShop"
+alias BuyStunMine "CloseMenu; Use BuyStunMine; OpenMenu TSneaker_ClassShop"
+
+alias BuyWeakenShuriken "CloseMenu; Use BuyWeakenShuriken; OpenMenu TAssassin_ClassShop"
+alias BuyNinjaRope "CloseMenu; Use BuyNinjaRope; OpenMenu TAssassin_ClassShop"
+alias BuyKillingDash "CloseMenu; Use BuyKillingDash; OpenMenu TAssassin_ClassShop"
+
+alias BuyHeadWheel "CloseMenu; Use BuyHeadWheel; OpenMenu TGrim_ClassShop"
+alias BuyDecomposeBeam "CloseMenu; Use BuyDecomposeBeam; OpenMenu TGrim_ClassShop"
+alias BuyNecromancy "CloseMenu; Use BuyNecromancy; OpenMenu TGrim_ClassShop"
+
+alias BuyGrandBomb "CloseMenu; Use BuyGrandBomb; OpenMenu TGrand_ClassShop"
+alias BuyBatteryDepleter "CloseMenu; Use BuyBatteryDepleter; OpenMenu TGrand_ClassShop"
+alias BuyBulletGrenade "CloseMenu; Use BuyBulletGrenade; OpenMenu TGrand_ClassShop"
+
+//====|PRBlaster's Class Shops|====
+alias BuyBombSlide "CloseMenu; Use BuyBombSlide; OpenMenu Blake_ClassShop"
+alias BuyBombLay "CloseMenu; Use BuyBombLay; OpenMenu Blake_ClassShop"
+alias BuyBlakeOut "CloseMenu; Use BuyBlakeOut; OpenMenu Blake_ClassShop"
+
+//====|Knux Class Shops|====
+alias BuyBubbleArrow "CloseMenu; Use BuyBubbleArrow; OpenMenu Knux_ClassShop"
+alias BuyBubbleBouncer "CloseMenu; Use BuyBubbleBouncer; OpenMenu Knux_ClassShop"
+alias BuyBubbleMine "CloseMenu; Use BuyBubbleMine; OpenMenu Knux_ClassShop"
+
+//====|Stakeout Class Shops|====
+alias BuyAutoTripod "CloseMenu; Use BuyAutoTripod; OpenMenu Stakeout_ClassShop"
+alias BuyHolographicBush "CloseMenu; Use BuyHolographicBush; OpenMenu Stakeout_ClassShop"
+alias BuyCameraDrone "CloseMenu; OpenMenu Stakeout_ClassShop" //lol

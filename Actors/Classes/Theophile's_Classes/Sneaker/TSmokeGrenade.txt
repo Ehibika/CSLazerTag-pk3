@@ -1,0 +1,454 @@
+actor Ability2_TSneaker : AbilityMasterBase
+{
+Weapon.AmmoUse2 1
+Weapon.AmmoGive2 0
+Inventory.Pickupmessage "$PU_MEGABUSTER"
+Obituary "$OB_MEGABUSTER"
+Tag "SmokeGrenade Ability"
+weapon.ammotype2 "busterPower"
+inventory.icon "SMKGSI"
+Dropitem ""
++WEAPON.ALLOW_WITH_RESPAWN_INVUL
+States
+{
+
+Ready:
+HSPR B 0 
+"####" "#" 0 A_Jumpif(CallACS("CSLT_CheckAbilityInput",1)==1,"User1")
+"####" "#" 0 A_Jumpif(CallACS("CSLT_CheckAbilityInput",3)==1,"User3")
+"####" B 0 A_FireCustomMissile("SmokeGrenadeAimPath",0,0,0,0,0,Aim_ArcOverHead+(Aim_ArcScale*Sin(-pitch)))
+"####" B 1 A_WeaponReady
+goto ready
+
+Fire:
+"####" FFGGG 1
+"####" C 0 A_PlaySoundEx("weapon/crackerthrow","Weapon")
+"####" B 0 A_FireCustomMissile("SmokeGrenadeL",0,1,0,0,0,Aim_ArcOverHead+(Aim_ArcScale*Sin(-pitch)))
+"####" B 1 A_TakeInventory("AbilityCharge_2",1)
+"####" B 0 A_GiveInventory("AmmoStaller")
+"####" IJKLM 2
+"####" B 0 A_Jump(256,"End")
+goto End
+
+AltFire:
+"####" B 1
+End:
+"####" B 1 A_TakeInventory("AbilityActiveFlag",9)
+"####" B 0 
+Goto End
+}
+}
+//====
+
+actor UseAbility2_TSneaker : CustomInventory
+{
+states
+{
+Use:
+WEA2 A 0 A_GiveInventory("MegaRushCallAbility",1)
+fail
+}
+}
+
+actor TSneakerSmokeGrenadeAbility : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_JumpIfInventory("AbilityCharge_2",1,"Pickup2")
+stop
+
+Pickup2:
+TNT1 A 0 ACS_NamedExecuteAlways("RunClassAbility",0,2)
+stop
+}
+}
+//=================
+//=================
+
+actor SmokeGrenadeAimPath : GolfBallAimInstantStarter { Speed 44 Gravity 1}
+
+actor SmokeGrenadeL
+{
+PROJECTILE
+-NOGRAVITY
++RIPPER
++HEXENBOUNCE
++BOUNCEONWALLS
++BOUNCEONCEILINGS
++MBFBOUNCER
++CANBOUNCEWATER
+Radius 6
+Height 7
+scale 2.5
+BounceFactor 0.3
+WallbounceFactor 0.8
+SeeSound "weapon/adapterreturn"
++BOUNCEONACTORS
+translation "208:210=143:143", "86:90=151:151"
+damagetype "SmokeGrenade"
+Obituary "%o choked on %k's smoke grenade."
+reactiontime 10
+Args 55
+//bouncecount 1
+speed 44
+states
+{
+Spawn:
+BOMB A 0
+AQBA L 0 A_GiveInventory("ProjectileDCode",1)
+Spawn2:
+INST KLMNOPQR 2 A_CheckFloor("SlowDown")
+Goto Spawn2
+SlowDown:
+INST M 1 A_ScaleVelocity(0.3)
+INST M 1 A_CountDown
+Goto Spawn
+Death:
+INST Q 0 A_Stop
+INST Q 0 A_ChangeFlag("NOGRAVITY",1)
+CENF A 0 A_PlaySoundEx("misc/hsloop","Weapon")
+/*
+INST Q 0 A_JumpIfInTargetInventory("LightTeamFlag",1,"Death.TeamLight")
+INST Q 0 A_JumpIfInTargetInventory("WilyTeamFlag",1,"Death.Wily")
+INST Q 0 A_JumpIfInTargetInventory("CossackTeamFlag",1,"Death.Cossack")
+INST Q 0 A_JumpIfInTargetInventory("KingTeamFlag",1,"Death.King")
+*/
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGenerator",0,0,0,0,0,0,0,1)
+TNT1 A 0 A_SetArg(0,Args[0]-1)
+TNT1 A 0 A_JumpIf(Args[0] <= 0,"Death.End")
+loop
+/*
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGenerator",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGenerator",0,0,0)
+CENF A 0 A_PlaySoundEx("misc/hsloop","Weapon")
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGenerator",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGenerator",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGenerator",0,0,0)
+CENF A 0 A_PlaySoundEx("misc/hsloop","Weapon")
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGenerator",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGenerator",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGenerator",0,0,0)
+CENF A 0 A_PlaySoundEx("misc/hsloop","Weapon")
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGenerator",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGenerator",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGenerator",0,0,0)
+*/
+Death.End:
+TNT1 A 1
+INST M 1
+TNT1 A 1
+INST M 1
+TNT1 A 1
+INST M 1
+stop
+Death.TeamLight:
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorB",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorB",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorB",0,0,0)
+CENF A 0 A_PlaySoundEx("misc/hsloop","Weapon")
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorB",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorB",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorB",0,0,0)
+CENF A 0 A_PlaySoundEx("misc/hsloop","Weapon")
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorB",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorB",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorB",0,0,0)
+CENF A 0 A_PlaySoundEx("misc/hsloop","Weapon")
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorB",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorB",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorB",0,0,0)
+goto Death.End
+Death.Wily:
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorR",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorR",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorR",0,0,0)
+CENF A 0 A_PlaySoundEx("misc/hsloop","Weapon")
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorR",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorR",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorR",0,0,0)
+CENF A 0 A_PlaySoundEx("misc/hsloop","Weapon")
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorR",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorR",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorR",0,0,0)
+CENF A 0 A_PlaySoundEx("misc/hsloop","Weapon")
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorR",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorR",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorR",0,0,0)
+goto Death.End
+Death.Cossack:
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorO",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorO",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorO",0,0,0)
+CENF A 0 A_PlaySoundEx("misc/hsloop","Weapon")
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorO",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorO",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorO",0,0,0)
+CENF A 0 A_PlaySoundEx("misc/hsloop","Weapon")
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorO",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorO",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorO",0,0,0)
+CENF A 0 A_PlaySoundEx("misc/hsloop","Weapon")
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorO",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorO",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorO",0,0,0)
+goto Death.End
+Death.King:
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorP",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorP",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorP",0,0,0)
+CENF A 0 A_PlaySoundEx("misc/hsloop","Weapon")
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorP",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorP",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorP",0,0,0)
+CENF A 0 A_PlaySoundEx("misc/hsloop","Weapon")
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorP",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorP",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorP",0,0,0)
+CENF A 0 A_PlaySoundEx("misc/hsloop","Weapon")
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorP",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorP",0,0,0)
+TNT1 A 0 A_Explode(4, 200, 0)
+INST MMMMM 1 A_SpawnItemEx("SmokeGeneratorP",0,0,0)
+goto Death.End
+}
+}
+
+actor SmokeGenerator
+{
++NOINTERACTION
++NOGRAVITY
++CLIENTSIDEONLY
+-SOLID
+scale 2.5
+height 0
+radius 0
+States
+{
+Spawn:
+TNT1 A 0
+TNT1 AA 0 A_SpawnItemEx("SmokeParticles",0,0,4,random(-8,8),random(-8,8),random(4,8),0,1)
+TNT1 A 0 A_SpawnItemEx("SmokeParticles2",0,0,4,random(-2,2),random(-2,2),6,0,1)
+TNT1 AA 0 A_SpawnItemEx("SmokeParticlesGuard",0,0,4,random(-8,8),random(-8,8),random(4,8),0,1)
+TNT1 A 0 A_SpawnItemEx("SmokeParticles2Guard",0,0,4,random(-2,2),random(-2,2),6,0,1)
+TNT1 A 1
+stop
+}
+}
+
+actor SmokeGeneratorB : SmokeGenerator
+{
+States
+{
+Spawn:
+TNT1 A 0
+TNT1 AA 0 A_SpawnItemEx("SmokeParticlesB",0,0,4,random(-8,8),random(-8,8),random(4,8))
+TNT1 A 0 A_SpawnItemEx("SmokeParticles2B",0,0,4,random(-2,2),random(-2,2),6)
+TNT1 AA 0 A_SpawnItemEx("SmokeParticlesGuardR",0,0,4,random(-8,8),random(-8,8),random(4,8))
+TNT1 AA 0 A_SpawnItemEx("SmokeParticles2GuardR",0,0,4,random(-8,8),random(-8,8),random(4,8))
+TNT1 A 0 A_SpawnItemEx("SmokeParticlesGuardO",0,0,4,random(-2,2),random(-2,2),6)
+TNT1 A 0 A_SpawnItemEx("SmokeParticles2GuardO",0,0,4,random(-2,2),random(-2,2),6)
+TNT1 AA 0 A_SpawnItemEx("SmokeParticlesGuardP",0,0,4,random(-8,8),random(-8,8),random(4,8))
+TNT1 AA 0 A_SpawnItemEx("SmokeParticles2GuardP",0,0,4,random(-8,8),random(-8,8),random(4,8))
+TNT1 A 1
+stop
+}
+}
+actor SmokeGeneratorR : SmokeGenerator
+{
+States
+{
+Spawn:
+TNT1 A 0
+TNT1 AA 0 A_SpawnItemEx("SmokeParticlesR",0,0,4,random(-8,8),random(-8,8),random(4,8))
+TNT1 A 0 A_SpawnItemEx("SmokeParticles2R",0,0,4,random(-2,2),random(-2,2),6)
+TNT1 AA 0 A_SpawnItemEx("SmokeParticlesGuardB",0,0,4,random(-8,8),random(-8,8),random(4,8))
+TNT1 AA 0 A_SpawnItemEx("SmokeParticles2GuardB",0,0,4,random(-8,8),random(-8,8),random(4,8))
+TNT1 A 0 A_SpawnItemEx("SmokeParticlesGuardO",0,0,4,random(-2,2),random(-2,2),6)
+TNT1 A 0 A_SpawnItemEx("SmokeParticles2GuardO",0,0,4,random(-2,2),random(-2,2),6)
+TNT1 AA 0 A_SpawnItemEx("SmokeParticlesGuardP",0,0,4,random(-8,8),random(-8,8),random(4,8))
+TNT1 AA 0 A_SpawnItemEx("SmokeParticles2GuardP",0,0,4,random(-8,8),random(-8,8),random(4,8))
+TNT1 A 1
+stop
+}
+}
+actor SmokeGeneratorO : SmokeGenerator
+{
+States
+{
+Spawn:
+TNT1 A 0
+TNT1 AA 0 A_SpawnItemEx("SmokeParticlesO",0,0,4,random(-8,8),random(-8,8),random(4,8))
+TNT1 A 0 A_SpawnItemEx("SmokeParticles2O",0,0,4,random(-2,2),random(-2,2),6)
+TNT1 AA 0 A_SpawnItemEx("SmokeParticlesGuardB",0,0,4,random(-8,8),random(-8,8),random(4,8))
+TNT1 AA 0 A_SpawnItemEx("SmokeParticles2GuardB",0,0,4,random(-8,8),random(-8,8),random(4,8))
+TNT1 A 0 A_SpawnItemEx("SmokeParticlesGuardR",0,0,4,random(-2,2),random(-2,2),6)
+TNT1 A 0 A_SpawnItemEx("SmokeParticles2GuardR",0,0,4,random(-2,2),random(-2,2),6)
+TNT1 AA 0 A_SpawnItemEx("SmokeParticlesGuardP",0,0,4,random(-8,8),random(-8,8),random(4,8))
+TNT1 AA 0 A_SpawnItemEx("SmokeParticles2GuardP",0,0,4,random(-8,8),random(-8,8),random(4,8))
+TNT1 A 1
+stop
+}
+}
+actor SmokeGeneratorP : SmokeGenerator
+{
+States
+{
+Spawn:
+TNT1 A 0
+TNT1 AA 0 A_SpawnItemEx("SmokeParticlesP",0,0,4,random(-8,8),random(-8,8),random(4,8))
+TNT1 A 0 A_SpawnItemEx("SmokeParticles2P",0,0,4,random(-2,2),random(-2,2),6)
+TNT1 AA 0 A_SpawnItemEx("SmokeParticlesGuardB",0,0,4,random(-8,8),random(-8,8),random(4,8))
+TNT1 AA 0 A_SpawnItemEx("SmokeParticles2GuardB",0,0,4,random(-8,8),random(-8,8),random(4,8))
+TNT1 A 0 A_SpawnItemEx("SmokeParticlesGuardR",0,0,4,random(-2,2),random(-2,2),6)
+TNT1 A 0 A_SpawnItemEx("SmokeParticles2GuardR",0,0,4,random(-2,2),random(-2,2),6)
+TNT1 AA 0 A_SpawnItemEx("SmokeParticlesGuardO",0,0,4,random(-8,8),random(-8,8),random(4,8))
+TNT1 AA 0 A_SpawnItemEx("SmokeParticles2GuardO",0,0,4,random(-8,8),random(-8,8),random(4,8))
+TNT1 A 1
+stop
+}
+}
+
+
+actor SmokeParticles
+{
+PROJECTILE
+radius 2
+height 2
+scale 7.5
++NOINTERACTION
++CLIENTSIDEONLY
+renderstyle translucent
+alpha 0.18
+//VisibleToTeam 1
+States
+{
+Spawn:
+INS1 F 0
+INS1 FGHIJ 2
+Spawn2:
+INS1 J 1 A_FadeOut(0.03)
+loop
+}
+}
+
+actor SmokeParticles2 : SmokeParticles
+{
+Translation "100:103=138:138"
+}
+
+actor SmokeParticlesGuard : SmokeParticles
+{
+//VisibleToTeam 0
+alpha 0.9
+States
+{
+Spawn:
+INS1 F 0
+INS1 FGHIJ 2
+Spawn2:
+INS1 J 1 A_FadeOut(0.1)
+loop
+}
+}
+
+actor SmokeParticles2Guard : SmokeParticlesGuard
+{
+Translation "100:103=138:138"
+}
+
+actor SmokeParticlesB : SmokeParticles {VisibleToTeam 0}
+actor SmokeParticlesR : SmokeParticles {VisibleToTeam 1}
+actor SmokeParticlesO : SmokeParticles {VisibleToTeam 2}
+actor SmokeParticlesP : SmokeParticles {VisibleToTeam 3}
+
+actor SmokeParticles2B : SmokeParticles2 {VisibleToTeam 0}
+actor SmokeParticles2R : SmokeParticles2 {VisibleToTeam 1}
+actor SmokeParticles2O : SmokeParticles2 {VisibleToTeam 2}
+actor SmokeParticles2P : SmokeParticles2 {VisibleToTeam 3}
+
+actor SmokeParticlesGuardB : SmokeParticlesGuard {VisibleToTeam 0}
+actor SmokeParticlesGuardR : SmokeParticlesGuard {VisibleToTeam 1}
+actor SmokeParticlesGuardO : SmokeParticlesGuard {VisibleToTeam 2}
+actor SmokeParticlesGuardP : SmokeParticlesGuard {VisibleToTeam 3}
+
+actor SmokeParticles2GuardB : SmokeParticles2Guard {VisibleToTeam 0}
+actor SmokeParticles2GuardR : SmokeParticles2Guard {VisibleToTeam 1}
+actor SmokeParticles2GuardO : SmokeParticles2Guard {VisibleToTeam 2}
+actor SmokeParticles2GuardP : SmokeParticles2Guard {VisibleToTeam 3}
+
+
+actor SmokeGrenadePickup : CustomInventory
+{
+states
+{
+Pickup:
+PLAY H 0 A_GiveInventory("PowerSmoke",1)
+stop
+}
+}
+
+actor PowerSmoke : PowerSpeed
+{
+powerup.duration 50
+Speed 0.5
+}

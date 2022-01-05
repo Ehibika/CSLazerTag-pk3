@@ -1,0 +1,75 @@
+
+actor CSLT_Blind : FlashStopperHit
+{
+    States
+    {
+    Pickup:
+		TNT1 A 0 A_SpawnItemEx("CSLT_BlindWatcher")
+        TNT1 A 0 ACS_NamedExecuteAlways("BlindConditionHandler", 0)
+        goto End
+    }
+}
+
+
+actor CSLT_QuickBlind : FlashStopperHit
+{
+    States
+    {
+    Pickup:
+		TNT1 A 0 A_SpawnItemEx("CSLT_BlindWatcher")
+        TNT1 A 0 ACS_NamedExecuteAlways("BlindConditionHandler", 0, 10)
+        goto End
+    }
+}
+
+actor CSLT_BlindWatcher
+{
+Height 0
+Radius 0
++NOINTERACTION
+-SOLID
++NOGRAVITY
++MISSILE
+States
+{
+Spawn:
+TNT1 A 0 
+TNT1 A 4 A_GiveToTarget("CSLT_BlindFX", 1)
+TNT1 A 0 A_JumpIfInTargetInventory("BrightBlind", 50, "Spawn")
+stop
+}
+}
+
+
+actor CSLT_BlindFX : CustomInventory
+{
++INVENTORY.AUTOACTIVATE
+-INVBAR
+States
+{
+Use:
+TNT1 A 0
+TNT1 AAA 0 A_SpawnItemEx("CSLT_BlindGFX", random(16,20), random(16, -16), random (40,56), 0, 0, 0, 0)
+stop
+}
+}
+
+actor CSLT_BlindGFX
+{
++NOGRAVITY
++THRUACTORS
++CLIENTSIDEONLY
++FORCEXYBILLBOARD
++MISSILE
++DONTBLAST
+Damage(0)
+Scale 3.5
+Height 0
+Radius 0
+States
+{
+Spawn:
+FST2 IJK 4
+stop
+}
+}
