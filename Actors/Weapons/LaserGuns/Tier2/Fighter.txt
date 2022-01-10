@@ -4,11 +4,11 @@ more like assault rifles.
 ===================================*/
 
 Const float Fighter_SPD = 2.8;
-Const int Fighter_BloomRate = 8; //16
-Const float Fighter_Recoil = 1.0; //2.0
-Const float Fighter_Kick = 0.8; //1.0
-Const float Fighter_SwayLeft = 0.6;
-Const float Fighter_SwayRight = 0.6;
+Const int Fighter_BloomRate = 16; 
+Const float Fighter_Recoil = 2.0; 
+Const float Fighter_Kick = 1.0; 
+Const float Fighter_SwayLeft = 4.6; //0.6
+Const float Fighter_SwayRight = 4.6;
 Const int Fighter_MoveError = 20;
 
 Const int Fighter_Damage = 30;
@@ -63,7 +63,8 @@ Fire:
 "####" B 0 A_FireCustomMissile("Fighter_FakeBeam",CallACS("GetShotDeviation",Fighter_SPD*FVM,Fighter_MoveError)/FVMF,1,8,0,0,CallACS("GetShotRecoil",Fighter_Recoil*FVM)/FVMF)
 */
 "####" A 0 A_GiveInventory("BloomCount",Fighter_BloomRate) //Stat
-"####" A 0 A_SetAngle(angle-(FRandom(-Fighter_SwayLeft,Fighter_SwayRight)),SPF_INTERPOLATE)
+//"####" A 0 A_SetAngle(angle-(FRandom(-Fighter_SwayLeft,Fighter_SwayRight)),SPF_INTERPOLATE)
+"####" A 0 A_SetAngle(angle-(CallACS("LeftRightDeviation",1,Fighter_SwayLeft*FVM,Fighter_SwayRight*FVM)/FVMF),SPF_INTERPOLATE)
 "####" A 0 A_GiveInventory("Fighter_REC",1) 
 "####" BC 1
 "####" A 2

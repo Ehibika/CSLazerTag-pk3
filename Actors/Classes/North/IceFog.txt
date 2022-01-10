@@ -6,7 +6,7 @@ Weapon.AmmoGive2 2
 Inventory.Pickupmessage "$PU_MEGABUSTER"
 Obituary "$OB_MEGABUSTER"
 Tag "SmokeScreen Gun"
-weapon.ammotype2 "SmokeScreenAmmo"
+//weapon.ammotype2 "SmokeScreenAmmo"
 inventory.icon "ICFOGI"
 Dropitem ""
 +WEAPON.ALLOW_WITH_RESPAWN_INVUL

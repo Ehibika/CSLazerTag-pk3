@@ -36,7 +36,7 @@ Spawn:
 WICO F 1
 loop
 Ready:
-HLBB A 1 
+CMU2 A 1 
 "####" "#" 0 A_Jump(256,"Ready.Core")
 Goto Ready.Core
 Deselect:
@@ -46,8 +46,8 @@ Loop
 Select:
 //TNT1 AAAAAAAAAAAAAAAAAAAAAA 0 A_Raise
 TNT1 A 0 ACS_NamedExecuteAlways("WepSpeedMod",0,Gunslinger_MoveSpeed*FVM)
-HLBB AA 0 A_Raise
-HLBB A 1
+CMUA AA 0 A_Raise
+CMUA A 1
 Loop
 
 Fire:
@@ -61,10 +61,11 @@ Fire:
 "####" A 0 A_SetAngle(angle-(FRandom(-Gunslinger_SwayLeft,Gunslinger_SwayRight)),SPF_INTERPOLATE)
 "####" A 0 A_SetPitch(pitch-(Gunslinger_Recoil),SPF_INTERPOLATE)
 "####" B 0 A_TakeInventory("FiringSpeed",9)
+"####" BCCD 1
 Hold:
-"####" C 1
+"####" D 1
 "####" B 0 A_Refire
-"####" CB 2
+"####" CA 2
 "####" A 1
 Goto Ready
 

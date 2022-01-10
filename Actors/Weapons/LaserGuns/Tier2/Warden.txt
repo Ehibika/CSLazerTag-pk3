@@ -25,7 +25,7 @@ const float Warden_MoveSpeed = 0.8;
 
 actor Warden : WepMasterBase
 {
-Weapon.AmmoUse 55
+Weapon.AmmoUse 33
 Weapon.SlotNumber 2
 Inventory.Pickupmessage "$PU_WARDEN"
 Obituary "$OB_WARDEN"

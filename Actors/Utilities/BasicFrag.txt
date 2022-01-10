@@ -1,0 +1,132 @@
+
+actor BasicThrowableWep : WepMasterBase
+{
+Weapon.AmmoUse2 1
+Weapon.AmmoGive2 2
+Weapon.SlotNumber 1
+Inventory.Pickupmessage "$PU_MEGABUSTER"
+Obituary "$OB_MEGABUSTER"
+Tag "Basic Throwable"
+inventory.icon "BUSTI"
+Dropitem ""
++WEAPON.ALLOW_WITH_RESPAWN_INVUL
+States
+{
+
+Ready:
+HSPR B 1 A_WeaponReady
+"####" B 0 A_FireCustomMissile("ThrowableAimPath",0,0,0,0,0,Aim_ArcOverHead+(Aim_ArcScale*Sin(-pitch)))
+"####" "#" 0 
+Goto Ready
+
+fire:
+"####" FFGGG 1
+"####" C 0 A_PlaySoundEx("weapon/crackerthrow","Weapon")
+"####" B 0 A_FireCustomMissile("BasicThrowable",0,0,0,0,0,Aim_ArcOverHead+(Aim_ArcScale*Sin(-pitch)))
+"####" IJKLM 2
+Hold:
+"####" B 1
+"####" B 0 A_Refire
+goto Ready
+
+}
+}
+
+actor ThrowableAimPath : GolfBallAimInstantStarter3 { Speed 35}
+
+actor BasicThrowable 
+{
+PROJECTILE
+damagetype "Explosion"
+Obituary "$OB_Hyperbomb"
+radius 4
+height 4
+scale 2.0
+-NOGRAVITY
++DOOMBOUNCE
++BOUNCEONCEILINGS
++ALLOWBOUNCEONACTORS
++BOUNCEONACTORS
++MTHRUSPECIES
++USEBOUNCESTATE
++NOTARGETSWITCH
++NOEXPLODEFLOOR
++SLIDESONWALLS
++MBFBOUNCER
+speed 35
+gravity 1.5
+Damage (0)
+wallbouncefactor 0.8
+BounceFactor 0.3
+reactiontime 35
+States
+{
+Spawn:
+TNT1 A 0
+TNT1 A 0 A_GiveInventory("ProjectileCode",1)
+TNT1 A 1 A_Jump(256,"Spawn2")
+Goto Spawn2
+
+Spawn2:
+MBAL B 1 A_SpawnItemEX("BasicThrowableTrail",0,0,5,0,0,0,0,SXF_TRANSFERTRANSLATION,0)
+MBAL B 0 A_CountDown
+TNT1 A 1 A_Jump(256,"Spawn2")
+Goto Spawn2
+
+Spawn.Bounced:
+BOMB S 1 A_SpawnItemEX("BasicThrowable2",0,0,0,momx,momy,momz,0,SXF_TRANSFERTRANSLATION|SXF_ABSOLUTEMOMENTUM,0)
+stop
+
+Bounce.Floor:
+Bounce.Ceiling:
+MINB A 0 A_ChangeFlag("NOGRAVITY",false)
+MINB A 0 A_ChangeFlag("USEBOUNCESTATE",false)
+TNT1 A 1 A_Jump(256,"Spawn.Bounced")
+Goto Spawn.Bounced
+
+Death:
+MINB A 0 A_SpawnItemEx("ExplosionEffect3",0,0,0,0,0,0,0,1)
+stop
+}
+}
+
+actor BasicThrowable2 : BasicThrowable
+{
+-USEBOUNCESTATE
+-NOGRAVITY
+States
+{
+Spawn:
+TNT1 A 0
+TNT1 A 0 A_GiveInventory("ProjectileCode",1)
+TNT1 A 1 A_Jump(256,"Spawn2")
+Goto Spawn2
+
+Spawn2:
+MBAL B 0 A_PlaySoundEX("weapon/Heat1","Soundslot6")
+MBAL B 1 A_CountDown
+MBAL B 0 A_CheckFloor("SlowDown")
+loop
+SlowDown:
+MBAL B 0 A_ScaleVelocity(0.3)
+Goto Spawn2
+	
+Death:
+MINB A 0 A_SpawnItemEx("ExplosionEffect3",0,0,0,0,0,0,0,1)
+stop
+}
+}
+
+actor BasicThrowableTrail : BasicClientside
+{
+scale 1.5
+States
+{
+Spawn:
+TNT1 A 0
+TNT1 A 2
+MINB IIIIII 1
+MINB IIIIII 1 A_Fadeout
+stop
+}
+}

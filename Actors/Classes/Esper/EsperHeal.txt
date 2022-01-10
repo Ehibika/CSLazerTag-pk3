@@ -5,7 +5,7 @@ Weapon.AmmoGive2 2
 Inventory.Pickupmessage "$PU_MEGABUSTER"
 Obituary "$OB_MEGABUSTER"
 Tag "SmokeScreen Gun"
-weapon.ammotype2 "SmokeScreenAmmo"
+//weapon.ammotype2 "SmokeScreenAmmo"
 inventory.icon "BUSTI"
 Dropitem ""
 +WEAPON.ALLOW_WITH_RESPAWN_INVUL
@@ -140,8 +140,6 @@ Height 10
 scale 2.5
 damage (0)
 ReactionTime 25
-damagetype "HealPulse"
-Obituary "$OB_HEALPULSE"
 speed 0
 var int user_speed;
 var int user_maxturn;

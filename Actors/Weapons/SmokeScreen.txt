@@ -175,7 +175,6 @@ Actor SmokeScreenAmmo : Ammo {inventory.amount 1 inventory.maxamount 2}
 Actor HyperBombFlag : inventory {inventory.amount 1 inventory.maxamount 2}
 
 Const int SmkScrRad = 100;
-Const int SmkScrM_EntiTID = 4;
 
 actor SmokeScreenAimPath : GolfBallAimInstantStarter3 { Speed 35 Gravity 1.5}
 

@@ -153,3 +153,113 @@ function void DefineClassChatlines(str character, int roundStart, int clutch, in
 	SetNoSaveCvarInt("cslt_clt_comeback", comeback);
     ACS_NamedExecuteWithResult("CreateCharacterChatLineLimits_S");
 }
+
+function void adjustInventory(str item, int amount)
+{
+int currentAmount = CheckInventory(item);
+if(amount>currentAmount) {
+	GiveInventory(item,amount-currentAmount);
+} else if(amount<currentAmount) {
+	TakeInventory(item,currentAmount-amount);
+}
+}
+
+Function int AToI (str s)
+{
+   str a = "";
+   int i, i2, n;
+   int l = StrLen(s);
+   for (i = 0; i < l; i++)
+   {
+      for (i2 = 0; i2 < 10; i2++)
+      {
+         a = StrParam(i:i2);
+         if (!StrCmpZan(StrParam(c:GetChar(s, i)), a))
+            n += i2 * Power(10, l - i - 1);
+      }
+   }
+   return n;
+}
+
+Function str ToLower (str s)
+{
+   int l = StrLen(s);
+   int aChar = GetChar("A", 0);
+   int zChar = GetChar("Z", 0);
+   int sChar;
+   str rs = "";
+   for (int i = 0; i < l; i++)
+   {
+      sChar = GetChar(s, i);
+      if (sChar <= zChar && sChar >= aChar)
+         sChar += 32;
+      rs = StrParam(s:rs, c:sChar);
+   }
+   return rs;
+}
+
+Function str ToUpper (str s)
+{
+   int l = StrLen(s);
+   int aChar = GetChar("a", 0);
+   int zChar = GetChar("z", 0);
+   int sChar;
+   str rs = "";
+   for (int i = 0; i < l; i++)
+   {
+      sChar = GetChar(s, i);
+      if (sChar <= zChar && sChar >= aChar)
+         sChar -= 32;
+      rs = StrParam(s:rs, c:sChar);
+   }
+   return rs;
+}
+
+Function bool StrCmpZan (str s1, str s2)
+{
+   int c1 = GetChar(s1, 0);
+   int c2 = GetChar(s2, 0);
+   if (c1 == c2)
+      return false;
+   return true;
+}
+
+Function bool StrICmpZan (str s1, str s2)
+{
+   s1 = ToLower(s1);
+   s2 = ToLower(s2);
+   int c1 = GetChar(s1, 0);
+   int c2 = GetChar(s2, 0);
+   if (c1 == c2)
+      return false;
+   return true;
+}
+
+Function int Power (int num, int pwr)
+{
+   int n = num;
+   if (pwr == 0)
+      return 1;
+   for (int i = 1; i < pwr; i++)
+      num *= n;
+   return num;
+}
+
+Function bool IsDigit (str charStr)
+{
+   if (StrLen(charStr) > 1)
+      charStr = StrParam(c:GetChar(charStr, 0));
+   str compare = "";
+   for (int i = 0; i < 10; i++)
+   {
+      compare = StrParam(i:i);
+      if (!StrICmpZan(charStr, compare))
+         return true;
+   }
+   return false;
+}
+
+Function bool IsAlpha (str charStr)
+{
+   return !IsDigit(charStr);
+}

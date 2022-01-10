@@ -1,0 +1,683 @@
+#library "A_Menus"
+#include "zcommon.acs"
+#Import "A_Core.acs"
+#Import "DB_Shop.acs"
+#Import "A_Shop.acs"
+
+#define MNL 8.0 //menu line spacing
+#define MNST 500 //
+#define MenuXOrigin 240.1//120.1
+#define MenuYOrigin 210.1//80.1
+int PastMenuSize;
+
+
+Function Int GetUpDownInputs (int B1, int B2, int Type)
+{
+
+	if(!(B1 & BT_FORWARD && B1 & BT_BACK))
+	{	
+		if(ButtonCheck(B1, B2, BT_FORWARD) == Type)
+			{
+				return -1;
+			}
+
+		else if(ButtonCheck(B1, B2, BT_BACK) == Type)
+			{
+				return 1;
+			}
+		else{return 0;}
+	}
+return 0;
+}
+
+Function Int GetLeftRightInputs (int B1, int B2, int Type)
+{
+
+	if(!(B1 & BT_MOVELEFT && B1 & BT_MOVERIGHT))
+	{	
+		if(ButtonCheck(B1, B2, BT_MOVELEFT) == Type)
+			{
+				return -1;
+			}
+
+		else if(ButtonCheck(B1, B2, BT_MOVERIGHT) == Type)
+			{
+				return 1;
+			}
+		else{return 0;}
+	}
+return 0;
+}
+
+Function Int GetChoiceInputs (int B1, int B2, int Type)
+{
+	int T1,T2;
+
+	if(Type == 4){T1 = 1; T2 = 2;}
+	else if(Type == 5){T1 = 2; T2 = 1;}
+
+	if(!(B1 & BT_ATTACK && B1 & BT_ALTATTACK))
+	{	
+		if(ButtonCheck(B1, B2, BT_ALTATTACK) == T2)
+			{
+				return -1;
+			}
+
+		else if(ButtonCheck(B1, B2, BT_ATTACK) == T1)
+			{
+				return 1;
+			}
+		else{return 0;}
+	}
+return 0;
+}
+
+Function Int GetCancelInputs (int B1, int B2, int Type)
+{
+		if(ButtonCheck(B1, B2, BT_JUMP) == Type)
+			{
+				return 1;
+			}
+return 0;
+}
+
+script "NET_freezeplayer" (int toggle, int Pnum) NET
+{
+	if(toggle >= 1){
+		if(!CheckInventory("InMenu"))
+        {ACS_NamedExecuteAlways("MenuFreeze",0,Pnum);}
+		GiveInventory("NetCheck_Freeze",1);
+	}
+	if(toggle == 0){
+		if(CheckInventory("InMenu")>0 ){
+		TakeInventory("InMenu", 99);
+        ACS_NamedExecuteAlways("Core_FreezePlayer",0,0,0);
+		}
+        if(!CheckInventory("InMenu")){GiveInventory("NetCheck_Freeze",1);}
+	}
+	
+}
+
+Script "MenuFreeze" (int Pnum)
+{
+    GiveInventory("InMenu", 1);
+    ACS_NamedExecuteAlways("Core_FreezePlayer",0,0,1);
+	//ACS_NamedExecuteAlways("PKMN_FreezePlayer",0,PLAYER_FULLFREEZE,FREEZE_MENU);
+
+	While(CheckInventory("InMenu")){Delay(1);}
+    ACS_NamedExecuteAlways("Core_FreezePlayer",0,0,0);
+	//ACS_NamedExecuteAlways("PKMN_FreezePlayer",0,PLAYER_UNFREEZE,FREEZE_MENU);
+
+}
+
+
+script "NET_Unstuck" (void) NET
+{
+if(Playernumber() != ConsolePlayerNumber() )Terminate;
+if(CheckInventory("UnstuckCooldown")){Log(s:"Must wait a few minutes to Unstuck again");Terminate;}
+
+TakeInventory("InMenu", 99);
+ACS_NamedExecuteAlways("Core_FreezePlayer",0,PlayerNumber(),0);
+//ACS_NamedExecuteAlways("PKMN_FreezePlayer",0,PLAYER_UNFREEZE,FREEZE_MENU);
+//SetPlayerProperty(0, 0, PROP_FROZEN);
+GiveInventory("UnstuckCooldown", 1);
+}
+
+Script "UnstuckFailMessage" (void) CLIENTSIDE
+{
+if(Playernumber() == ConsolePlayerNumber() ) {Log(s:"Must wait a few minutes to Unstuck again");}
+}
+
+//#region -=- Menu Backing
+#region -=- Menu Backing 
+
+Str MenuFrames[1] = {
+	"MFRA",
+};
+
+
+
+Function Void DrawMenuFrame (Int Ox, int Oy, int h,int w, int MenuMid)
+{
+/*
+ * Ox = Origin X
+ * Oy = Origin Y
+ * w = Width
+ * H = Height
+*/ 
+int Mid = 2000 + MenuMid;
+int Ofs = 8.0;
+int k;
+str sprite;
+int SpriteDirA;
+int SpriteDirB;
+int HorBit;
+int VertBit;
+//SetHudSize(320,240,0);
+SetHudSize(640,480,0);
+for (int i = 0; i < h+1; i++)
+{// - Each Row -
+	if(i == 0){HorBit = 1<<2;}
+	else if(i == h){HorBit = 1<<4;}
+	else{HorBit = 1<<0;}
+	//-=-=-=-=
+	for(int j = 0; j < w+1; j++)
+	{// - We're going to get fancy and use a bitwise flag -
+	if(j == 0){VertBit = 1<<3;}		
+	else if(j == w){VertBit = 1<<1;}	
+	else{VertBit = 1<<0;}
+	// -=-=-=-=-
+	//SpriteDirA |= VertBit;
+	//SpriteDirA |= HorBit;
+	SpriteDirA = HorBit|VertBit;
+	SpriteDirB = MenuBitConvert(SpriteDirA);
+	// -=-=-=-=-
+	sprite = strparam(s:MenuFrames[0],i:SpriteDirB);
+	//log(i:SpriteDirA,s:" Became ",i:SpriteDirB,s:" :: ",s:sprite);
+	SetFont(sprite);
+	HudMessage(s:"A"; HUDMSG_PLAIN, Mid+k, CR_red,Ox+(Ofs*i), Oy+(Ofs*j), 0,0);
+	k++;
+	}
+j = 0;
+}
+PastMenuSize = k;
+}
+
+Function Void ClearMenuFrame (Void)
+{
+	int Mid = 2000;
+	for (int i = 0; i < 2000; i++)
+{
+	HudMessage(s:""; HUDMSG_PLAIN, Mid+i, CR_red,0.0, 0.0, 2.0,0);
+}
+}
+
+
+Function int MenuBitConvert (int Val)
+{
+	int output;
+switch(Val)
+	{
+	Case 3: output = 1; break;
+	Case 6: output = 2; break;
+	Case 5: output = 3; break;
+	Case 12: output = 4; break;
+	Case 9: output = 5; break;
+	Case 24: output = 6; break;
+	Case 17: output = 7; break;
+	Case 18: output = 8; break;
+	}
+return output;
+}
+
+
+Script "PrintBitangle" (void)
+{
+
+log(s:"Down Is ",i:1<<1|(1<<0));
+log(s:"DownLeft Is ",i:(1<<1)|(1<<2));
+log(s:"Left Is ",i:1<<2|(1<<0));
+log(s:"UpLeft Is ",i:(1<<3)|(1<<2));
+log(s:"Up Is ",i:1<<3|(1<<0));
+log(s:"UpRight Is ",i:(1<<3)|(1<<4));
+log(s:"Right Is ",i:1<<4|(1<<0));
+log(s:"DownRight Is ",i:(1<<1)|(1<<4));
+
+//log(s:"DownLeft Is also ",i:(1<<1)^(1<<3));
+
+}
+
+#endregion
+//#endregion
+
+Function int ScrollValue (int Input,int Dir, Int min, int Max)
+{
+
+Switch(Dir)
+	{
+	Case -1:
+	Case 0: Input--; if(Input<min){Input = Max;}	break;
+	Case 1: Input++; if(Input>Max){Input = min;} break;
+	}
+
+	return Input;
+}
+
+
+Function str ShopQuantityParser (Str itemName, int AblNum)
+{
+    For(int i = 0; i < GEARSTART; i++)
+    {
+    if(StrIcmp(itemName,ShopItemList[i][0])==0)
+        { //Item is a weapon, Return if you have it
+        if(CheckInventory(itemName)) return "Possessed";
+        else return "---";
+        }
+    }
+
+    if(StrIcmp(itemName,"LightArmor")==0 || StrIcmp(itemName,"HeavyArmor")==0)
+        { //Item is armor, return how much
+        if(CheckInventory("LT_Armor")) return StrParam(s:"Got ",i:CheckInventory("LT_Armor"),s:" Armor");
+        else return "Got No Armor";
+        }
+
+    if(StrIcmp(itemName,"LazerBattery")==0)
+    { //Item is a LazerBattery, return how much
+    if(CheckInventory(itemName)) return StrParam(s:"Got ",i:CheckInventory(itemName),s:" Battery");
+    else return "Got No Batteries";
+    }
+
+    //If none of the above, then it must be an ability, so count the charges
+    if(AblNum)
+    {
+    int AblCount = StrParam(s:"AbilityCharge_",i:AblNum);
+    int AblMax = StrParam(s:"AbilityChargeCap_",i:AblNum);
+
+    return StrParam(i:CheckInventory(AblCount),s:"/",i:CheckInventory(AblMax));
+    }
+ 
+return "";
+}
+
+
+//#region -=- Item Shop
+#region -=- Item Shop
+
+Script "PromptMainShop" (void)
+{
+//==================[+]
+// - Pre Start Up -
+//==================[+]
+//if(ShopTime() == 0){print(s:"Cannot open the Item shop here"); Terminate;}
+
+//GiveInventory("SpawnSafeZone",1);
+ACS_NamedExecuteAlways("Menu_MainShop",0);
+}
+
+Str ClassShopCache[MAX_ABLSHOP][2];
+
+Script "Menu_MainShop" (void) CLIENTSIDE
+{
+	if(Playernumber() != ConsolePlayerNumber()) {Terminate;}
+	while(!CheckInventory("NetCheck_Freeze")){NamedRequestScriptPuke("NET_FreezePlayer",1,Playernumber());Delay(1);}
+	//=======================[+]
+	// - Define Variables -
+	//=======================[+]
+	int PlayerLVL = GetCvar(StrParam(s:"PlayerLevel_",i:PlayerNumber()));
+	int PlayerDEXNum = GetCvar(StrParam(s:"PlayerDEXNum_",i:PlayerNumber()));
+    Str PlayerCheckout = StrParam(s:"PLAYER",i:PlayerNumber(),s:"_SHOP");
+	
+	
+	Int MoveFrameCap =6;
+	Int StartMoves = 4;
+	Int ChoiceID = 0;
+	Int ChoiceCap = PlayerLVL;
+	int MenuX = MenuXOrigin;
+	int Menuy = MenuYOrigin+19.0;//19.0;
+
+	str ItemName;
+	str itemSpace;
+	int ItemCost;
+
+	str ChoiceItemName;
+	int ChoiceItemCost;
+	int CursorY;
+	// - Menu -
+	int InputButtons, InputOldButtons, UpInput, DownInput, SideInput;
+	Int ConfirmInput,AltConfirmInput, CancelInput, ChoiceInput;
+	Int MenuStates = 0;
+	Int ShopState = 0;
+	Int MenuNextState; 
+	int i, j, h;
+	Bool MenuUp = true;
+	Bool BGUp;
+    Bool CacheMade;
+
+	str ItemGameName;
+	str ItemLang;
+	str ChoiceItemMaxName;
+	int ItemQuantity;
+    str ItemCount;
+
+	int UpDownRepeat = 0;
+    int ConfirmBuffer = 0;
+    int conP = ConsolePlayerNumber();
+	//=======================[+]
+	// - Menu Loop Begin -
+	//=======================[+]
+	while (MenuUp && GetActorProperty(0,APROP_HEALTH) > 0) {
+		//SetHudSize(320, 200, 0);
+        SetHudSize(640, 400, 0);
+		SetFont("STCFN");
+		MenuStates = MenuNextState;
+	
+		// #------------------
+		// # Begin Menustate 0
+		// #------------------
+		if (MenuStates == 0) {
+	
+			j = 0;
+			// - Print the list of items -
+			For(i = 0; i < MAX_SHOP; i++)
+			{
+				if(ChoiceID >= 3 && ChoiceID < MAX_SHOP-3)
+				{
+					if(i < ChoiceID-3){continue;}
+					if(i > ChoiceID+3){break;}
+				}
+				if(ChoiceID < 3)
+				{
+					if(i > 6){break;}
+				}
+				if(ChoiceID > MAX_SHOP-4)
+				{
+					if(i < MAX_SHOP-6){continue;}
+				}
+                /*
+				ItemName = ShopItemList[i][1];
+				itemSpace = StrLeft("                ",16-StrLen(ItemName));
+                if(ShopItemList[i][2] != -1.0){ItemCost = ShopItemList[i][2]>>16;}
+                else{ItemCost = 0;}
+                */
+                ItemName = ShopItemList[i][0];
+					HudMessage(l:strParam(s:"SHOP_",s:ItemName); HUDMSG_FADEOUT, MNST + 00 + j, CR_WHITE, MenuX, Menuy + (MNL * j), 0.2, 0);
+					j++;
+			}
+	
+				if(!BGUp)
+					{DrawMenuFrame(MenuX-(8.0*4),MenuY-(8.0*-3),23,6+MoveFrameCap,0); 
+					//DrawMenuFrame(MenuX-(8.0*3),MenuY-(8.0*3),21,2,PastMenuSize);
+					DrawMenuFrame(MenuX-(8.0*12),MenuY-(8.0*5),38,7,PastMenuSize);
+					BGup = True;}
+
+				ChoiceCap = MAX_SHOP;
+				if(MAX_SHOP>6)
+				{
+				if (ChoiceID > 3 && ChoiceID < MAX_SHOP-3){ CursorY = 3;}
+				else if(ChoiceID >= MAX_SHOP-3){CursorY = 3 + (ChoiceID-(MAX_SHOP-3));}	
+				else{CursorY = ChoiceID;}
+				}
+				else{CursorY = ChoiceID;}
+				
+				if(ChoiceID >= MAX_SHOP-3 && MAX_SHOP>6){HudMessage(s: "Exit"; HUDMSG_FADEOUT, MNST + 00 + (6), CR_ORANGE, MenuX, Menuy + (MNL * 6), 0.2, 0);}
+				else if(MAX_SHOP<=6){HudMessage(s: "Exit"; HUDMSG_FADEOUT, MNST + 00 + (MAX_SHOP), CR_ORANGE, MenuX, Menuy + (MNL * MAX_SHOP), 0.2, 0);}
+				HudMessage(s: ">>"; HUDMSG_FADEOUT, MNST + 15, 0, MenuX - 16.0, Menuy + (MNL * CursorY), 0.2, 0);
+	
+				//Draw Description
+				ItemGameName = ShopItemList[ChoiceID][0];
+				ItemLang = strParam(s:"SHOPDESC_",s:ItemGameName);
+                SetHudClipRect((MenuX- (MNL * 10))>>16, (Menuy - (MNL * 8))>>16, ((MNL * 35))>>16, ((MNL * 6))>>16, ((MNL * 35))>>16);
+				if(ChoiceID < MAX_SHOP)HudMessage(l:ItemLang; HUDMSG_FADEOUT, MNST + 17, CR_White, MenuX- (MNL * 10) , Menuy - (MNL * 8), 0.2, 0);
+				SetHUDClipRect(0, 0, 0, 0, 0); 
+
+				//ItemQuantity = CheckInventory(ItemGameName);
+                ItemCount = ShopQuantityParser(ItemGameName,0);
+				HudMessage(s:"\cG<< Weapons >>    ",s:ItemCount; HUDMSG_FADEOUT, MNST + 18, CR_White, MenuX- (MNL * 4) , Menuy - (MNL * 3 + 6.0), 0.2, 0);
+
+                //Display Cash
+                HudMessage(s:"\cFCash: \cJ", i:GetPlayerCash(conP); HUDMSG_FADEOUT, MNST + 19, CR_White, MenuX- (MNL * 0) , Menuy - (MNL * 10 + 6.0), 0.2, 0);
+                HudMessage(s:"\cFMin Next Round: \cJ", i:GetPlayerMinCash(conP);HUDMSG_FADEOUT, MNST + 20, CR_White, MenuX- (MNL * 0) , Menuy - (MNL * 9 + 6.0), 0.2, 0);
+			
+	
+			// - Grab Inputs -
+			InputButtons = GetPlayerInput(-1, INPUT_BUTTONS);
+			
+			ChoiceInput = GetChoiceInputs(InputButtons,InputOldButtons,4);
+            if(ConfirmBuffer){ChoiceInput = 0; ConfirmBuffer--;}
+            CancelInput = GetCancelInputs(InputButtons,InputOldButtons,1);
+			SideInput = GetLeftRightInputs(InputButtons,InputOldButtons,1);
+			if(GetUpDownInputs(InputButtons,InputOldButtons,3) != 0)
+				{
+					if(UpDownRepeat==0){ChoiceID += GetUpDownInputs(InputButtons,InputOldButtons,3);}
+					if(UpDownRepeat>10){ChoiceID += GetUpDownInputs(InputButtons,InputOldButtons,3); UpDownRepeat=8;}
+					UpDownRepeat++;
+				}
+				else{UpDownRepeat = 0;}
+
+			if (ChoiceID > ChoiceCap) { ChoiceID = 0; }
+			if (ChoiceID < 0) { ChoiceID = ChoiceCap; }
+			if (SideInput != 0) {MenuNextState = 1;} //Swap to sell menu 
+			if (CancelInput == 1 || ChoiceInput == 1 && ChoiceID == MAX_SHOP) {break;} //MenuUp = false;
+			if (ChoiceInput == 1 && ChoiceID < MAX_SHOP) 
+					{ //Item Purchase
+						ChoiceItemName = ShopItemList[ChoiceID][0];
+						ChoiceItemMaxName = strParam(s:"Max",s:ChoiceItemName);
+						ChoiceItemCost = ShopItemList[ChoiceID][2]>>16;
+                        ConfirmBuffer = 20;
+                        //The "Buy" inventories handle weather a sale is approved or not
+                        SetCvarString(PlayerCheckout,ChoiceItemName);
+                        while(!CheckInventory("NetCheck_A")){NamedSendNetworkString ("NET_MainShop_Buy",ChoiceItemName,ConsolePlayerNumber());Delay(3);}
+
+                        /*
+						if(ACS_NamedExecuteWithResult("CashCheck",ChoiceItemCost)
+							//&& CheckInventory(ChoiceItemName) < GetAmmoCapacity(ChoiceItemMaxName)
+							&& ShopItemList[ChoiceID][3] != "NOSELL")
+						{
+							while(!CheckInventory("NetCheck_A")){NamedSendNetworkString ("NET_MainShop_Buy",ChoiceItemName,ConsolePlayerNumber());Delay(3);}
+						}
+						else
+						{
+							ACS_NamedExecuteAlways("ShopFailSound",0);
+							if(!ACS_NamedExecuteWithResult("CashCheck",ChoiceItemCost)){ACS_NamedExecuteAlways("ShopBuyFailMoneyMsg",0);}
+							//else if(CheckInventory(ChoiceItemName) >= GetAmmoCapacity(ChoiceItemMaxName)){ACS_NamedExecuteAlways("ShopBuyFailSpaceMsg",0);}
+							else if(ShopItemList[ChoiceID][3] != "NOSELL"){ACS_NamedExecuteAlways("ShopBuyFailMoneyMsg",0);}
+						}
+                        */
+
+					} 
+		}
+			// #------------------
+			// # End Menustate 0
+			// #------------------
+
+			// #------------------
+			// # Begin Menustate 1
+			// #------------------
+			if (MenuStates == 1) {
+		
+				j = 0;
+                str ClassName = GetActorClass(0);
+                str AblName;
+                str AblCost;
+
+                // - Create Cache array for this class
+                if(!CacheMade)
+                {
+                For(h = 0; h < MAX_ABLSHOP; h++)
+				{
+                    If(h<3)
+                        { 
+                        ClassName = GetActorClass(0);
+                        AblName = StrParam(s:"ABL",i:h+1,s:"_",s:ClassName);
+                        AblCost = StrParam(s:"ABL",i:h+1,s:"COST_",s:ClassName);
+                        ClassShopCache[h][0] = StrParam(l:AblName);
+                        ClassShopCache[h][1] = AToI(StrParam(l:AblCost));
+                        }
+                    else
+                        {
+                        ItemName = ShopItemList[GEARSTART+(h-3)][0];
+                        ItemCost = ShopItemList[GEARSTART+(h-3)][1];
+                        ClassShopCache[h][0] = ItemName;
+                        ClassShopCache[h][1] = ItemCost;
+                        }
+                }
+                CacheMade = true;
+                }
+
+				// - Print the list of items -
+				For(i = 0; i < MAX_ABLSHOP; i++)
+				{
+					if(ChoiceID >= 3 && ChoiceID < MAX_ABLSHOP-3)
+					{
+						if(i < ChoiceID-3){continue;}
+						if(i > ChoiceID+3){break;}
+					}
+					if(ChoiceID < 3)
+					{
+						if(i > 6){break;}
+					}
+					if(ChoiceID > MAX_ABLSHOP-4)
+					{
+						if(i < MAX_ABLSHOP-6){continue;}
+					}
+                    /*
+					ItemName = ShopItemList[i][1];
+					itemSpace = StrLeft("                ",16-StrLen(ItemName));
+					ItemCost = ShopItemList[i][2]>>16;
+					if(ItemCost>1){ItemCost = ItemCost/2;}
+						HudMessage(s:ItemName,s:itemSpace,i:ItemCost,s:" \cfBP"; HUDMSG_FADEOUT, MNST + 00 + j, CR_WHITE, MenuX, Menuy + (MNL * j), 0.2, 0);
+						
+                    */
+
+                    /*
+                    If(j<3)
+                        { //Printing Class Abilities
+                        ClassName = GetActorClass(0);
+                        AblName = StrParam(s:"ABL",i:j+1,s:"_",s:ClassName);
+                        HudMessage(l:StrParam(s:"SHOP_",l:AblName); HUDMSG_FADEOUT, MNST + 00 + j, CR_WHITE, MenuX, Menuy + (MNL * j), 0.2, 0);
+                        }
+                    else
+                        {
+                        ItemName = ShopItemList[GEARSTART+(j-3)][0];
+					    HudMessage(l:strParam(s:"SHOP_",s:ItemName); HUDMSG_FADEOUT, MNST + 00 + j, CR_WHITE, MenuX, Menuy + (MNL * j), 0.2, 0);
+                        }
+                    */
+                    HudMessage(l:strParam(s:"SHOP_",s:ClassShopCache[j][0]); HUDMSG_FADEOUT, MNST + 00 + j, CR_WHITE, MenuX, Menuy + (MNL * j), 0.2, 0);
+                    j++;
+				}
+		
+					if(!BGUp)
+						{DrawMenuFrame(MenuX-(8.0*3),MenuY-(8.0*0),21,6+MoveFrameCap,0); 
+						//DrawMenuFrame(MenuX-(8.0*3),MenuY-(8.0*3),21,2,PastMenuSize);
+						DrawMenuFrame(MenuX-(8.0*12),MenuY-(8.0*8),38,7,PastMenuSize);
+						BGup = True;}
+
+					ChoiceCap = MAX_ABLSHOP;
+					if(MAX_ABLSHOP>6)
+					{
+					if (ChoiceID > 3 && ChoiceID < MAX_ABLSHOP-3){ CursorY = 3;}
+					else if(ChoiceID >= MAX_ABLSHOP-3){CursorY = 3 + (ChoiceID-(MAX_ABLSHOP-3));}	
+					else{CursorY = ChoiceID;}
+					}
+					else{CursorY = ChoiceID;}
+					
+					if(ChoiceID >= MAX_ABLSHOP-3 && MAX_ABLSHOP>6){HudMessage(s: "Exit"; HUDMSG_FADEOUT, MNST + 00 + (6), CR_ORANGE, MenuX, Menuy + (MNL * 6), 0.2, 0);}
+					else if(MAX_ABLSHOP<=6){HudMessage(s: "Exit"; HUDMSG_FADEOUT, MNST + 00 + (MAX_ABLSHOP), CR_ORANGE, MenuX, Menuy + (MNL * MAX_ABLSHOP), 0.2, 0);}
+					HudMessage(s: ">>"; HUDMSG_FADEOUT, MNST + 15, 0, MenuX - 16.0, Menuy + (MNL * CursorY), 0.2, 0);
+		
+					//Draw Description
+					ItemGameName = ClassShopCache[ChoiceID][0];
+					ItemLang = strParam(s:"SHOPDESC_",s:ItemGameName);
+                    SetHudClipRect((MenuX- (MNL * 10))>>16, (Menuy - (MNL * 8))>>16, ((MNL * 35))>>16, ((MNL * 6))>>16, ((MNL * 35))>>16);
+					if(ChoiceID < MAX_ABLSHOP)HudMessage(l:ItemLang; HUDMSG_FADEOUT, MNST + 17, CR_White, MenuX- (MNL * 10) , Menuy - (MNL * 8), 0.2, 0);
+				    SetHUDClipRect(0, 0, 0, 0, 0); 
+
+					//ItemQuantity = CheckInventory(ItemGameName);
+                    if(ChoiceID < 3){ItemCount = ShopQuantityParser(ItemGameName,ChoiceID+1);}
+                    else{ItemCount = ShopQuantityParser(ItemGameName,0);}
+					HudMessage(s:"\cd<< Abilities >>    ",s:ItemCount; HUDMSG_FADEOUT, MNST + 18, CR_White, MenuX- (MNL * 4) , Menuy - (MNL * 3 + 6.0), 0.2, 0);
+
+		
+                    //Display Cash
+                    HudMessage(s:"\cFCash: \cJ", i:GetPlayerCash(conP); HUDMSG_FADEOUT, MNST + 19, CR_White, MenuX- (MNL * 0) , Menuy - (MNL * 10 + 6.0), 0.2, 0);
+                    HudMessage(s:"\cFMin Next Round: \cJ", i:GetPlayerMinCash(conP);HUDMSG_FADEOUT, MNST + 20, CR_White, MenuX- (MNL * 0) , Menuy - (MNL * 9 + 6.0), 0.2, 0);
+                    
+				// - Grab Inputs -
+				InputButtons = GetPlayerInput(-1, INPUT_BUTTONS);
+				ChoiceInput = GetChoiceInputs(InputButtons,InputOldButtons,4);
+                if(ConfirmBuffer){ChoiceInput = 0; ConfirmBuffer--;}
+                CancelInput = GetCancelInputs(InputButtons,InputOldButtons,1);
+				SideInput = GetLeftRightInputs(InputButtons,InputOldButtons,1);
+				if(GetUpDownInputs(InputButtons,InputOldButtons,3) != 0)
+					{
+						if(UpDownRepeat==0){ChoiceID += GetUpDownInputs(InputButtons,InputOldButtons,3);}
+						if(UpDownRepeat>10){ChoiceID += GetUpDownInputs(InputButtons,InputOldButtons,3); UpDownRepeat=8;}
+						UpDownRepeat++;
+					}
+					else{UpDownRepeat = 0;}
+					
+				if (ChoiceID > ChoiceCap) { ChoiceID = 0; }
+				if (ChoiceID < 0) { ChoiceID = ChoiceCap; }
+				if (SideInput != 0) {MenuNextState = 0;} //Swap to Buy menu 
+				if (CancelInput == 1 || ChoiceInput == 1 && ChoiceID == MAX_ABLSHOP) {break;} //MenuUp = false;
+				if (ChoiceInput == 1 && ChoiceID < MAX_ABLSHOP) 
+						{ //Buy Abilities/Gear
+                            
+                            ChoiceItemCost = ClassShopCache[ChoiceID][1];
+                            ChoiceItemName = ClassShopCache[ChoiceID][0];
+                            ConfirmBuffer = 20;
+                            if(ChoiceItemCost >=100)
+                            {
+                            //log(i:ChoiceItemCost);
+                            SetCvarString(PlayerCheckout,ChoiceItemName);
+                            while(!CheckInventory("NetCheck_A")){NamedSendNetworkString ("NET_MainShop_Buy",ChoiceItemName,ConsolePlayerNumber());Delay(3);}
+                            }
+  							else
+							{
+								ACS_NamedExecuteAlways("ShopFailSound",0);
+								ACS_NamedExecuteAlways("ShopBuyFailNoBuyMsg",0);
+							}
+
+                            /*
+							ChoiceItemName = ShopItemList[ChoiceID][0];
+							ChoiceItemMaxName = strParam(s:"Max",s:ChoiceItemName);
+							ChoiceItemCost = ShopItemList[ChoiceID][2]>>16;
+							if(ChoiceItemCost>1){ChoiceItemCost = ChoiceItemCost/2;}
+							if(CheckInventory(ChoiceItemName))
+							{
+								while(!CheckInventory("NetCheck_A")){NamedRequestScriptPuke("NET_MainShop_Sell",ChoiceItemName,ChoiceItemCost);Delay(3);}
+							}
+                            
+							else
+							{
+								ACS_NamedExecuteAlways("ShopFailSound",0);
+								ACS_NamedExecuteAlways("ShopSellFailQuantityMsg",0);
+							}
+                            */
+
+						} 
+				// #------------------
+				// # End Menustate 1
+				// #------------------
+			}
+			Delay(1);
+			InputOldButtons = InputButtons;
+		
+	} 
+	
+	//=======================[+]
+	// - Menu Loop End -
+	//=======================[+]
+	ClearMenuFrame();
+	while(!CheckInventory("NetCheck_Freeze")){NamedRequestScriptPuke("NET_FreezePlayer",0,Playernumber());Delay(1);}
+}
+
+
+Script "NET_MainShop_Buy" (int ChoiceItemName) NET
+{
+/*
+before, I was able to just send a string in an int by accident somehow, but now this won't work with the ability
+names, fortunately this new function from zand 3.1 has come in clutch for me!
+*/
+log(s:"Buy ",s:ChoiceItemName);
+
+	if(!CheckInventory("InMenu")){Print(s:"Illegal netscript call!!");GiveInventory("NetCheck_A",1);Terminate;}
+	if(CheckInventory("NetCheck_A")) Terminate;
+
+    UseInventory(StrParam(s:"Buy",s:ChoiceItemName));
+
+GiveInventory("NetCheck_A",1);
+}
+
+Script "NET_MainShop_Sell" (int ChoiceItemName, int ChoiceItemCost) NET
+{
+	if(!CheckInventory("InMenu")){Print(s:"Illegal netscript call!!");GiveInventory("NetCheck_A",1);Terminate;}
+	if(CheckInventory("NetCheck_A")) Terminate;
+
+	TakeInventory(ChoiceItemName,1);
+	ACS_NamedExecuteAlways("GivePlayerBP",0,PlayerNumber(),ChoiceItemCost);
+	ACS_NamedExecuteAlways("ShopSuccessSound",0);
+GiveInventory("NetCheck_A",1);
+}
+#endregion
+//#endregion

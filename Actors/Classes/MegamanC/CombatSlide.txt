@@ -17,12 +17,14 @@ CKIC C 0
 goto Fire
 
 Fire:
+"####" C 0 A_GiveInventory("HushStep",1)
 CKIC C 0 A_PlaySoundEx("weapon/chargekick","Weapon")
 "####" C 0 A_TakeInventory("AbilityCharge_1",1)
 "####" C 0 SetPlayerProperty(0,1,0)
 "####" BBAAAAAA 1 A_ChangeVelocity(35,0,momz,CVF_RELATIVE|CVF_REPLACE)//A_Recoil(-20)
 "####" A 0 SetPlayerProperty(0,0,0)
 "####" BC 2
+"####" C 0 A_TakeInventory("HushStep",1)
 "####" C 0 A_Jump(256,"End")
 goto End
 

@@ -71,7 +71,6 @@ Fire:
 "####" "#" 0 A_PlaySoundEx("weapon/coilexplode", "SoundSlot6")
 //"####" "#" 0 ACS_NamedExecuteWithResult("SetTempShotDev",CallACS("GetShotGun_Deviation",HyperBeam_SPD*FVM,HyperBeam_MoveError)/FVMF)
 "####" "#" 0 A_SetUserVar ("User_TempShotVar",CallACS("GetShotGun_Deviation",HyperBeam_SPD*FVM,HyperBeam_MoveError))
-"####" "#" 0 A_Logint(CallACS("GetTempShotDev"))
 
 "####" B 0 A_FireCustomMissile("HyperBeamStart2",CallACS("GetTempShotDev")/FVMF,0,8,0)
 "####" B 0 A_FireCustomMissile("HyperBeamhitboxStart",CallACS("GetTempShotDev")/FVMF,1,8,0) //HyperBeamDamager
@@ -192,6 +191,11 @@ Powerup.Duration 17
 powerup.type "FiringSpeed"
 }
 
+Actor HyperBeamProtect : powerprotection
+{
+Powerup.duration 7
+Damagefactor "HyperBeam", 0
+}
 //[+]========================================================================[+]
 //--------------------------------|Projectiles |--------------------------------
 //[+]========================================================================[+]
@@ -338,6 +342,7 @@ stop
 actor HyperBeam_BodyShotter : TF2BodyShotter
 {
 args 30
+DamageType "HyperBeam"
 states
 {
 
@@ -354,6 +359,7 @@ actor HyperBeam_WallBodyShotter : HyperBeam_BodyShotter
 actor HyperBeam_HeadShotter : TF2HeadShotter
 {
 args 45
+DamageType "HyperBeam"
 states
 {
 Spawn2:

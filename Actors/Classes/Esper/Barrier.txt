@@ -7,7 +7,7 @@ Weapon.AmmoGive2 2
 Inventory.Pickupmessage "$PU_MEGABUSTER"
 Obituary "$OB_MEGABUSTER"
 Tag "SmokeScreen Gun"
-weapon.ammotype2 "SmokeScreenAmmo"
+//weapon.ammotype2 "SmokeScreenAmmo"
 inventory.icon "BUSTI"
 Dropitem ""
 +WEAPON.ALLOW_WITH_RESPAWN_INVUL
@@ -308,7 +308,7 @@ actor WallSpawner5up
   stop
   
   Death3:
-  TNT1 A 0 A_Log("high")
+  //TNT1 A 0 A_Log("high")
   TNT1 A 0 A_SpawnitemEx("WallSpawner5up_B",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION|SXF_TRANSFERPOINTERS,0,TID)
   TNT1 A 0 A_SpawnitemEx("WallSpawner5up_B",0,0,-32,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION|SXF_TRANSFERPOINTERS,0,TID)
   TNT1 A 0 A_SpawnitemEx("WallSpawner5up_B",0,0,-64,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION|SXF_TRANSFERPOINTERS,0,TID)

@@ -7,8 +7,8 @@ Const float Scout_SPD = 4.2;
 Const int Scout_BloomRate = 6;
 Const float Scout_Recoil = 0.8;
 Const float Scout_Kick = 0.8;
-Const float Scout_SwayLeft = 1.5;
-Const float Scout_SwayRight = 2.5;
+Const float Scout_SwayLeft = 2.5;
+Const float Scout_SwayRight = 3.1;
 Const int Scout_MoveError = 40;
 
 Const int Scout_Damage = 10;
@@ -58,7 +58,8 @@ Fire:
 "####" A 0 A_PlaySoundEx("weapon/basshot","Weapon")
 "####" A 0 A_FireCustomMissile("Scout_Beam",CallACS("GetShotDeviation",Scout_SPD*FVM,Scout_MoveError)/FVMF,1,8,0,0,CallACS("GetShotRecoil",Scout_Recoil*FVM)/FVMF)
 "####" A 0 A_GiveInventory("BloomCount",Scout_BloomRate) //Stat
-"####" A 0 A_SetAngle(angle-(FRandom(-Scout_SwayLeft,Scout_SwayRight)),SPF_INTERPOLATE)
+"####" A 0 A_SetAngle(angle-(CallACS("LeftRightDeviation",1,Scout_SwayLeft*FVM,Scout_SwayRight*FVM)/FVMF),SPF_INTERPOLATE)
+//"####" A 0 A_SetAngle(angle-(FRandom(-Scout_SwayLeft,Scout_SwayRight)),SPF_INTERPOLATE)
 "####" A 0 A_GiveInventory("Scout_REC",1) 
 "####" BC 1
 "####" AA 1

@@ -47,6 +47,8 @@ Const int WP_LightCannon = 12;
 
 Const int WP_Muscler = 13;
 Const int WP_Skye = 14;
+Const int WP_Vaporizer = 15;
+
 //=======|Input Constants|==========
 const int BT_ATTACK	= 1;
 const int BT_USE = 2;

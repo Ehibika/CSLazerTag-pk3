@@ -129,6 +129,7 @@ Death:
 DeathTake:
 TNT1 A 0 A_TakeFromTarget("ShotCount",99)
 TNT1 A 0 A_TakeFromTarget("RecoilRecover",99)
+TNT1 A 0 A_GiveToTarget("RecoilRecover_SwayReset",1)
 TNT1 A 0
 stop
 }
@@ -167,6 +168,16 @@ stop
 
 Clearance:
 TNT1 A 0 A_TakeFromTarget("ShotCount",99)
+stop
+}
+}
+
+actor RecoilRecover_SwayReset : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 ACS_NamedExecuteAlways("Clear_LeftRightDeviation",0)
 stop
 }
 }
@@ -1204,3 +1215,99 @@ actor XRayTagItem : PowerupGiver
 Powerup.Duration -6
 powerup.type "XRayTagFlag"
 }
+
+
+
+
+actor FootStepPickup : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0 A_PlaySoundEx("weapon/footstep","Voice")
+PickupPrint:
+TNT1 A 0 A_JumpIfInventory("LeftFoot",1,"Left")
+TNT1 A 0 A_GiveInventory("LeftFoot",1)
+Right:
+TNT1 A 0 A_SpawnItemEx("FootStepJ",0,8,0)
+stop
+Left:
+TNT1 A 0 A_TakeInventory("LeftFoot",1)
+TNT1 A 0 A_SpawnItemEx("FootStepJ",0,-8,0)
+stop
+}
+}
+
+
+actor LeftFoot : Inventory
+{
+Inventory.Amount 1
+Inventory.MaxAmount 1
+}
+
+actor CloakDaggerBar : Inventory
+{
+Inventory.Amount 1
+Inventory.MaxAmount 100
+}
+
+actor FootStepJ
+{
+//+FLOORHUGGER
++NOGRAVITY
++CLIENTSIDEONLY
+damage 0
+radius 10
+Speed 0
+scale 2.5
++FORCEXYBILLBOARD
++DONTSPLASH
+translation "176:176=28:28"
+States
+{
+Spawn:
+FTST F 0
+FTST F 1
+Spawn2:
+FTST F 1 A_FadeOut(0.066)
+loop
+Death:
+FTST F 1
+stop
+}
+}
+
+actor FootStep
+{
++FLOORHUGGER
+damage 0
+radius 10
+Speed 0
+scale 2.5
++FORCEXYBILLBOARD
++DONTSPLASH
+deathsound "weapon/footstep"
+States
+{
+Spawn:
+FTST A 1 A_PlaySoundEx("weapon/footstep","Voice")
+FTST A 0 A_JumpIfInTargetInventory("WireFrame",1,"Spawn2")
+FTST A 1 A_FadeOut(0.1)
+goto Spawn+1
+Death:
+FTST A 1
+stop
+Spawn2:
+FTST B 1 A_FadeOut(0.1)
+loop
+}
+}
+
+actor Wireframe : Inventory
+{
+Inventory.Amount 1
+Inventory.MaxAmount 1
+}
+
+
+actor HushStep : Powerup{inventory.amount 1 powerup.duration 35}

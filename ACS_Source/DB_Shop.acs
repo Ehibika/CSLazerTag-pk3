@@ -12,7 +12,10 @@
 #LIBDEFINE SHOP_MAX_PLAYERS 64
 #LIBDEFINE SHOP_MAX_SLOTS 10
 #LIBDEFINE MAX_TEAMS 4
-#LIBDEFINE MAX_SHOP 24
+#LIBDEFINE MAX_SHOP 19
+#LIBDEFINE MAX_ABLSHOP 6
+#LIBDEFINE GEARSTART MAX_SHOP-3
+
 
 #LIBDEFINE PLAYERSTARTCASH 800
 #LIBDEFINE WINAWARD 3000
@@ -27,34 +30,30 @@ int thePlayerTeam[SHOP_MAX_PLAYERS];
 bool theTeamPlayed[MAX_TEAMS];
 
 str ShopItemList[MAX_SHOP][4] = {
-    {"Zapper", "Zapper", 3.0 ,"NOSELL"},
-    {"Scrapper", "Scrapper", 3.0 ,"NOSELL"},
-    {"Watchman", "Watchman", 3.0,""},
-    {"Scout", "Scout", 3.0,""},
-    {"Pounder", "Pounder", 3.0,""},
-    {"Gunslinger", "Gunslinger", 5.0,""},
+    {"Zapper", "Zapper", -1.0 ,""},
+    {"Scrapper", "Scrapper", 600.0 ,""},
+    {"Watchman", "Watchman", 500.0,""},
+    {"Scout", "Scout", 400.0,""},
+    {"Pounder", "Pounder", 200.0,""},
+    {"Gunslinger", "Gunslinger", 800.0,""},
 	//===
-	{"Fighter", "Fighter", 5.0,""},
-	{"Warden", "Warden", 5.0,""},
-	{"Tracer", "Tracer", 5.0,""},
-	{"Enforcer", "Enforcer", 5.0,""},
-	{"Toujorprey", "Toujorprey", 5.0,""},
+	{"Tracer", "Tracer", 1100.0,""},
+	{"Skye", "Skye", 1400.0,""},
+	{"Muscler", "Muscler", 1000.0,""},
 	//===
-	{"Hyperbeam", "Hyperbeam", 5.0,""},
-	{"LightCannon", "LightCannon", 5.0,""},
-	{"Muscler", "Muscler", 5.0,""},
-	{"Skye", "Skye", 5.0,""},
-
-	{"LT_Armor", "LT_Armor", 5.0,""},
-	{"LazerBattery", "LazerBattery", 5.0,""},
-	
-	{"AbilityCharge_1", "AbilityCharge_1", 5.0,""},
-	{"AbilityCharge_2", "AbilityCharge_2", 5.0,""},
-	{"AbilityCharge_3", "AbilityCharge_3", 5.0,""},
-	{"AbilityResource_1", "AbilityResource_1", 5.0,""},
-	{"AbilityResource_2", "AbilityResource_2", 5.0,""},
-	{"AbilityResource_3", "AbilityResource_3", 5.0,""},
-	{"UltimateCharge", "UltimateCharge", 5.0,""},
+	{"Fighter", "Fighter", 2100.0,""},
+	{"Warden", "Warden", 2700.0,""},
+	{"Enforcer", "Enforcer", 2900.0,""},
+	{"Toujorprey", "Toujorprey", 2900.0,""},
+	//===
+	{"Vaporizer", "Vaporizer", 1100.0,""},
+	{"Hyperbeam", "Hyperbeam", 5000.0,""},
+	{"LightCannon", "Light Cannon", 4500.0,""},
+	//===
+	//===
+	{"LightArmor", "Light Armor", 400.0,"NOSELL"},
+	{"HeavyArmor", "Heavy Armor", 1000.0,"NOSELL"},
+	{"LazerBattery", "Lazer Battery", 300.0,"NOSELL"},
 
 };
 

@@ -19,6 +19,12 @@ Pain.KnifeCrit:
 Goto pain+1
 
 
+Pain.HyperBeam:
+"----" H 0 A_GiveInventory("HyperBeamProtect",1)
+Goto pain+1
+Pain.Vaporizer:
+"----" H 0 A_GiveInventory("VaporizerProtect",1)
+Goto pain+1
 //==============
 Pain.StunMine:
 "----" H 0 A_GiveInventory("MineStunPickup",1)

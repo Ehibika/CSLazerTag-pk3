@@ -3,6 +3,7 @@ actor WepsShop : CustomInventory
 states
 {
 Pickup:
+TNT1 A 0 A_GiveInventory("BuyZapper",1)
 TNT1 A 0 A_GiveInventory("BuyScrapper",1)
 TNT1 A 0 A_GiveInventory("BuyWatchman",1)
 TNT1 A 0 A_GiveInventory("BuyScout",1)
@@ -17,6 +18,7 @@ TNT1 A 0 A_GiveInventory("BuyHyperbeam",1)
 TNT1 A 0 A_GiveInventory("BuyLightCannon",1)
 TNT1 A 0 A_GiveInventory("BuyMuscler",1)
 TNT1 A 0 A_GiveInventory("BuySkye",1)
+TNT1 A 0 A_GiveInventory("BuyVaporizer",1)
 
 stop
 }
@@ -42,11 +44,13 @@ TNT1 A 0 A_TakeInventory("Hyperbeam",9)
 TNT1 A 0 A_TakeInventory("LightCannon",9)
 TNT1 A 0 A_TakeInventory("Muscler",9)
 TNT1 A 0 A_TakeInventory("Skye",9)
+TNT1 A 0 A_TakeInventory("Vaporizer",9)
 
 stop
 }
 }
 
+Const int Cost_Zapper = 0;
 Const int Cost_Scrapper = 600;
 Const int Cost_Watchman = 500;
 Const int Cost_Scout = 400;
@@ -63,6 +67,30 @@ Const int Cost_LightCannon = 4200;
 
 Const int Cost_Muscler = 1000;
 Const int Cost_Skye = 1400;
+Const int Cost_Vaporizer = 1100;
+
+actor BuyZapper : BuyThing
+{
+states
+{
+Use1:
+TNT1 A 0 A_JumpIf(CallACS("CashCheck",Cost_Zapper),"Use2")
+goto NoMoney
+CostPay:
+TNT1 A 0 ACS_NamedExecuteWithResult("CashPay",Cost_Zapper)
+goto BuySuccess
+//===
+Use2:
+TNT1 A 0 A_JumpIfInventory("Zapper",1,"Possessed")
+DUST B 0 ACS_NamedExecuteAlways("DropYourWeapons",0,WP_Zapper)
+DUST B 0 A_GiveInventory("WepPickupBuffer",1)
+TNT1 A 0 A_GiveInventory("Zapper",1)
+TNT1 A 0 A_SelectWeapon("Zapper")
+TNT1 A 0 ACS_NamedExecuteAlways("Write_Inventory",0)
+
+goto CostPay
+}
+}
 
 actor BuyScrapper : BuyThing
 {
@@ -381,6 +409,29 @@ DUST B 0 ACS_NamedExecuteAlways("DropYourWeapons",0,WP_Skye)
 DUST B 0 A_GiveInventory("WepPickupBuffer",1)
 TNT1 A 0 A_GiveInventory("Skye",1)
 TNT1 A 0 A_SelectWeapon("Skye")
+TNT1 A 0 ACS_NamedExecuteAlways("Write_Inventory",0)
+
+goto CostPay
+}
+}
+
+actor BuyVaporizer : BuyThing
+{
+states
+{
+Use1:
+TNT1 A 0 A_JumpIf(CallACS("CashCheck",Cost_Vaporizer),"Use2")
+goto NoMoney
+CostPay:
+TNT1 A 0 ACS_NamedExecuteWithResult("CashPay",Cost_Vaporizer)
+goto BuySuccess
+//===
+Use2:
+TNT1 A 0 A_JumpIfInventory("Vaporizer",1,"Possessed")
+DUST B 0 ACS_NamedExecuteAlways("DropYourWeapons",0,WP_Vaporizer)
+DUST B 0 A_GiveInventory("WepPickupBuffer",1)
+TNT1 A 0 A_GiveInventory("Vaporizer",1)
+TNT1 A 0 A_SelectWeapon("Vaporizer")
 TNT1 A 0 ACS_NamedExecuteAlways("Write_Inventory",0)
 
 goto CostPay

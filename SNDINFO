@@ -63,3 +63,5 @@ weapon/tripodflip 	BBERECT
 
 Move/Blizzard BLIZZARD
 $attenuation Move/Blizzard 0.5
+
+weapon/footstep	FOOTSTP2

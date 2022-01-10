@@ -148,6 +148,7 @@ FLSB E 0 A_CheckFloor("SlowDown")
 loop
 SlowDown:
 FLSB B 1 A_ScaleVelocity(0.3)
+FLSB E 0 A_Jump(256,"Spawn2")
 Goto Spawn2
 	
 Death:

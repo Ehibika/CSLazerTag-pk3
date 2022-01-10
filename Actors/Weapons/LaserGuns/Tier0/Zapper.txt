@@ -36,67 +36,69 @@ Spawn:
 WICO A 1
 loop
 Ready:
-BUST B 1 
+CMUA A 1 
 "####" "#" 0 A_Jump(256,"Ready.Core")
 Goto Ready.Core
 Deselect:
 TNT1 AAAAAAAAAAAAAAAAAAAAAA 0 A_Lower
-BUST B 1 A_Lower
+CMUA A 1 A_Lower
 Loop
 Select:
 //TNT1 AAAAAAAAAAAAAAAAAAAAAA 0 A_Raise
 TNT1 A 0 ACS_NamedExecuteAlways("WepSpeedMod",0,Zapper_MoveSpeed*FVM)
-BUST BB 0 A_Raise
-BUST B 1
+CMUA AA 0 A_Raise
+CMUA A 1
 Loop
 
 Fire:
-"####" B 0 A_JumpIfNoAmmo("NoAmmo")
-"####" B 0 A_GiveInventory("Zapper_FS",1)
-"####" B 0 A_GiveInventory("Zapper_SS",1)
-"####" B 0 A_PlaySoundEx("weapon/basshot","Weapon")
-"####" B 0 A_FireCustomMissile("Zapper_Beam",CallACS("GetShotDeviation",Zapper_SPD*FVM,Zapper_MoveError)/FVMF,1,8,0)
-"####" B 0 A_GiveInventory("BloomCount",Zapper_BloomRate) //Stat
+"####" A 0 A_JumpIfNoAmmo("NoAmmo")
+"####" A 0 A_GiveInventory("Zapper_FS",1)
+"####" A 0 A_GiveInventory("Zapper_SS",1)
+"####" A 0 A_PlaySoundEx("weapon/basshot","Weapon")
+"####" A 0 A_FireCustomMissile("Zapper_Beam",CallACS("GetShotDeviation",Zapper_SPD*FVM,Zapper_MoveError)/FVMF,1,8,0)
+"####" A 0 A_GiveInventory("BloomCount",Zapper_BloomRate) //Stat
 //"####" A 0 A_SetAngle(angle-(FRandom(-Zapper_SwayLeft,Zapper_SwayRight)),SPF_INTERPOLATE)
 //"####" A 0 A_SetPitch(pitch-(Zapper_Recoil),SPF_INTERPOLATE)
-"####" B 0 A_TakeInventory("FiringSpeed",9)
-"####" B 0 A_JumpIfInventory("Isbot",1,"Hold.Bot")
+"####" A 0 A_TakeInventory("FiringSpeed",9)
+"####" A 0 A_JumpIfInventory("Isbot",1,"Hold.Bot")
+"####" BC 1
 Hold:
-"####" C 1
+"####" D 1
 "####" B 0 A_Refire
-"####" CB 2
+"####" C 2
 Goto Ready
 
 Hold.Bot:
-"####" CB 2
+"####" C 7
 "####" B 0 A_Refire("Fire")
 Goto Ready
 
 AltFire:
-"####" B 0 A_GiveInventory("Zapper_FS",1)
-"####" B 0 A_GiveInventory("Zapper_SS",1)
-"####" B 0 A_JumpIfNoAmmo("NoAmmo")
-"####" B 0 A_PlaySoundEx("weapon/basshot","Weapon")
-"####" C 1 A_FireCustomMissile("Zapper_Beam",CallACS("GetShotGun_Deviation",Zapper_SPD*FVM,Zapper_MoveError)/FVMF,1,8,0)
+"####" A 0 A_GiveInventory("Zapper_FS",1)
+"####" A 0 A_GiveInventory("Zapper_SS",1)
+"####" A 0 A_JumpIfNoAmmo("NoAmmo")
+"####" A 0 A_PlaySoundEx("weapon/basshot","Weapon")
+"####" B 1 A_FireCustomMissile("Zapper_Beam",CallACS("GetShotGun_Deviation",Zapper_SPD*FVM,Zapper_MoveError)/FVMF,1,8,0)
 "####" A 0 A_SetAngle(angle-(FRandom(-Zapper_SwayLeft,Zapper_SwayRight)),SPF_INTERPOLATE)
 "####" A 0 A_SetPitch(pitch-(Zapper_Recoil),SPF_INTERPOLATE)
 
 "####" B 0 A_PlaySoundEx("weapon/basshot","Weapon")
-"####" C 1 A_FireCustomMissile("Zapper_Beam",CallACS("GetShotGun_Deviation",Zapper_SPD*FVM,Zapper_MoveError)/FVMF,1,8,0)
+"####" A 1 A_FireCustomMissile("Zapper_Beam",CallACS("GetShotGun_Deviation",Zapper_SPD*FVM,Zapper_MoveError)/FVMF,1,8,0)
 "####" A 0 A_SetAngle(angle-(FRandom(-Zapper_SwayLeft,Zapper_SwayRight)),SPF_INTERPOLATE)
 "####" A 0 A_SetPitch(pitch-(Zapper_Recoil),SPF_INTERPOLATE)
 
 "####" B 0 A_PlaySoundEx("weapon/basshot","Weapon")
-"####" C 1 A_FireCustomMissile("Zapper_Beam",CallACS("GetShotGun_Deviation",Zapper_SPD*FVM,Zapper_MoveError)/FVMF,1,8,0)
+"####" B 1 A_FireCustomMissile("Zapper_Beam",CallACS("GetShotGun_Deviation",Zapper_SPD*FVM,Zapper_MoveError)/FVMF,1,8,0)
 "####" B 0 A_GiveInventory("BloomCount",Zapper_BloomRate*3) //Stat
 "####" A 0 A_SetAngle(angle-(FRandom(-Zapper_SwayLeft,Zapper_SwayRight)),SPF_INTERPOLATE)
 "####" A 0 A_SetPitch(pitch-(Zapper_Recoil),SPF_INTERPOLATE)
 
-"####" D 7 
+"####" CD 3 
 "####" B 0 A_TakeInventory("FiringSpeed",9)
 AltHold:
 "####" D 1
 "####" B 0 A_Refire
+"####" C 2
 Goto Ready
 
 NoAmmo:

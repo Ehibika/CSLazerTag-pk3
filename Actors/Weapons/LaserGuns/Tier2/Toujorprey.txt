@@ -22,7 +22,7 @@ const float Toujorprey_MoveSpeed = 0.8;
 
 actor Toujorprey : WepMasterBase
 {
-Weapon.AmmoUse 22
+Weapon.AmmoUse 33
 Weapon.SlotNumber 2
 Inventory.Pickupmessage "$PU_TOUJORPREY"
 Obituary "$OB_TOUJORPREY"
@@ -57,7 +57,9 @@ Fire:
 "####" A 0 A_PlaySoundEx("weapon/RapidBuster","Weapon")
 "####" A 0 A_FireCustomMissile("ToujorPrey_Beam",CallACS("GetShotDeviation",ToujorPrey_SPD*FVM,ToujorPrey_MoveError)/FVMF,1,8,0,0,CallACS("GetShotRecoil",ToujorPrey_Recoil*FVM)/FVMF)
 "####" A 0 A_GiveInventory("BloomCount",ToujorPrey_BloomRate) //Stat
-"####" A 0 A_SetAngle(angle-(FRandom(-ToujorPrey_SwayLeft,ToujorPrey_SwayRight)),SPF_INTERPOLATE)
+//"####" A 0 A_SetAngle(angle-(FRandom(-ToujorPrey_SwayLeft,ToujorPrey_SwayRight)),SPF_INTERPOLATE)
+"####" A 0 A_SetAngle(angle-(CallACS("LeftRightDeviation",4,ToujorPrey_SwayLeft*FVM,ToujorPrey_SwayRight*FVM)/FVMF),SPF_INTERPOLATE)
+
 "####" A 0 A_GiveInventory("ToujorPrey_REC",1) 
 "####" BC 1
 "####" A 2

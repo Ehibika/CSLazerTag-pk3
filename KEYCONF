@@ -22,8 +22,8 @@ addplayerclass Stakeout
 
 alias !cslt_justjoin "closemenu;join"
 
-alias OpenMainShop "CloseMenu; OpenMenu ShopMenu;"
-alias OpenClassShop "CloseMenu; Use OpenClassShop"
+alias OpenMainShop "CloseMenu; Use ItemShopStartItem;"
+alias OpenClassShop "CloseMenu; Use ItemShopStartItem" //OpenClassShop
 
 alias BuyScrapper "CloseMenu; Use BuyScrapper; OpenMenu ShopMenu;"
 alias BuyWatchman "CloseMenu; Use BuyWatchman; OpenMenu ShopMenu;"
@@ -37,6 +37,7 @@ alias BuyTracer "CloseMenu; Use BuyTracer; OpenMenu ShopMenu;"
 alias BuyEnforcer "CloseMenu; Use BuyEnforcer; OpenMenu ShopMenu;"
 alias BuyToujorprey "CloseMenu; Use BuyToujorprey; OpenMenu ShopMenu;"
 //===
+alias BuyVaporizer "CloseMenu; Use BuyVaporizer; OpenMenu ShopMenu;"
 alias BuyHyperbeam "CloseMenu; Use BuyHyperbeam; OpenMenu ShopMenu;"
 alias BuyLightCannon "CloseMenu; Use BuyLightCannon; OpenMenu ShopMenu;"
 //===

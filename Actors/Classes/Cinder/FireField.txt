@@ -6,7 +6,7 @@ Weapon.AmmoGive2 2
 Inventory.Pickupmessage "$PU_MEGABUSTER"
 Obituary "$OB_MEGABUSTER"
 Tag "SmokeScreen Gun"
-weapon.ammotype2 "SmokeScreenAmmo"
+//weapon.ammotype2 "SmokeScreenAmmo"
 inventory.icon "BUSTI"
 Dropitem ""
 +WEAPON.ALLOW_WITH_RESPAWN_INVUL
@@ -75,8 +75,6 @@ actor FireFieldAimPath : GolfBallAimInstantStarter3 { Speed 35 Gravity 1.5}
 actor FireFieldShot
 {
 PROJECTILE
-damagetype "Explosion"
-Obituary "$OB_Hyperbomb"
 radius 4
 height 4
 scale 2.0

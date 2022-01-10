@@ -2,11 +2,11 @@
 The Silent, Slower, but deadlier relative to the Skye.
 ===================================*/
 
-Const float Skye_SPD = 3.2;
-Const int Skye_BloomRate = 12;
+Const float Skye_SPD = 2.8;
+Const int Skye_BloomRate = 6;
 Const float Skye_Recoil = 0.6;
-Const float Skye_Kick = 1.6;
-Const float Skye_SwayLeft = 1.3;
+Const float Skye_Kick = 1.4;
+Const float Skye_SwayLeft = 2.3;
 Const float Skye_SwayRight = 2.3;
 Const int Skye_MoveError = 30;
 
@@ -22,7 +22,7 @@ const float Skye_MoveSpeed = 1.0;
 
 actor Skye : WepMasterBase
 {
-Weapon.AmmoUse 35
+Weapon.AmmoUse 31
 Weapon.SlotNumber 2
 Inventory.Pickupmessage "$PU_SKYE"
 Obituary "$OB_SKYE"
@@ -57,7 +57,8 @@ Fire:
 "####" A 0 A_PlaySoundEx("weapon/RapidBuster","Weapon")
 "####" A 0 A_FireCustomMissile("Skye_Beam",CallACS("GetShotDeviation",Skye_SPD*FVM,Skye_MoveError)/FVMF,1,8,0,0,CallACS("GetShotRecoil",Skye_Recoil*FVM)/FVMF)
 "####" A 0 A_GiveInventory("BloomCount",Skye_BloomRate) //Stat
-"####" A 0 A_SetAngle(angle-(FRandom(-Skye_SwayLeft,Skye_SwayRight)),SPF_INTERPOLATE)
+"####" A 0 A_SetAngle(angle-(CallACS("LeftRightDeviation",1,Skye_SwayLeft*FVM,Skye_SwayRight*FVM)/FVMF),SPF_INTERPOLATE)
+//"####" A 0 A_SetAngle(angle-(FRandom(-Skye_SwayLeft,Skye_SwayRight)),SPF_INTERPOLATE)
 "####" A 0 A_GiveInventory("Skye_REC",1) 
 "####" BC 1
 "####" A 1
@@ -111,7 +112,7 @@ actor Skye_SS : PowerupGiver
 inventory.amount 1
 inventory.maxamount 1
 +INVENTORY.AUTOACTIVATE
-Powerup.Duration 8
+Powerup.Duration 1
 powerup.type "AmmoStaller"
 }
 

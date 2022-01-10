@@ -203,15 +203,6 @@ if (GetCVar("teamplay")==1||GetCVar("teamlms")==1||GetCVar("teampossession")==1
 Return TEAM_NONE;
 }
 
-function void adjustInventory(str item, int quantity) {
-	int diff = quantity-CheckInventory(item);
-	if(diff>0) {
-		giveInventory(item,diff);
-	} else if (diff<0) {
-		takeInventory(item,-diff);
-	}
-}
-
 function void adjustActorInventory(int actor, str item, int quantity) {
 	int diff = quantity-CheckActorInventory(actor,item);
 	if(diff>0) {

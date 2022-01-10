@@ -3,19 +3,19 @@ The Enforcer boasts greater damage per shot than other blasters but takes more
 energy. it recovers fairly quickly however.
 ===================================*/
 
-Const float Enforcer_SPD = 0.5;
+Const float Enforcer_SPD = 1.5;
 Const int Enforcer_BloomRate = 10;
-Const float Enforcer_Recoil = 1.0;
+Const float Enforcer_Recoil = 1.2;
 Const float Enforcer_Kick = 1.4;
-Const float Enforcer_SwayLeft = 0.5;
-Const float Enforcer_SwayRight = 0.5;
+Const float Enforcer_SwayLeft = 5.5;
+Const float Enforcer_SwayRight = 5.5;
 Const int Enforcer_MoveError = 10;
 
 Const int Enforcer_Damage = 40;
 Const int Enforcer_FalloffRange = FalloffBase+800;
 Const int Enforcer_FalloffRate = S_FLR;
 
-Const int Enforcer_HeadShotDamage = 45;
+Const int Enforcer_HeadShotDamage = 65;
 Const int Enforcer_HeadShotFalloffRange = FalloffBase+800;
 Const int Enforcer_HeadShotFalloffRate = S_HFLR;
 
@@ -23,7 +23,7 @@ const float Enforcer_MoveSpeed = 0.8;
 
 actor Enforcer : WepMasterBase
 {
-Weapon.AmmoUse 65
+Weapon.AmmoUse 50
 Weapon.SlotNumber 2
 Inventory.Pickupmessage "$PU_ENFORCER"
 Obituary "$OB_ENFORCER"
@@ -58,7 +58,8 @@ Fire:
 "####" A 0 A_PlaySoundEx("weapon/RapidBuster3","Weapon")
 "####" A 0 A_FireCustomMissile("Enforcer_Beam",CallACS("GetShotDeviation",Enforcer_SPD*FVM,Enforcer_MoveError)/FVMF,1,8,0,0,CallACS("GetShotRecoil",Enforcer_Recoil*FVM)/FVMF)
 "####" A 0 A_GiveInventory("BloomCount",Enforcer_BloomRate) //Stat
-"####" A 0 A_SetAngle(angle-(FRandom(-Enforcer_SwayLeft,Enforcer_SwayRight)),SPF_INTERPOLATE)
+//"####" A 0 A_SetAngle(angle-(FRandom(-Enforcer_SwayLeft,Enforcer_SwayRight)),SPF_INTERPOLATE)
+"####" A 0 A_SetAngle(angle-(CallACS("LeftRightDeviation",-2,Enforcer_SwayLeft*FVM,Enforcer_SwayRight*FVM,2.2*FVM)/FVMF),SPF_INTERPOLATE)
 "####" A 0 A_GiveInventory("Enforcer_REC",1) 
 "####" BC 1
 "####" A 3

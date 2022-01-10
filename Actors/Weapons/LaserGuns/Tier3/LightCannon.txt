@@ -7,8 +7,8 @@ Const float LightCannon_SPD = 2.2;
 Const int LightCannon_BloomRate = 4;
 Const float LightCannon_Recoil = 4.6;
 Const float LightCannon_Kick = 0.4;
-Const float LightCannon_SwayLeft = 2.2;
-Const float LightCannon_SwayRight = 2.1;
+Const float LightCannon_SwayLeft = 8.2;
+Const float LightCannon_SwayRight = 6.7;
 Const int LightCannon_MoveError = 5;
 
 Const int LightCannon_Damage = 20;
@@ -58,7 +58,9 @@ Fire:
 "####" A 0 A_PlaySoundEx("weapon/BasherShot","Weapon")
 "####" A 0 A_FireCustomMissile("LightCannon_Beam",CallACS("GetShotDeviation",LightCannon_SPD*FVM,LightCannon_MoveError)/FVMF,1,8,0,0,CallACS("GetShotRecoil",LightCannon_Recoil*FVM)/FVMF)
 "####" A 0 A_GiveInventory("BloomCount",LightCannon_BloomRate) //Stat
-"####" A 0 A_SetAngle(angle-(FRandom(-LightCannon_SwayLeft,LightCannon_SwayRight)),SPF_INTERPOLATE)
+//"####" A 0 A_SetAngle(angle-(FRandom(-LightCannon_SwayLeft,LightCannon_SwayRight)),SPF_INTERPOLATE)
+"####" A 0 A_SetAngle(angle-(CallACS("LeftRightDeviation",4,LightCannon_SwayLeft*FVM,LightCannon_SwayRight*FVM)/FVMF),SPF_INTERPOLATE)
+
 "####" A 0 A_GiveInventory("LightCannon_REC",1) 
 "####" A 0 A_JumpIfInventory("ShotCount", 6, "Fire.After1")
 "####" A 0 A_JumpIfInventory("ShotCount", 3, "Fire.After2")

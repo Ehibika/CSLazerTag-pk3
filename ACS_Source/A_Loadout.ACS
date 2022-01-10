@@ -3,7 +3,8 @@
 #import "DB_Shop.acs"
 #import "A_Core.acs"
 
-#DEFINE MAX_ITEMS 15
+#DEFINE MAX_ITEMS 25
+#DEFINE MAX_WEAPONS 16
 
 
 str the_items[MAX_ITEMS] = 
@@ -26,6 +27,18 @@ str the_items[MAX_ITEMS] =
 //===
 "Muscler",
 "Skye",
+"Vaporizer",
+//===
+"LT_Armor",
+"LazerBattery",
+//===
+"AbilityCharge_1",
+"AbilityCharge_2",
+"AbilityCharge_3",
+"AbilityResource_1",
+"AbilityResource_2",
+"AbilityResource_3",
+"UltimateCharge",
 };
 
 //#DEFINE MAX_PLAYERS 64
@@ -42,7 +55,7 @@ Script "DropYourWeapons" (int Exclude)
     while(InvCount){DropWepFunc(the_items[i],60,60); InvCount = CheckInventory(the_items[i]);}
     }
     //==
-    for (i=Exclude+1; i<MAX_ITEMS; i++) 
+    for (i=Exclude+1; i<MAX_WEAPONS; i++) 
     {
     InvCount = CheckInventory(the_items[i]);
     while(InvCount){DropWepFunc(the_items[i],60,60); InvCount = CheckInventory(the_items[i]);}
@@ -57,7 +70,7 @@ Function void DropWepFunc (str WepName, int XSpeed, int Zspeed)
 {
     int Angle = GetActorAngle(0) >> 8;
     str DroppedItem = StrParam(s:WepName,s:"DropItem");
-    SpawnProjectile (0,DroppedItem, Angle+(128+Random(-64,64)), XSpeed, Zspeed, 0.5, DROPITEMTID);
+    SpawnProjectile (0,DroppedItem, Angle+(128+Random(-64,64)), XSpeed, Zspeed, 0.5, UniqueTID(DROPITEMTID,DROPITEMTID+100));
     TakeInventory(WepName,1);
     //log(i:Angle,s:" ",f:Angle);
 }
@@ -150,15 +163,15 @@ str ItemQ; //hex value of item quantity
 
 int ItemCount; //number of different items found
     /* -=-=-=-=-=-=-=-=-=-= 
-    * So what we are going to do here is go down the ShopItemList and see
+    * So what we are going to do here is go down the the_items and see
     * if you have that item, if you do. then we count the quantity, and create
     * the inventory block. and then append it to the end of INVSTR
     * -=-=-=-=-=-=-=-=-=-=-=
     */
 
-   for (int i=0; i<MAX_SHOP; i++) 
+   for (int i=0; i<MAX_ITEMS; i++) 
    {
-    InvCount = CheckInventory(ShopItemList[i][0]);
+    InvCount = CheckInventory(the_items[i]);
     if(InvCount)
         {
             if(i<16){ItemID = StrParam(s:"0",x:i);}
@@ -210,7 +223,7 @@ int ItemQ;
         if(ItemQ>0)
             {
             //log(s:"get ",i:ItemQ,s:" ",s:ShopItemList[ItemID]);
-            GiveInventory(ShopItemList[ItemID][0],ItemQ);
+            GiveInventory(the_items[ItemID],ItemQ);
             }
         
 

@@ -28,7 +28,7 @@ Fire:
 "####" B 0 A_FireCustomMissile("SubHyperBomb",0,0,0,0,0,Aim_ArcOverHead+(Aim_ArcScale*Sin(-pitch)))
 "####" B 1 A_TakeInventory("AbilityCharge_3",1)
 "####" B 0 A_GiveInventory("AmmoStaller")
-"####" A 0 ACS_NamedExecuteWithResult("CSLT_Chatline",CLT_ABILITY,Random(1,2))
+"####" A 0 ACS_NamedExecuteWithResult("CSLT_Chatline",CLT_ABILITY,Random(2,3))
 "####" IJKLM 2
 "####" B 0 A_Jump(256,"End")
 goto End
@@ -124,9 +124,6 @@ stop
 }
 }
 
-	actor SubHyperBomb_BLUE : SubHyperBomb{}
-	actor SubHyperBomb_RED : SubHyperBomb{translation "192:192=54:54", "198:198=42:42" , "196:196=170:170"}
-
 actor SubHyperBomb2 : SubHyperBomb
 {
 -USEBOUNCESTATE
@@ -134,7 +131,11 @@ actor SubHyperBomb2 : SubHyperBomb
 States
 {
 Spawn:
+TNT1 A 0
 TNT1 A 0 A_GiveInventory("ProjectileCode",1)
+TNT1 A 1 A_Jump(256,"Spawn2")
+Goto Spawn2
+
 Spawn2:
 BOMB S 0 A_PlaySoundEX("weapon/Heat1","Soundslot6")
 BOMB S 1 A_CountDown
@@ -145,13 +146,7 @@ BOMB S 0 A_ScaleVelocity(0.3)
 Goto Spawn2
 	
 Death:
-MINB A 0 A_SpawnItemEx("S_HyperbombExplosion")
-stop
-Crash:
-MINB A 0 A_SpawnItemEx("S_HyperbombExplosion")
-stop
-XDeath:
-MINB A 0 A_SpawnItemEx("S_HyperbombFakeExplosion")
+MINB A 0 A_SpawnItemEx("S_HyperbombExplosion",0,0,0,0,0,0,0,1)
 stop
 }
 }

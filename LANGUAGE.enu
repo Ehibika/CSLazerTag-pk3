@@ -84,6 +84,11 @@ OB_TOUJORPREY = "%k Eliminated %o with the Toujorprey";
 OB_TOUJORPREY2 = "%k HeadShotted %o with the Toujorprey";
 
 //===
+PU_VAPORIZER = "Picked up the Vaporizer";
+TAG_VAPORIZER = "Vaporizer";
+OB_VAPORIZER = "%k Eliminated %o with the Vaporizer";
+OB_VAPORIZER2 = "%k HeadShotted %o with the Vaporizer";
+
 PU_HYPERBEAM = "Picked up the Hyperbeam";
 TAG_HYPERBEAM = "Hyperbeam";
 OB_HYPERBEAM = "%k Eliminated %o with the Hyperbeam";
@@ -127,6 +132,7 @@ SHOP_BUY = "Purchase Success!";
 SHOP_BUYFAIL_MONEY = "Purchase Fail! Not Enough Money!";
 SHOP_BUYFAIL_POSSESS = "Purchase Fail! Already Possessed!";
 SHOP_BUYFAIL_SPACE = "Purchase Fail! Can't carry any more!";
+SHOP_BUYFAIL_NOBUY = "Not Available for Purchase!";
 
 //Shop Titles
 
@@ -141,6 +147,9 @@ CSLT_OPTEXT1 = "\c[MenuYellow][+]\cj Game Inputs \c[MenuYellow][+]";
 CSLT_OPTEXT2 = "\c[MenuYellow][+]\cj Alternative Game Inputs \c[MenuYellow][+]";
 CSLT_OPTEXT3 = "\c[MenuYellow][+]\cj Optional Inputs \c[MenuYellow][+]";
 
+SHOPCost_Scrapper = 500.0;
+
+
 SHOP_Zapper = "\cgZapper\cj :: Free";
 SHOP_Scrapper = "\cFScrapper\cj :: 600";
 SHOP_Watchman = "\cFWatchman\cj :: 500";
@@ -154,6 +163,7 @@ SHOP_Tracer = "\cFTracer\cj :: 1100";
 SHOP_Enforcer = "\cFEnforcer\cj :: 2900";
 SHOP_Toujorprey = "\cFToujorprey\cj :: 2900";
 //===
+SHOP_Vaporizer = "\cFVaporizer\cj :: 1100";
 SHOP_Hyperbeam = "\cFHyperbeam\cj :: 5000";
 SHOP_LightCannon = "\cFLightCannon\cj :: 4200";
 //===
@@ -165,25 +175,25 @@ SHOP_HeavyArmor = "\cFHeavy Armor\cj :: 1000";
 SHOP_LazerBattery = "\cFLazer Battery\cj :: 300";
 
 //Shop Descriptions
-SHOPDESC_Zapper = "\c[MenuWhite]The Starting Blaster";
-SHOPDESC_Scrapper = "\c[MenuWhite]Well Rounded";
-SHOPDESC_Watchman = "\c[MenuWhite]Great Damage at a distance";
-SHOPDESC_Scout = "\c[MenuWhite]Rapid Fire with free Movement";
-SHOPDESC_Pounder = "\c[MenuWhite]Potent Mini Shotgun";
-SHOPDESC_Gunslinger = "\c[MenuWhite]Lethal Headshots";
+SHOPDESC_Zapper = "\c[MenuWhite]The Starting Blaster, able to fire a 3 shot burst with altfire.";
+SHOPDESC_Scrapper = "\c[MenuWhite]Optimized for quick trigger pulls and high damage";
+SHOPDESC_Watchman = "\c[MenuWhite]Shots have reduced falloff, allowing for greater damage at farther ranges. it also quieter than most blasters";
+SHOPDESC_Scout = "\c[MenuWhite]Mini automatic that fires shots rapidly, hard to control and runs dry of energy quickly.";
+SHOPDESC_Pounder = "\c[MenuWhite]Deals potent shotgun blasts but is energy inefficient, can fire roughly 2 times consecutively.";
+SHOPDESC_Gunslinger = "\c[MenuWhite]Fires slower than most handguns, but it's shots deal significant headshot damage.";
 //===
-SHOPDESC_Fighter = "\c[MenuWhite]Flexible and Versatile";
-SHOPDESC_Warden = "\c[MenuWhite]Burst Fire with Great Precision";
-SHOPDESC_Tracer = "\c[MenuWhite]Fires Fast with full free movement";
-SHOPDESC_Enforcer = "\c[MenuWhite]Shots pack high power and Precision";
-SHOPDESC_Toujorprey = "\c[MenuWhite]High Damage consistency and Ammo Efficiency";
+SHOPDESC_Fighter = "\c[MenuWhite]an affordable tier 2 blaster, it's unwieldly but possesses decent stats.";
+SHOPDESC_Warden = "\c[MenuWhite]Fires a 3-shot burst with great precision, drains ammo rather fast however.";
+SHOPDESC_Tracer = "\c[MenuWhite]Fires rapidly all without movement penalties, but is weak beyond close ranges.";
+SHOPDESC_Enforcer = "\c[MenuWhite]Despite it's lower fire rate, it shots deal a lot of damage, it's hefty and an energy guzzler so make your shots count.";
+SHOPDESC_Toujorprey = "\c[MenuWhite]Boasts excellent energy efficiency and low falloff, this flexible weapon rarely has much downtime and makes little noise to boot.";
 //===
-SHOPDESC_Hyperbeam = "\c[MenuWhite]A powerful Sniper rifle with a Scope";
-SHOPDESC_LightCannon = "\c[MenuWhite]A Light Machine gun that can punch\n"
-"Through walls and players alike!";
+SHOPDESC_Vaporizer = "\c[MenuWhite]Light and precise marksman rifle that works well on the move, deals the most damage through headshots";
+SHOPDESC_Hyperbeam = "\c[MenuWhite]A Hefty but powerfull sniper rifle, a shot from anywhere means certain death.";
+SHOPDESC_LightCannon = "\c[MenuWhite]A Light Machine gun that can punch Through walls and players alike! it can fire for a long time but is tough  to control.";
 //===
-SHOPDESC_Muscler = "\c[MenuWhite]Mighty and flexible Shotgun";
-SHOPDESC_Skye = "\c[MenuWhite]Swift and Subtle";
+SHOPDESC_Muscler = "\c[MenuWhite]A Solid Shotgun blaster, deadly in close quarters.";
+SHOPDESC_Skye = "\c[MenuWhite]Shoots fast and shoots quietly, it's headshots can sting as well.";
 
 SHOPDESC_LightArmor = "\c[MenuWhite]Armor that Blocks 25 points of damage";
 SHOPDESC_HeavyArmor = "\c[MenuWhite]Armor that Blocks 50 points of damage";
@@ -191,122 +201,152 @@ SHOPDESC_LazerBattery = "\c[MenuWhite]Restore's half of your Weapon Energy";
 
 //Class Shop Descriptions
 
+ABL1_MEGAMANC = "CombatSlide";
+ABL2_MEGAMANC = "RushCall";
+ABL3_MEGAMANC = "HyperBomb";
+ABL1COST_MEGAMANC = "-1";
+ABL2COST_MEGAMANC = "200";
+ABL3COST_MEGAMANC = "250";
+
 SHOP_HyperBomb = "\cFHyper Bomb\cj :: 250";
 SHOPDESC_HyperBomb = "\c[MenuWhite]Powerful Thrown Explosives";
 
 SHOP_RushCall = "\cFRush Call\cj :: 200";
-SHOPDESC_RushCall = "\c[MenuWhite]Call Rush to give you a boost up\n"
-"High Places";
+SHOPDESC_RushCall = "\c[MenuWhite]Call Rush to give you a boost up High Places";
 
 SHOP_CombatSlide = "\cFCombat Slide\cj :: ---";
-SHOPDESC_CombatSlide = "\c[MenuWhite]Do a quick slide! Recovers\n"
-"after 2 frags!";
+SHOPDESC_CombatSlide = "\c[MenuWhite]Do a quick slide! Recovers after 2 frags!";
+
+
+ABL1_NORTH = "IceBolt";
+ABL2_NORTH = "IceFog";
+ABL3_NORTH = "AuroraVeil";
+ABL1COST_NORTH = "350";
+ABL2COST_NORTH = "200";
+ABL3COST_NORTH = "250";
 
 SHOP_IceBolt = "\cFIce Bolt\cj :: 350";
-SHOPDESC_IceBolt = "\c[MenuWhite]Cast a Freezing Blast that\n"
-"Leaves behind a slowing field";
+SHOPDESC_IceBolt = "\c[MenuWhite]Cast a Freezing Blast that Leaves behind a slowing field";
 
 SHOP_IceFog = "\cFIce Fog\cj :: 200";
-SHOPDESC_IceFog = "\c[MenuWhite]Conjure up dense fogs at\n"
-"Remote locations";
+SHOPDESC_IceFog = "\c[MenuWhite]Conjure up dense fogs at Remote locations";
 
 SHOP_AuroraVeil = "\cFAurora Veil\cj :: 250";
-SHOPDESC_AuroraVeil = "\c[MenuWhite]Create a line of blinding lights\n"
-"That Block Vision and blind anyone that\n"
-"Passes through it.";
+SHOPDESC_AuroraVeil = "\c[MenuWhite]Create a line of blinding lights That Block Vision and blind anyone that Passes through it.";
 
 SHOP_SnowStorm = "\cFSnow Storm\cj :: 6 Points";
-SHOPDESC_SnowStorm = "\c[MenuWhite]Conjur a Whirling Blizzard\n"
-"At your location that deflects enemy \n"
-"projectiles and slows foes who enter it.";
+SHOPDESC_SnowStorm = "\c[MenuWhite]Conjur a Whirling Blizzard At your location that deflects enemy  projectiles and slows foes who enter it.";
+
+
+ABL1_CINDER = "FlashWisp";
+ABL2_CINDER = "FireSpirit";
+ABL3_CINDER = "FireField";
+ABL1COST_CINDER = "200";
+ABL2COST_CINDER = "400";
+ABL3COST_CINDER = "300";
 
 SHOP_FlashWisp = "\cFFlash Wisp\cj :: 200";
-SHOPDESC_FlashWisp = "\c[MenuWhite]Cast a Guided Wisp\n"
-"That can be detonated to blind foes.";
+SHOPDESC_FlashWisp = "\c[MenuWhite]Cast a Guided Wisp That can be detonated to blind foes.";
 
 SHOP_FireSpirit = "\cFFire Spirit\cj :: 400";
-SHOPDESC_FireSpirit = "\c[MenuWhite]Conjure up a Wisp that\n"
-"Reveals Targets";
+SHOPDESC_FireSpirit = "\c[MenuWhite]Conjure up a Wisp that Reveals Targets";
 
 SHOP_FireField = "\cFFire Field\cj :: 300";
 SHOPDESC_FireField = "\c[MenuWhite]Toss a Molotov on the ground";
 
+
+ABL1_ESPER = "EsperHeal";
+ABL2_ESPER = "Barrier";
+ABL3_ESPER = "PsycheBomb";
+ABL1COST_ESPER = "300";
+ABL2COST_ESPER = "500";
+ABL3COST_ESPER = "200";
+
 SHOP_EsperHeal = "\cFHeal\cj :: 300";
-SHOPDESC_EsperHeal = "\c[MenuWhite]Restore 60 HP on A Teammate\n"
-"or oneself over time (Press Altfire to\n."
-"self heal.";
+SHOPDESC_EsperHeal = "\c[MenuWhite]Restore 60 HP on A Teammate or oneself over time (Press Altfire to self heal).";
 
 SHOP_Barrier = "\cFBarrier\cj :: 500";
-SHOPDESC_Barrier = "\c[MenuWhite]Erect a Psychic Barrier\n"
-"That Blocks enemies and their shots.";
+SHOPDESC_Barrier = "\c[MenuWhite]Erect a Psychic Barrier That Blocks enemies and their shots.";
 
 SHOP_PsycheBomb = "\cFPsyche Bomb\cj :: 200";
-SHOPDESC_PsycheBomb = "\c[MenuWhite]Remotely Plant Psychic Mines that \n"
-"Detonate and reveal approaching Enemies.\n";
+SHOPDESC_PsycheBomb = "\c[MenuWhite]Remotely Plant Psychic Mines that  Detonate and reveal approaching Enemies. ";
 
 
 //Théophile's Classes
 
+ABL1_TSNEAKER = "CardBoardBox";
+ABL2_TSNEAKER = "SmokeGrenade";
+ABL3_TSNEAKER = "StunMine";
+ABL1COST_TSNEAKER = "200";
+ABL2COST_TSNEAKER = "300";
+ABL3COST_TSNEAKER = "350";
+
 SHOP_CardboardBox = "\cFCardboard Box\cj :: 200";
-SHOPDESC_CardboardBox = "\c[MenuWhite]Deploys a box that\n"
-"makes every player inside it invisible.\n"
-"This isn't cheap cardboard, huh.\n";
+SHOPDESC_CardboardBox = "\c[MenuWhite]Deploys a box that makes every player inside it invisible. This isn't cheap cardboard, huh.";
 
 SHOP_SmokeGrenade = "\cFSmoke Grenade\cj :: 300";
-SHOPDESC_SmokeGrenade = "\c[MenuWhite]Throws a grenade that will\n"
-"Stop on surfaces and makes smoke\n"
-"that makes opponents move at half speed\n";
+SHOPDESC_SmokeGrenade = "\c[MenuWhite]Throws a grenade that will Stop on surfaces and makes smoke that makes opponents move at half speed";
 
 SHOP_StunMine = "\cFStun Mine\cj :: 350";
-SHOPDESC_StunMine = "\c[MenuWhite]Places down a trap that\n"
-"Jumps up and stuns opponents around it\n"
-"This mine can be destroyed by others.";
+SHOPDESC_StunMine = "\c[MenuWhite]Places down a trap that Jumps up and stuns opponents around it This mine can be destroyed by others.";
+
+
+ABL1_TASSASSIN = "WeakenShuriken";
+ABL2_TASSASSIN = "NinjaRope";
+ABL3_TASSASSIN = "KillingDash";
+ABL1COST_TASSASSIN = "250";
+ABL2COST_TASSASSIN = "250";
+ABL3COST_TASSASSIN = "350";
 
 SHOP_WeakenShuriken = "\cFWeaken Shuriken\cj :: 250";
-SHOPDESC_WeakenShuriken = "\c[MenuWhite]Throws 3 spreaded shurikens\n"
-"that gives opponents half damage if hit\n";
+SHOPDESC_WeakenShuriken = "\c[MenuWhite]Throws 3 spreaded shurikens that gives opponents half damage if hit";
 
 SHOP_NinjaRope = "\cFNinja Rope\cj :: 250";
-SHOPDESC_NinjaRope = "\c[MenuWhite]Throws a kunai with a rope that\n"
-"Acts as a long wire adaptor\n"
-"This rope doesn't include refunds.\n";
+SHOPDESC_NinjaRope = "\c[MenuWhite]Throws a kunai with a rope that Acts as a long wire adaptor This rope doesn't include refunds.";
 
 SHOP_KillingDash = "\cFKilling Dash\cj :: 350";
-SHOPDESC_KillingDash = "\c[MenuWhite]Dashes forward for a long\n"
-"duration, press Altfire to use Knife instantly\n"
-"at the cost of longer endlag, killing\n"
-"with it will reward you a single charge.\n";
+SHOPDESC_KillingDash = "\c[MenuWhite]Dashes forward for a long duration, press Altfire to use Knife instantly at the cost of longer endlag, killing with it will reward you a single charge.";
+
+ABL1_TGRIM = "HeadWheel";
+ABL2_TGRIM = "DecomposeBeam";
+ABL3_TGRIM = "Necromancy";
+ABL1COST_TGRIM = "100";
+ABL2COST_TGRIM = "200";
+ABL3COST_TGRIM = "-1";
 
 SHOP_HeadWheel = "\cFHead Wheel\cj :: 100";
-SHOPDESC_HeadWheel = "\c[MenuWhite]Throws an half speed beam\n"
-"that deals lethal damage when headshotting with.\n";
+SHOPDESC_HeadWheel = "\c[MenuWhite]Throws an half speed beam that deals lethal damage when headshotting with.";
 
 SHOP_DecomposeBeam = "\cFDecompose Beam\cj :: 200";
-SHOPDESC_DecomposeBeam = "\c[MenuWhite]Creates a close-range beam\n"
-"that steal health, remove ammo\n"
-"and make their aim worse\n";
+SHOPDESC_DecomposeBeam = "\c[MenuWhite]Creates a close-range beam that steal health, remove ammo and make their aim worse";
 
 SHOP_Necromancy = "\cFNecromancy\cj :: ---";
-SHOPDESC_Necromancy = "\c[MenuWhite]Summons a monster\n"
-"that shoots opponents, last shots\n"
-"make it move a bit, fragging opponents\n"
-"using your abilities rewards this one.\n";
+SHOPDESC_Necromancy = "\c[MenuWhite]Summons a monster that shoots opponents, last shots make it move a bit, fragging opponents using your abilities rewards this one.";
+
+ABL1_TGRAND = "GrandBomb";
+ABL2_TGRAND = "BatteryDepleter";
+ABL3_TGRAND = "BulletGrenade";
+ABL1COST_TGRAND = "350";
+ABL2COST_TGRAND = "400";
+ABL3COST_TGRAND = "400";
 
 SHOP_GrandBomb = "\cFGrand Bomb\cj :: 350";
-SHOPDESC_GrandBomb = "\c[MenuWhite]Throws a lobbing grenade\n"
-"that bounces several times on surfaces.\n";
+SHOPDESC_GrandBomb = "\c[MenuWhite]Throws a lobbing grenade that bounces several times on surfaces.";
 
 SHOP_BatteryDepleter = "\cFBattery Depleter\cj :: 400";
-SHOPDESC_BatteryDepleter = "\c[MenuWhite]Throws a faster lobbing grenade\n"
-"that removes ammo from opponents\n"
-"explodes into an area of anti-ammo.\n";
+SHOPDESC_BatteryDepleter = "\c[MenuWhite]Throws a faster lobbing grenade that removes ammo from opponents explodes into an area of anti-ammo.";
 
 SHOP_BulletGrenade = "\cFBullet Grenade\cj :: 400";
-SHOPDESC_BulletGrenade = "\c[MenuWhite]Throws an even faster lobbing grenade\n"
-"That explodes into dozens of lazers,\n"
-"a few lazers moves honrizontally.\n";
+SHOPDESC_BulletGrenade = "\c[MenuWhite]Throws an even faster lobbing grenade That explodes into dozens of lazers, a few lazers moves honrizontally.";
 
 //PRBlaster's Classes
+
+ABL1_BLAKE = "BombSlide";
+ABL2_BLAKE = "BombLay";
+ABL3_BLAKE = "BlakeOut";
+ABL1COST_BLAKE = "-1";
+ABL2COST_BLAKE = "250";
+ABL3COST_BLAKE = "350";
 
 SHOP_BombSlide = "\cFBomb Slide\cj :: ---";
 SHOPDESC_BombSlide = "\c[MenuWhite]A very quick dash, useful for getting away";
@@ -318,23 +358,31 @@ SHOP_BlakeOut = "\cFBlake Out\cj :: 350";
 SHOPDESC_BlakeOut = "\c[MenuWhite]An escape option when all else fails";
 
 //Knux
+
+ABL1_KNUX = "BubbleArrow";
+ABL2_KNUX = "BubbleBouncer";
+ABL3_KNUX = "BubbleMine";
+ABL1COST_KNUX = "200";
+ABL2COST_KNUX = "350";
+ABL3COST_KNUX = "250";
+
 SHOP_BubbleArrow = "\cFBubble Arrow\cj :: 200";
-SHOPDESC_BubbleArrow = "\c[MenuWhite]Draw a bow to fire bubble\n"
-"Arrows, toggle the number of \n"
-"bounces with altfire.";
+SHOPDESC_BubbleArrow = "\c[MenuWhite]Draw a bow to fire bubble Arrows, toggle the number of  bounces with altfire.";
 
 SHOP_BubbleBouncer = "\cFBubble Bouncer\cj :: 350";
-SHOPDESC_BubbleBouncer = "\c[MenuWhite]Spawn a large, obstructive\n"
-"Bubble, bursts into slow foam\n"
-"when hit with a bubble Arrow.";
+SHOPDESC_BubbleBouncer = "\c[MenuWhite]Spawn a large, obstructive Bubble, bursts into slow foam when hit with a bubble Arrow.";
 
 SHOP_BubbleMine = "\cFBubble Mine\cj :: 250";
-SHOPDESC_BubbleMine = "\c[MenuWhite]Deploy a mine that upon\n"
-"detecting an opponent, explodes and releases \n"
-"slowing foam. you can step on\n"
-"The mines yourself for a boost!";
+SHOPDESC_BubbleMine = "\c[MenuWhite]Deploy a mine that upon detecting an opponent, explodes and releases slowing foam. you can step on The mines yourself for a boost!";
 
 //Stakeout
+ABL1_STAKEOUT = "CameraDrone";
+ABL2_STAKEOUT = "HolographicBush";
+ABL3_STAKEOUT = "AutoTripod";
+ABL1COST_STAKEOUT = "-1";
+ABL2COST_STAKEOUT = "100";
+ABL3COST_STAKEOUT = "250";
+
 SHOP_CAMERADRONE = "\cFCamera Drone\cj :: N/A";
 SHOPDESC_CAMERADRONE = "\c[MenuWhite]Equips drone that watches all\n\c[MenuWhite]Hold to readjust its aim\n\c[MenuWhite]Reactivate to pop flash.";
 

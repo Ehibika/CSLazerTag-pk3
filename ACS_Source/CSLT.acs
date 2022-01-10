@@ -28,7 +28,8 @@ if(ACS_ExecuteWithResult(975,1)==1)
 	ACS_NamedExecuteAlways("SetClientSpecies",0,GetPlayerInfo(PlayerNumber(), PLAYERINFO_TEAM));
 	}
 else{setactorproperty(0,APROP_SPECIES,StrParam(s:"Player_",i:pln));}
- 
+ 	ACS_NamedExecuteAlways("CSLT_StepHandler",0);
+
 // Stores the players starting Jump Height on spawn
 //PlayerJumpZ[pln] = GetActorProperty(0, APROP_JumpZ);
 }
@@ -98,6 +99,57 @@ int ABPLevel;
 		
 
 	}
+}
+
+
+#DEFINE CLOAKDAGGERLIMIT 60.0//96.0
+#DEFINE CLOAKDAGGERSTEPCOST 55.0//72.0
+#DEFINE CLOAKDAGGERREGEN 4.5
+// 100 / CLOAKDAGGERLIMIT =
+#DEFINE CLOAKDAGGERFIXEDMULTIPLY 1.042
+
+script "CSLT_StepHandler" (void)
+{
+int CloakDagger = CLOAKDAGGERLIMIT;
+while(PlayerHealth()>0) {
+	if(GetActorZ (0) - GetActorFloorZ (0) < 1){CloakDagger = CloakDaggerFunc(CloakDagger);}
+	delay(1);
+}
+}
+
+function int CloakDaggerFunc(int CloakDagger)
+{
+	if(CheckInventory("CardboardBoxRadiusFlag")==0 && CheckInventory("HushStep")==0) {
+		CloakDagger -= getTotalVelocity();
+	}
+	CloakDagger += CLOAKDAGGERREGEN;
+	if(CloakDagger > CLOAKDAGGERLIMIT) {
+		CloakDagger = CLOAKDAGGERLIMIT;
+	} else if (CloakDagger <= 0.0) {
+		CloakDagger += CLOAKDAGGERSTEPCOST;
+		GiveInventory("FootStepPickup",1);
+	}
+	//adjustInventory("CloakDaggerBar",(fixedMul(CloakDagger,CLOAKDAGGERFIXEDMULTIPLY))>>16);
+	return CloakDagger;
+}
+
+function int getTotalVelocity(void)
+{
+	int len;
+	int x = GetActorVelX(0);
+	int y = GetActorVelY(0);
+	int z = GetActorVelZ(0);
+
+	int ang = vectorangle(x,y);
+	if(((ang+0.125)%0.5) > 0.25) len = fixeddiv(y, sin(ang));
+	else len = fixeddiv(x, cos(ang));
+
+	ang = vectorangle(len, z);
+	if(((ang+0.125)%0.5) > 0.25) len = fixeddiv(z, sin(ang));
+	else len = fixeddiv(len, cos(ang));
+
+	//print(f:len);
+	return len;
 }
 
 Script "TF2_TracerZGet" (void)
@@ -232,6 +284,15 @@ if (Damage<=0){Damage = 1;}
 SetResultValue(Damage);
 }
 
+
+Script "DMGR" (int DMG1, int Range1, int DMG2, int Range2) //Damage Rate Script
+{
+int Dist = xyzdistance(0, ACS_ExecuteWithResult("Core_GetTarget", 0));
+
+int Damage;// = NoNeg(ModDamage - NoNeg(xyzdistance(0, ACS_ExecuteWithResult(257, 0))-DistStart)/RampRate);
+if (Damage<=0){Damage = 1;}
+SetResultValue(Damage);
+}
 
 script "CSLT_PitchGrab" (Void)
 {
@@ -473,7 +534,7 @@ else
 			    userCount++;
 				Dist = xyDistance(0, targetTID);
 				BlindFactor = ValueMap(Dist,maxRange>>16,(maxRange>>16)/2,50,BlindDuration);
-					log(i:Dist,s:" ",i:BlindFactor);
+					//log(i:Dist,s:" ",i:BlindFactor);
 					if(BlindFactor > BlindDuration){BlindFactor = BlindDuration;}
 					if(BlindFactor < 50){BlindFactor = 50;}
 					
@@ -1521,17 +1582,21 @@ ACS_NamedExecuteAlways("TLMS_RoundSignature", 0);
 Script "TLMS_RoundCleanup" OPEN
 {
 if(GetCvar("lastmanstanding")==1||GetCvar("teamlms")==1){
-	While(GetGameModeState() != GAMESTATE_INPROGRESS) Delay(1);
+	//While(GetGameModeState() != GAMESTATE_INPROGRESS) Delay(1);
 	//===Round Start
 	While(GetGameModeState() != GAMESTATE_COUNTDOWN) Delay(1);
-	Thing_Remove(DROPITEMTID);
-	ACS_NamedExecuteAlways("TLMS_ClientRoundCleanup", 0);
+
+	For(int i=0;i<100;i++)
+	{
+	Thing_Remove(DROPITEMTID+i);
+	ACS_NamedExecuteAlways("TLMS_ClientRoundCleanup", 0,DROPITEMTID+i);
+	}	
 	}
 }
 
-Script "TLMS_ClientRoundCleanup" (VOID)
+Script "TLMS_ClientRoundCleanup" (int TID)
 {
-Thing_Remove(DROPITEMTID);
+Thing_Remove(TID);
 }
 
 Script "CheckAbilityCap" (int AbilityNum)
@@ -1605,4 +1670,81 @@ script "CSLT_istargetclient" (void) CLIENTSIDE
 	{
 		SetResultValue(0);
 	}
+}
+
+
+int PlayerSprayPattern[64][3];
+#define SP_Cur 0
+#define SP_Dir 1
+#define SP_Count 2
+
+#DEFINE SP_SWAYSHOTSTART 3
+#DEFINE SP_SWAYCAP 1.2
+#DEFINE SP_SWAYMIN 0.2
+//#define SwayRate 0.75
+script "LeftRightDeviation" (int ShotGoal, int LeftGoal, int RightGoal, int SwaySpeedCap)
+{
+int P = PlayerNumber();
+int OutPut;
+int SwayRate;
+if(!SwaySpeedCap){SwaySpeedCap = SP_SWAYCAP;}
+If(CheckInventory("ShotCount") > SP_SWAYSHOTSTART)
+	{
+	if (PlayerSprayPattern[p][SP_Dir] == 1)
+		{
+			if (PlayerSprayPattern[p][SP_Cur] < RightGoal)
+			{
+			SwayRate = 0.1+FixedMul(RightGoal-PlayerSprayPattern[p][SP_Cur],0.4);
+			if(SwayRate > SwaySpeedCap) {SwayRate = SwaySpeedCap;}
+			if(SwayRate < SP_SWAYMIN) {SwayRate = SP_SWAYMIN;}
+			PlayerSprayPattern[p][SP_Cur] += SwayRate;
+			OutPut = SwayRate;
+			}
+			else
+				{
+				PlayerSprayPattern[p][SP_Count] += 1;
+				If(PlayerSprayPattern[p][SP_Count] >= ShotGoal+Random(-2,2)){PSP_SwapDir();}
+				}
+		}
+	else if (PlayerSprayPattern[p][SP_Dir] == 0)
+		{
+			if (PlayerSprayPattern[p][SP_Cur] > -LeftGoal)
+			{
+			SwayRate = (0.1+FixedMul(abs(LeftGoal-(-PlayerSprayPattern[p][SP_Cur])),0.4));
+			if(SwayRate > SwaySpeedCap) {SwayRate = SwaySpeedCap;}
+			if(SwayRate < SP_SWAYMIN) {SwayRate = SP_SWAYMIN;}
+			PlayerSprayPattern[p][SP_Cur] -= SwayRate;
+			OutPut = -SwayRate;
+			}
+			else
+				{
+				PlayerSprayPattern[p][SP_Count] += 1;
+				If(PlayerSprayPattern[p][SP_Count] >= ShotGoal+Random(0,3)){PSP_SwapDir();}
+				}
+		}
+
+
+	
+	
+	}
+
+SetResultValue(OutPut);
+}
+
+script "Clear_LeftRightDeviation" (void)
+{
+int P = PlayerNumber();
+PlayerSprayPattern[p][SP_Cur] = 0;
+PlayerSprayPattern[p][SP_Dir] = 1;
+PlayerSprayPattern[p][SP_Count] = 0;
+
+}
+
+Function void PSP_SwapDir (void)
+{
+int P = PlayerNumber();
+//PlayerSprayPattern[p][SP_Cur] = 0;
+
+	if (PlayerSprayPattern[p][SP_Dir] == 1){PlayerSprayPattern[p][SP_Dir] = 0;}
+	else if (PlayerSprayPattern[p][SP_Dir] == 0){PlayerSprayPattern[p][SP_Dir] = 1;}
 }
