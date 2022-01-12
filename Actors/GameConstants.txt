@@ -1,5 +1,9 @@
 Const int FVM = 65536; //Fixed Value Multiple
 Const float FVMF = 65536.0;
+
+Const int W_SideArm = 1;
+Const int W_MainWeapon = 2;
+Const int W_MainWeapon2 = 3;
 //=======|weapon Constants|==========
 const int Aim_OverHead = 35;
 const int Aim_ArcOverHead = 15;

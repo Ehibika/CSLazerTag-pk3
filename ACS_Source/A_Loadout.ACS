@@ -6,6 +6,8 @@
 #DEFINE MAX_ITEMS 25
 #DEFINE MAX_WEAPONS 16
 
+#DEFINE MAINWEPSTART 7
+
 
 str the_items[MAX_ITEMS] = 
 {
@@ -52,13 +54,57 @@ Script "DropYourWeapons" (int Exclude)
     for (int i=0; i<Exclude; i++) 
     {
     InvCount = CheckInventory(the_items[i]);
-    while(InvCount){DropWepFunc(the_items[i],60,60); InvCount = CheckInventory(the_items[i]);}
+    while(InvCount){DropWepFunc(the_items[i],6.0,6.0); InvCount = CheckInventory(the_items[i]);}
     }
     //==
     for (i=Exclude+1; i<MAX_WEAPONS; i++) 
     {
     InvCount = CheckInventory(the_items[i]);
-    while(InvCount){DropWepFunc(the_items[i],60,60); InvCount = CheckInventory(the_items[i]);}
+    while(InvCount){DropWepFunc(the_items[i],6.0,6.0); InvCount = CheckInventory(the_items[i]);}
+    }  
+
+    ACS_NamedExecuteAlways("Write_Inventory",0,1);
+    delay(1);
+    GiveInventory("PickupOn",1);
+}
+
+Script "DropYourSidearm" (int Exclude)
+{
+    GiveInventory("PickupOff",1);
+    int InvCount;
+
+    for (int i=0; i<Exclude; i++) 
+    {
+    InvCount = CheckInventory(the_items[i]);
+    while(InvCount){DropWepFunc(the_items[i],6.0,6.0); InvCount = CheckInventory(the_items[i]);}
+    }
+    //==
+    for (i=Exclude+1; i<MAINWEPSTART; i++) 
+    {
+    InvCount = CheckInventory(the_items[i]);
+    while(InvCount){DropWepFunc(the_items[i],6.0,6.0); InvCount = CheckInventory(the_items[i]);}
+    }  
+
+    ACS_NamedExecuteAlways("Write_Inventory",0,1);
+    delay(1);
+    GiveInventory("PickupOn",1);
+}
+
+Script "DropYourMainWep" (int Exclude)
+{
+    GiveInventory("PickupOff",1);
+    int InvCount;
+
+    for (int i=MAINWEPSTART; i<Exclude; i++) 
+    {
+    InvCount = CheckInventory(the_items[i]);
+    while(InvCount){DropWepFunc(the_items[i],6.0,6.0); InvCount = CheckInventory(the_items[i]);}
+    }
+    //==
+    for (i=Exclude+1; i<MAX_WEAPONS; i++) 
+    {
+    InvCount = CheckInventory(the_items[i]);
+    while(InvCount){DropWepFunc(the_items[i],6.0,6.0); InvCount = CheckInventory(the_items[i]);}
     }  
 
     ACS_NamedExecuteAlways("Write_Inventory",0,1);
@@ -70,7 +116,11 @@ Function void DropWepFunc (str WepName, int XSpeed, int Zspeed)
 {
     int Angle = GetActorAngle(0) >> 8;
     str DroppedItem = StrParam(s:WepName,s:"DropItem");
-    SpawnProjectile (0,DroppedItem, Angle+(128+Random(-64,64)), XSpeed, Zspeed, 0.5, UniqueTID(DROPITEMTID,DROPITEMTID+100));
+    int DropTID = UniqueTID(DROPITEMTID,DROPITEMTID+100);
+    SpawnSpotForced(DroppedItem,ActivatorTID(),DropTID,Angle+(128+Random(-64,64)));
+    SetActorVelocity(DropTID,XSpeed,0,Zspeed,FALSE, FALSE);
+    //if(XSpeed && Zspeed){SpawnProjectile (0,DroppedItem, Angle+(128+Random(-64,64)), XSpeed, Zspeed, 0.5, UniqueTID(DROPITEMTID,DROPITEMTID+100));}
+    //else{}
     TakeInventory(WepName,1);
     //log(i:Angle,s:" ",f:Angle);
 }
@@ -345,7 +395,7 @@ str ItemName;
     {
     ItemName = the_items[i];
     InvCount = CheckInventory(ItemName);
-    if(InvCount){DropWepFunc(ItemName,60,60); InvCount = CheckInventory(ItemName); /*log(s:"Dropped ",s:ItemName);*/}
+    if(InvCount){DropWepFunc(ItemName,6.0,6.0); InvCount = CheckInventory(ItemName); /*log(s:"Dropped ",s:ItemName);*/}
     }
 
 if (!GetPlayerLivesLeft(PlayerNumber()))

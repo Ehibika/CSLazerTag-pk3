@@ -3,7 +3,7 @@ actor SmokeScreenGun : BasicLazer
 {
 Weapon.AmmoUse2 1
 Weapon.AmmoGive2 2
-Weapon.SlotNumber 1
+Weapon.SlotNumber 0
 Inventory.Pickupmessage "$PU_MEGABUSTER"
 Obituary "$OB_MEGABUSTER"
 Tag "SmokeScreen Gun"
@@ -49,7 +49,7 @@ actor Ability1_Smoker : WepMasterBase
 {
 Weapon.AmmoUse2 1
 Weapon.AmmoGive2 2
-Weapon.SlotNumber 1
+Weapon.SlotNumber 0
 Inventory.Pickupmessage "$PU_MEGABUSTER"
 Obituary "$OB_MEGABUSTER"
 Tag "SmokeScreen Gun"
@@ -112,7 +112,7 @@ actor Ability2_Smoker : WepMasterBase
 {
 Weapon.AmmoUse2 1
 Weapon.AmmoGive2 2
-Weapon.SlotNumber 1
+Weapon.SlotNumber 0
 Inventory.Pickupmessage "$PU_MEGABUSTER"
 Obituary "$OB_MEGABUSTER"
 Tag "SmokeScreen Gun"

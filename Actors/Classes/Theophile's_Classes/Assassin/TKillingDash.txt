@@ -20,7 +20,7 @@ MKNI A 0
 loop
 
 Select:
-TNT1 A 0 ACS_NamedExecuteAlways("WepSpeedMod",0,Knife_MoveSpeed*FVM)
+TNT1 A 0 ACS_NamedExecuteAlways("WepSetup",0,Knife_MoveSpeed*FVM,W_SideArm)
 TNT1 AAAAAAAAAAAAAAAAAAAAAA 0 A_Raise
 "####" B 1 A_Raise
 Loop

@@ -32,6 +32,10 @@ var int user_wepangle;
 var int user_weppitch;
 var int user_wepangle2;
 
+var int user_RemoteX;
+var int user_RemoteY;
+var int user_RemoteZ;
+
 var int User_TempShotVar;
 States
 {

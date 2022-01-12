@@ -5,6 +5,7 @@ player.startitem "IsGrim"
 player.startitem "BusterPower", 100
 player.startitem "SetupShop"
 player.startitem "LoadShopInventory"
+player.startitem "RoundSignatureGive"
 
 player.startitem "TGrim_ClassSet"
 

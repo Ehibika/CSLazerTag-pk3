@@ -37,6 +37,9 @@ Goto Ready.Core
 Deselect:
 TNT1 A 0 A_TakeInventory("TargActive",9)
 TNT1 A 0 A_TakeInventory("AbilityActiveFlag",9)
+TNT1 A 0 A_TakeInventory("WepTier1",1) 
+TNT1 A 0 A_TakeInventory("WepTier2",1) 
+TNT1 A 0 A_TakeInventory("WepTier3",1) 
 TNT1 AAAAAAAAAAAAAAAAAAAAAA 0 A_Lower
 "####" B 1 A_Lower
 Loop

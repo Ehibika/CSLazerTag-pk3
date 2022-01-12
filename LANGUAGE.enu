@@ -151,24 +151,24 @@ SHOPCost_Scrapper = 500.0;
 
 
 SHOP_Zapper = "\cgZapper\cj :: Free";
-SHOP_Scrapper = "\cFScrapper\cj :: 600";
-SHOP_Watchman = "\cFWatchman\cj :: 500";
-SHOP_Scout = "\cFScout\cj :: 400";
-SHOP_Pounder = "\cFPounder\cj :: 200";
-SHOP_Gunslinger = "\cFGunslinger\cj :: 800";
+SHOP_Scrapper = "\cnScrapper\cj :: 600";
+SHOP_Watchman = "\cnWatchman\cj :: 500";
+SHOP_Scout = "\cnScout\cj :: 400";
+SHOP_Pounder = "\cnPounder\cj :: 200";
+SHOP_Gunslinger = "\cnGunslinger\cj :: 800";
 //===
-SHOP_Fighter = "\cFFighter\cj :: 2200";
-SHOP_Warden = "\cFWarden\cj :: 2700";
-SHOP_Tracer = "\cFTracer\cj :: 1100";
-SHOP_Enforcer = "\cFEnforcer\cj :: 2900";
-SHOP_Toujorprey = "\cFToujorprey\cj :: 2900";
+SHOP_Fighter = "\cdFighter\cj :: 2200";
+SHOP_Warden = "\cdWarden\cj :: 2700";
+SHOP_Tracer = "\cdTracer\cj :: 1100";
+SHOP_Enforcer = "\cdEnforcer\cj :: 2900";
+SHOP_Toujorprey = "\cdToujorprey\cj :: 2900";
 //===
-SHOP_Vaporizer = "\cFVaporizer\cj :: 1100";
-SHOP_Hyperbeam = "\cFHyperbeam\cj :: 5000";
-SHOP_LightCannon = "\cFLightCannon\cj :: 4200";
+SHOP_Vaporizer = "\cdVaporizer\cj :: 1100";
+SHOP_Hyperbeam = "\cdHyperbeam\cj :: 5000";
+SHOP_LightCannon = "\cdLightCannon\cj :: 4200";
 //===
-SHOP_Muscler = "\cFMuscler\cj :: 1000";
-SHOP_Skye = "\cFSkye\cj :: 1400";
+SHOP_Muscler = "\cdMuscler\cj :: 1000";
+SHOP_Skye = "\cdSkye\cj :: 1400";
 
 SHOP_LightArmor = "\cFLight Armor\cj :: 400";
 SHOP_HeavyArmor = "\cFHeavy Armor\cj :: 1000";

@@ -6,6 +6,7 @@ player.startitem "IsKnux"
 player.startitem "BusterPower", 1000
 player.startitem "SetupShop"
 player.startitem "LoadShopInventory"
+player.startitem "RoundSignatureGive"
 
 player.startitem "Knux_ClassSet"
 

@@ -69,36 +69,48 @@ Script "BusterPowerHandler" ENTER
 	delay(3);
 GiveInventory("BusterPower",1000);
 GiveInventory("AntiBusterPower",1000);
+GiveInventory("BusterPower2",1000);
+GiveInventory("AntiBusterPower2",1000);
 int BPLevel;
 int ABPLevel;
 	while (GetActorProperty(ActivatorTID(), APROP_HEALTH) > 0)
 	{
 	delay(1);
-	BPLevel = Checkinventory("BusterPower");
-	ABPLevel = Checkinventory("AntiBusterPower");
+	//BPLevel = Checkinventory("BusterPower");
+	//ABPLevel = Checkinventory("AntiBusterPower");
+	if(Checkinventory("AmmoStaller")){Continue;}
+	BPHandler("BusterPower","AntiBusterPower");
+	BPHandler("BusterPower2","AntiBusterPower2");
 	
-	
-	if ( BPLevel == 1000 && ABPLevel == 1000){Continue;}
-	if (Checkinventory("AmmoStaller")){Continue;}
-		if (BPLevel < ABPLevel)
+	}
+}
+
+Function void BPHandler (str Bpower, str ABPower)
+{
+	int BPLevel = Checkinventory(Bpower);
+	int ABPLevel = Checkinventory(ABPower);
+	if (!(BPLevel == 1000 && ABPLevel == 1000))
+	{
+			if (BPLevel < ABPLevel)
 			{
-			TakeInventory("AntiBusterPower",ANTIDRAINRATE);
+			TakeInventory(ABPower,ANTIDRAINRATE);
 			if(CheckInventory("BloomCount")){TakeInventory("BloomCount",BLOOMRECHARGERATE);}
 			}
 		Else if (BPLevel == ABPLevel)
 			{
-			GiveInventory("BusterPower",RECHARGERATE);
-			GiveInventory("AntiBusterPower",RECHARGERATE);
+			GiveInventory(Bpower,RECHARGERATE);
+			GiveInventory(ABPower,RECHARGERATE);
 			if(CheckInventory("BloomCount")){TakeInventory("BloomCount",999);}
 			}
 		Else if (BPLevel > ABPLevel)
 			{
-			TakeInventory("AntiBusterPower",9999);
-			GiveInventory("AntiBusterPower",BPLevel);
+			TakeInventory(ABPower,9999);
+			GiveInventory(ABPower,BPLevel);
 			}
+	}
+
 		
 
-	}
 }
 
 
@@ -277,6 +289,26 @@ if(Value != GetActorProperty(0,APROP_SPEED))
 
 }
 
+Script "WepSetup" (int SpeedValue, int WepTier)
+{
+int FixedValue = SpeedValue<<16;
+if(SpeedValue != GetActorProperty(0,APROP_SPEED))
+	{
+	//log(i:Value,s:" ",i:GetActorProperty(0,APROP_SPEED),s:" ",f:Value,s:" ",f:GetActorProperty(0,APROP_SPEED));
+	SetActorPRoperty(0,APROP_SPEED,SpeedValue);
+	}
+
+	TakeInventory("Weptier1",9);
+	TakeInventory("Weptier2",9);
+	TakeInventory("Weptier3",9);
+
+	if(WepTier > 3){WepTier = 3;}
+	if(WepTier < 1){WepTier = 1;}
+
+	GiveInventory(StrParam(s:"Weptier",i:WepTier),1);
+
+}
+
 Script "DamageRate" (int ModDamage, int DistStart, int RampRate) //DamageDropoff Script
 {
 int Damage = NoNeg(ModDamage - NoNeg(xyzdistance(0, ACS_ExecuteWithResult(257, 0))-DistStart)/RampRate);
@@ -285,12 +317,26 @@ SetResultValue(Damage);
 }
 
 
+Script "DMinMax" (int MinD, int MaxD)
+{ //Picks the highest of the 2 values
+int Output = MinD;
+if(MaxD > MinD) {Output = MaxD;}
+SetResultValue(Output);
+}
+
 Script "DMGR" (int DMG1, int Range1, int DMG2, int Range2) //Damage Rate Script
 {
-int Dist = xyzdistance(0, ACS_ExecuteWithResult("Core_GetTarget", 0));
 
-int Damage;// = NoNeg(ModDamage - NoNeg(xyzdistance(0, ACS_ExecuteWithResult(257, 0))-DistStart)/RampRate);
-if (Damage<=0){Damage = 1;}
+//Range 1 is the closest range threshold, Range 2 is the furthest
+
+int Dist = xyzdistance(0, ACS_NamedExecuteWithResult("Core_GetTarget", 0));
+int Damage;
+if(Dist <= Range1*ZDMETER) //Within effective range
+	{Damage = DMG1;}
+else if(Dist <= Range2*ZDMETER) //Beyond effective range
+	{
+	Damage = DMG2;
+	}
 SetResultValue(Damage);
 }
 
@@ -1148,11 +1194,12 @@ Script "RemoteControlActor" (int ActorSpeed, int MaxRange)
     Thing_Remove(0);
     //if(CheckActorInventory(OwnerTID,"RemoteKiller")){GiveActorInventory(OwnerTID,"FrightFXSpawn",1);}
 }
-/*
+
 Script "MouseRemoteControlActor" (int ActorSpeed, int MaxRange)
 {
 
     int OwnerTID = ACS_NamedExecuteWithResult("core_gettarget",0);
+	int OwnerStartPitch = GetActorPitch(OwnerTID);
     if (MaxRange <= 0){MaxRange = 500;}
 
     int InputButtons;
@@ -1173,9 +1220,18 @@ Script "MouseRemoteControlActor" (int ActorSpeed, int MaxRange)
     int HostAngle;
     int MoveAngle;
 
+    int yawScale;
+    int pitchScale;
+
+	int mx,my;
+	int pitch;
+	int PitchRamp;
+	int Dist;
+
     GiveActorInventory(OwnerTID,"InRemoteMode",1);
     GiveActorInventory(OwnerTID,"3PCam_On",1);
-		
+	if(GetCvar("GL_NoGL") || GetCvar("Vid_Renderer") == 0){SetActorPitch (OwnerTID, 10194);}
+	else{SetActorPitch (OwnerTID, 16384);}
     while(GetActorProperty(OwnerTID, APROP_HEALTH)>0 && !CheckActorInventory(OwnerTID,"RemoteKiller"))
     {	
         //log(s:"test");
@@ -1188,14 +1244,29 @@ Script "MouseRemoteControlActor" (int ActorSpeed, int MaxRange)
         ConfirmInput = ButtonCheck(InputButtons, InputOldButtons, BT_ATTACK);
         CancelInput = ButtonCheck(InputButtons, InputOldButtons, BT_AltATTACK);
         Angle = GetActorAngle(OwnerTID);
+		Pitch = GetActorPitch(OwnerTID);
         HostAngle = VectorAngle (GetActorX (0) - GetActorX (OwnerTID), GetActorY (0) - GetActorY (OwnerTID));
+
+            yawScale   = FixedDiv(2.5,FixedMul(GetCVar("m_yaw"),GetCVar("mouse_sensitivity")));
+            pitchScale = FixedDiv(5.0,FixedMul(GetCVar("m_pitch"),GetCVar("mouse_sensitivity")));
+           
+            // Now we get our delta x and delta y. 'Delta' means 'change in'. So 'change in x', and 'change in y'.
+            // We'll use these to offset our current mouse position.
+            int dmx = FixedMul(GetPlayerInput(0,INPUT_YAW),yawScale);
+            int dmy = -FixedMul(GetPlayerInput(0,INPUT_PITCH),pitchScale);
+           
+            // Apply our offsets.
+            mx += dmx;
+            my += dmy;
         //MoveAngle = Angle;
+		
 
 
         Velx = 0;
         vely = 0;
         VelX2 = 0;
         Vely2 = 0;
+		/*
         if(UpInput != DownInput)
             {
                 if(UpInput == 3){Velx = FixedMul(cos(Angle),  ActorSpeed*65536); vely = FixedMul(Sin(Angle),  ActorSpeed*65536);}
@@ -1207,16 +1278,38 @@ Script "MouseRemoteControlActor" (int ActorSpeed, int MaxRange)
                 if(LeftInput == 3){Velx2 = FixedMul(cos(-Angle),  ActorSpeed*65536); vely2 = FixedMul(Sin(-Angle),  ActorSpeed*65536);}
                 if(RightInput == 3){Velx2 = FixedMul(cos(-Angle), -ActorSpeed*65536); vely2 = FixedMul(Sin(-Angle),  -ActorSpeed*65536);}
             }    
+			*/
 //log(f:HostAngle);
-            if(CancelInput == 1){Thing_Remove(0); Terminate;}
+
+			VelX2 = (dmx/ActorSpeed)*65536;
+			vely2 = (dmy/ActorSpeed)*65536;
+
+		    velx = FixedMul(VelX2,cos(Angle));
+    		vely = FixedMul(vely2,Sin(Angle));
+
+			//log(i:Velx,s:" ",i:vely);
+
+            if(CancelInput == 1){SetActorPitch (OwnerTID,OwnerStartPitch ); Thing_Remove(0); Terminate;}
             if(ConfirmInput == 1){SetActorState(0,"Trigger");}
-    SetActorVelocity(0, velx+vely2, vely+velx2, 0, FALSE, FALSE);
+    //SetActorVelocity(0, Velx, vely, 0, FALSE, FALSE);
     SetActorAngle (0,Angle );
+    SetActorPitch (0,Pitch );
+
+	//just in case
+	if(GetCvar("GL_NoGL") || GetCvar("Vid_Renderer") == 0){PitchRamp = ValueMap(Pitch,-5825,10194,-16384,0);}
+	else{PitchRamp = ValueMap(Pitch,-16384,16384,-16384,0);}
+
+	Dist = MaxRange*Sin(-PitchRamp) >> 16;
+    Warp(OwnerTID,Dist*cos(Angle),Dist*Sin(-Angle),0,Angle,WARPF_ABSOLUTEANGLE|WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_TOFLOOR);
+
+	//SetUserVariable(OwnerTID,"user_RemoteX",GetActorX (0))
+	//SetUserVariable(OwnerTID,"user_RemoteY",GetActorY (0))
+	//SetUserVariable(OwnerTID,"user_RemoteZ",GetActorZ (0))
 
     if(xyDistance(0, OwnerTID) > MaxRange)
         {
-            Warp(OwnerTID,MaxRange*cos(HostAngle),MaxRange*Sin(-HostAngle),0,HostAngle,WARPF_ABSOLUTEANGLE|WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_TOFLOOR);
-            SetActorAngle (0,Angle );
+           // Warp(OwnerTID,MaxRange*cos(HostAngle),MaxRange*Sin(-HostAngle),0,Angle,WARPF_ABSOLUTEANGLE|WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_TOFLOOR);
+            //SetActorAngle (0,Angle );
         //Velx = FixedMul(cos(HostAngle),  ActorSpeed*65536); vely = FixedMul(Sin(HostAngle),  ActorSpeed*65536);
         //SetActorVelocity(0, velx, vely, 0, FALSE, FALSE);    
         }
@@ -1224,20 +1317,156 @@ Script "MouseRemoteControlActor" (int ActorSpeed, int MaxRange)
 	InputOldButtons = InputButtons;
     }
 
+	SetActorPitch (OwnerTID,OwnerStartPitch );
     TakeActorInventory(OwnerTID,"InRemoteMode",99);
 	GiveActorInventory(OwnerTID,"3PCam_Off",1);
     Thing_Remove(0);
     //if(CheckActorInventory(OwnerTID,"RemoteKiller")){GiveActorInventory(OwnerTID,"FrightFXSpawn",1);}
 }
-*/
+
+Script "RemoteCursor" (int ActorSpeed, int MaxRange)
+{
+ACS_NamedExecuteAlways("C_RemoteCursor",0, ActorSpeed,  MaxRange);
+}
+
+Script "C_RemoteCursor" (int ActorSpeed, int MaxRange) CLIENTSIDE
+{
+
+	if(Playernumber() != ConsolePlayerNumber()) {Terminate;}
+
+    int OwnerTID = activatorTID();
+	log(i:OwnerTID);
+    if (MaxRange <= 0){MaxRange = 500;}
+
+    int InputButtons;
+    int InputOldButtons; 
+    int UpInput;
+    int DownInput;
+    int LeftInput;
+    int RightInput;
+    Int ConfirmInput;
+    Int CancelInput;
+	int cursortid = (OwnerTID -1000) + 9100;
+
+    int Velx;
+    int Vely;
+    int Velx2;
+    int Vely2;
+    int Angle;
+    int HostAngle;
+    int MoveAngle;
+
+    int yawScale;
+    int pitchScale;
+
+	int mx,my;
+
+		if(SpawnForced("RemoteCursor", GetActorX(OwnerTID), GetActorY(OwnerTID), GetActorZ(OwnerTID)-GetActorFloorZ(OwnerTID) + 28.0, cursortid, GetActorAngle(OwnerTID) >> 8) > 0)
+	{
+	while(!CheckInventory("NetCheck_Freeze")){NamedRequestScriptPuke("NET_RemoStopPlayer",1,Playernumber());Delay(1);}
+
+	while(GetActorProperty(0, APROP_HEALTH)>0 
+			&& !CheckInventory("RemoteKiller") 
+			&& ThingCount(T_NONE,cursortid)
+			)
+    {	
+        //log(s:"test");
+        // - Grab Inputs -
+        InputButtons = GetPlayerInput(-1, INPUT_BUTTONS);
+        UpInput = ButtonCheck(InputButtons, InputOldButtons, BT_FORWARD);
+        DownInput = ButtonCheck(InputButtons, InputOldButtons, BT_BACK);
+        LeftInput = ButtonCheck(InputButtons, InputOldButtons, BT_MOVELEFT);
+        RightInput = ButtonCheck(InputButtons, InputOldButtons, BT_MOVERIGHT);
+        ConfirmInput = ButtonCheck(InputButtons, InputOldButtons, BT_ATTACK);
+        CancelInput = ButtonCheck(InputButtons, InputOldButtons, BT_AltATTACK);
+        Angle = GetActorAngle(0);
+        HostAngle = VectorAngle (GetActorX (cursortid) - GetActorX (OwnerTID), GetActorY (cursortid) - GetActorY (OwnerTID));
+        //MoveAngle = Angle;
+
+
+        Velx = 0;
+        vely = 0;
+        VelX2 = 0;
+        Vely2 = 0;
+        if(UpInput != DownInput)
+            {
+                if(UpInput){Velx = FixedMul(cos(Angle),  ActorSpeed*65536); vely = FixedMul(Sin(Angle),  ActorSpeed*65536);}
+                if(DownInput){Velx = FixedMul(cos(Angle), -ActorSpeed*65536); vely = FixedMul(Sin(Angle),  -ActorSpeed*65536);}
+            }  
+
+        if(LeftInput != RightInput)
+            {
+                if(LeftInput){Velx2 = FixedMul(cos(-Angle),  ActorSpeed*65536); vely2 = FixedMul(Sin(-Angle),  ActorSpeed*65536);}
+                if(RightInput){Velx2 = FixedMul(cos(-Angle), -ActorSpeed*65536); vely2 = FixedMul(Sin(-Angle),  -ActorSpeed*65536);}
+            }    
+//log(f:HostAngle);
+            if(CancelInput == 1){Thing_Remove(cursortid);}
+            if(ConfirmInput == 1){SetActorState(cursortid,"Trigger");}
+    SetActorVelocity(cursortid, velx+vely2, vely+velx2, 0, FALSE, FALSE);
+    SetActorAngle (cursortid,Angle );
+
+	//SetUserVariable(0,"user_RemoteX",(GetActorX (cursortid)-GetActorX (0))/65536);
+	//SetUserVariable(0,"user_RemoteY",(GetActorY (cursortid)-GetActorY (0))/65536);
+	//SetUserVariable(0,"user_RemoteZ",(GetActorZ (cursortid)-GetActorZ (0))/65536);
+
+	SetNoSaveCvarString("user_RemoteX", (GetActorX (cursortid)-GetActorX (0))/65536);
+	SetNoSaveCvarString("user_RemoteY", (GetActorY (cursortid)-GetActorY (0))/65536);
+	SetNoSaveCvarString("user_RemoteZ", (GetActorZ (cursortid)-GetActorZ (0))/65536);
+
+    if(xyDistance(cursortid, OwnerTID) > MaxRange)
+        {
+           // Warp(cursortid,MaxRange*cos(HostAngle),MaxRange*Sin(-HostAngle),0,HostAngle,WARPF_ABSOLUTEANGLE|WARPF_MOVEPTR|WARPF_INTERPOLATE|WARPF_NOCHECKPOSITION|WARPF_TOFLOOR);
+            SetActorAngle (cursortid,Angle );
+        //Velx = FixedMul(cos(HostAngle),  ActorSpeed*65536); vely = FixedMul(Sin(HostAngle),  ActorSpeed*65536);
+        //SetActorVelocity(0, velx, vely, 0, FALSE, FALSE);    
+        }
+    Delay(1);
+	InputOldButtons = InputButtons;
+    }
+	}
+
+
+	while(!CheckInventory("NetCheck_Freeze")){NamedRequestScriptPuke("NET_RemoStopPlayer",0,Playernumber());Delay(1);}
+    Thing_Remove(cursortid);
+    //if(CheckActorInventory(OwnerTID,"RemoteKiller")){GiveActorInventory(OwnerTID,"FrightFXSpawn",1);}
+}
+
+script "NET_RemoStopPlayer" (int toggle, int Pnum) NET
+{
+	if(toggle >= 1){
+		if(!CheckInventory("InRemoteMode"))
+        {ACS_NamedExecuteAlways("RemoStop",0,Pnum);}
+		GiveInventory("NetCheck_Freeze",1);
+	}
+	if(toggle == 0){
+		if(CheckInventory("InRemoteMode")>0 ){
+		TakeInventory("InRemoteMode", 99);
+        ACS_NamedExecuteAlways("Core_StopPlayer",0,0,0);
+		}
+        if(!CheckInventory("InRemoteMode")){GiveInventory("NetCheck_Freeze",1);}
+	}
+	
+}
+
+Script "RemoStop" (int Pnum)
+{
+    GiveInventory("InRemoteMode",1);
+    GiveInventory("3PCam_On",1);
+    ACS_NamedExecuteAlways("Core_StopPlayer",0,0,1);
+
+	While(CheckInventory("InRemoteMode")){Delay(1);}
+    ACS_NamedExecuteAlways("Core_StopPlayer",0,0,0);
+	GiveInventory("3PCam_Off",1);
+}
+
 Script "GrabRemoteCoor" (int T)
 {
 int output;
 switch(T)
     {
-    case 0: output = GetUserVariable(0,"user_RemoteX"); break;
-    case 1: output = GetUserVariable(0,"user_RemoteY"); break;
-    case 2: output = GetUserVariable(0,"user_RemoteZ"); break;
+    case 0: output = GetCvar("user_RemoteX"); /*GetUserVariable(0,"user_RemoteX");*/ break;
+    case 1: output = GetCvar("user_RemoteY");/*GetUserVariable(0,"user_RemoteY");*/ break;
+    case 2: output = GetCvar("user_RemoteZ");/*GetUserVariable(0,"user_RemoteZ");*/ break;
     }
 SetResultValue(output);
 }
@@ -1554,7 +1783,7 @@ Script "TLMS_RoundWarpRespawn" RESPAWN
 {
 ACS_NamedExecuteAlways("TLMS_RoundWarpRespawn", 0);
 }
-
+/*
 Script "TLMS_RoundSignature" ENTER
 {
 if(GetCvar("lastmanstanding")==1||GetCvar("teamlms")==1){
@@ -1577,6 +1806,18 @@ if(GetCvar("lastmanstanding")==1||GetCvar("teamlms")==1){
 Script "TLMS_RoundSignatureRespawn" RESPAWN
 {
 ACS_NamedExecuteAlways("TLMS_RoundSignature", 0);
+}
+*/
+
+Script "TLMS_RoundSignatureHandler" (Void)
+{
+if((GetCvar("lastmanstanding")==1||GetCvar("teamlms")==1)
+	&& GetGameModeState() == GAMESTATE_COUNTDOWN
+	&& !CheckInventory("AbilityCharge_1"))
+	{
+	GiveInventory("AbilityCharge_1",1); 
+	ACS_NamedExecuteAlways("Write_Inventory",0,1);
+	}
 }
 
 Script "TLMS_RoundCleanup" OPEN

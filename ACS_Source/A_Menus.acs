@@ -7,7 +7,7 @@
 #define MNL 8.0 //menu line spacing
 #define MNST 500 //
 #define MenuXOrigin 240.1//120.1
-#define MenuYOrigin 210.1//80.1
+#define MenuYOrigin 240.1//80.1
 int PastMenuSize;
 
 
@@ -380,14 +380,14 @@ Script "Menu_MainShop" (void) CLIENTSIDE
                 else{ItemCost = 0;}
                 */
                 ItemName = ShopItemList[i][0];
-					HudMessage(l:strParam(s:"SHOP_",s:ItemName); HUDMSG_FADEOUT, MNST + 00 + j, CR_WHITE, MenuX, Menuy + (MNL * j), 0.2, 0);
+					HudMessage(l:strParam(s:"SHOP_",s:ItemName); HUDMSG_FADEOUT, MNST + 00 + j, CR_WHITE, MenuX-(MNL * 1), Menuy + (MNL * j), 0.2, 0);
 					j++;
 			}
 	
 				if(!BGUp)
-					{DrawMenuFrame(MenuX-(8.0*4),MenuY-(8.0*-3),23,6+MoveFrameCap,0); 
+					{DrawMenuFrame(MenuX-(8.0*4),MenuY-(8.0*-4),23,6+MoveFrameCap,0); 
 					//DrawMenuFrame(MenuX-(8.0*3),MenuY-(8.0*3),21,2,PastMenuSize);
-					DrawMenuFrame(MenuX-(8.0*12),MenuY-(8.0*5),38,7,PastMenuSize);
+					DrawMenuFrame(MenuX-(8.0*12),MenuY-(8.0*4),38,7,PastMenuSize);
 					BGup = True;}
 
 				ChoiceCap = MAX_SHOP;
@@ -399,9 +399,9 @@ Script "Menu_MainShop" (void) CLIENTSIDE
 				}
 				else{CursorY = ChoiceID;}
 				
-				if(ChoiceID >= MAX_SHOP-3 && MAX_SHOP>6){HudMessage(s: "Exit"; HUDMSG_FADEOUT, MNST + 00 + (6), CR_ORANGE, MenuX, Menuy + (MNL * 6), 0.2, 0);}
-				else if(MAX_SHOP<=6){HudMessage(s: "Exit"; HUDMSG_FADEOUT, MNST + 00 + (MAX_SHOP), CR_ORANGE, MenuX, Menuy + (MNL * MAX_SHOP), 0.2, 0);}
-				HudMessage(s: ">>"; HUDMSG_FADEOUT, MNST + 15, 0, MenuX - 16.0, Menuy + (MNL * CursorY), 0.2, 0);
+				if(ChoiceID >= MAX_SHOP-3 && MAX_SHOP>6){HudMessage(s: "Exit"; HUDMSG_FADEOUT, MNST + 00 + (6), CR_ORANGE, MenuX-(MNL * 1), Menuy + (MNL * 6), 0.2, 0);}
+				else if(MAX_SHOP<=6){HudMessage(s: "Exit"; HUDMSG_FADEOUT, MNST + 00 + (MAX_SHOP), CR_ORANGE, MenuX-(MNL * 1), Menuy + (MNL * MAX_SHOP), 0.2, 0);}
+				HudMessage(s: ">>"; HUDMSG_FADEOUT, MNST + 15, 0, MenuX - (MNL * 3), Menuy + (MNL * CursorY), 0.2, 0);
 	
 				//Draw Description
 				ItemGameName = ShopItemList[ChoiceID][0];
@@ -542,7 +542,7 @@ Script "Menu_MainShop" (void) CLIENTSIDE
 					    HudMessage(l:strParam(s:"SHOP_",s:ItemName); HUDMSG_FADEOUT, MNST + 00 + j, CR_WHITE, MenuX, Menuy + (MNL * j), 0.2, 0);
                         }
                     */
-                    HudMessage(l:strParam(s:"SHOP_",s:ClassShopCache[j][0]); HUDMSG_FADEOUT, MNST + 00 + j, CR_WHITE, MenuX, Menuy + (MNL * j), 0.2, 0);
+                    HudMessage(l:strParam(s:"SHOP_",s:ClassShopCache[j][0]); HUDMSG_FADEOUT, MNST + 00 + j, CR_WHITE, MenuX-(MNL * 1), Menuy + (MNL * j), 0.2, 0);
                     j++;
 				}
 		
@@ -561,9 +561,9 @@ Script "Menu_MainShop" (void) CLIENTSIDE
 					}
 					else{CursorY = ChoiceID;}
 					
-					if(ChoiceID >= MAX_ABLSHOP-3 && MAX_ABLSHOP>6){HudMessage(s: "Exit"; HUDMSG_FADEOUT, MNST + 00 + (6), CR_ORANGE, MenuX, Menuy + (MNL * 6), 0.2, 0);}
-					else if(MAX_ABLSHOP<=6){HudMessage(s: "Exit"; HUDMSG_FADEOUT, MNST + 00 + (MAX_ABLSHOP), CR_ORANGE, MenuX, Menuy + (MNL * MAX_ABLSHOP), 0.2, 0);}
-					HudMessage(s: ">>"; HUDMSG_FADEOUT, MNST + 15, 0, MenuX - 16.0, Menuy + (MNL * CursorY), 0.2, 0);
+					if(ChoiceID >= MAX_ABLSHOP-3 && MAX_ABLSHOP>6){HudMessage(s: "Exit"; HUDMSG_FADEOUT, MNST + 00 + (6), CR_ORANGE, MenuX-(MNL * 1), Menuy + (MNL * 6), 0.2, 0);}
+					else if(MAX_ABLSHOP<=6){HudMessage(s: "Exit"; HUDMSG_FADEOUT, MNST + 00 + (MAX_ABLSHOP), CR_ORANGE, MenuX-(MNL * 1), Menuy + (MNL * MAX_ABLSHOP), 0.2, 0);}
+					HudMessage(s: ">>"; HUDMSG_FADEOUT, MNST + 15, 0, MenuX - (MNL * 3), Menuy + (MNL * CursorY), 0.2, 0);
 		
 					//Draw Description
 					ItemGameName = ClassShopCache[ChoiceID][0];

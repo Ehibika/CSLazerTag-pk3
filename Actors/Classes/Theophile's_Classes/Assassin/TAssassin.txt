@@ -5,6 +5,7 @@ player.startitem "IsAssassin"
 player.startitem "BusterPower", 100
 player.startitem "SetupShop"
 player.startitem "LoadShopInventory"
+player.startitem "RoundSignatureGive"
 
 player.startitem "TAssassin_ClassSet"
 

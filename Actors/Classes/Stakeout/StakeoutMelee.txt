@@ -14,7 +14,7 @@ STU0 B 1 A_Lower
 Loop
 Select:
 //TNT1 AAAAAAAAAAAAAAAAAAAAAA 0 A_Raise
-TNT1 A 0 ACS_NamedExecuteAlways("WepSpeedMod",0,Knife_MoveSpeed*FVM)
+TNT1 A 0 ACS_NamedExecuteAlways("WepSetup",0,Knife_MoveSpeed*FVM,W_SideArm)
 STU0 BBB 0 A_Raise
 STU0 B 1 A_WEAPONREADY(WRF_NOPRIMARY|WRF_NOSECONDARY|WRF_NOBOB)
 Loop

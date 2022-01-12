@@ -68,7 +68,7 @@ Script "3rdCameraHandler" (int p_num) ClientSide
 	int r = GetCamSetting(0);//MAX_R-(Clamp_R);
 
 	Int HostTID;
-
+	int RoofDist,PlayerHeight,a,p,x,y,h,z,xyr;
 	//if (p_num != GetCvar("PlayerCamNum")){p_num = GetCvar("PlayerCamNum");}
 	//int test = 0.0;
 	while (cam_mode[p_num] == ON)//(GetCVar(strparam(s:"PlayerCam_",i:p_num)) == ON)//
@@ -79,15 +79,16 @@ Script "3rdCameraHandler" (int p_num) ClientSide
 		//test += 0.01;
 		//if(test > 1.0){test = 0.0;}
 
-		int RoofDist = GetActorCeilingZ (HostTID) - GetActorZ (HostTID);
-		int PlayerHeight = 30.0;
-		int a = GetActorAngle (0) + Fixedmul(AOFFSET,GetCamSetting(3));
-		int p = GetActorPitch (0) + Fixedmul(POFFSET,GetCamSetting(1));
-		int x = GetActorX (HostTID) ;
-		int y = GetActorY (HostTID) ;
-			int h = (CAMHEIGHT_CLAMP*GetCamSetting(2));
-		int z = GetActorZ (HostTID) + VIEW_HEIGHT + h;
-		int xyr = r * cos (p) >> 16;
+		 RoofDist = GetActorCeilingZ (HostTID) - GetActorZ (HostTID);
+		 PlayerHeight = 30.0;
+		 a = GetActorAngle (0) + Fixedmul(AOFFSET,GetCamSetting(3));
+		 if(!CheckInventory("InRemoteMode")){p = GetActorPitch (0) + Fixedmul(POFFSET,GetCamSetting(1));}
+		 else{p = REMOPITCH;}
+		 x = GetActorX (HostTID) ;
+		 y = GetActorY (HostTID) ;
+			 h = (CAMHEIGHT_CLAMP*GetCamSetting(2));
+		 z = GetActorZ (HostTID) + VIEW_HEIGHT + h;
+		 xyr = r * cos (p) >> 16;
 		
 		if (z > GetActorCeilingZ(HostTID) - (PlayerHeight)){z = GetActorCeilingZ(HostTID) - (PlayerHeight);}
 		//log(f:RoofDist);

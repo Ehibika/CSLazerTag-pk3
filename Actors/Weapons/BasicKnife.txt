@@ -7,7 +7,7 @@ const float Knife_MoveSpeed = 1.4;
 actor BasicKnife : WepMasterBase
 {
 Weapon.AmmoUse 0
-Weapon.SlotNumber 0
+Weapon.SlotNumber 3
 Inventory.Pickupmessage "$PU_MEGABUSTER"
 Obituary "$OB_MEGABUSTER"
 Tag "Knife"
@@ -28,7 +28,7 @@ MKNI B 1 A_Lower
 Loop
 Select:
 //TNT1 AAAAAAAAAAAAAAAAAAAAAA 0 A_Raise
-TNT1 A 0 ACS_NamedExecuteAlways("WepSpeedMod",0,Knife_MoveSpeed*FVM)
+TNT1 A 0 ACS_NamedExecuteAlways("WepSetup",0,Knife_MoveSpeed*FVM,W_SideArm)
 MKNI BBB 0 A_Raise
 MKNI B 1 A_WEAPONREADY(WRF_NOPRIMARY|WRF_NOSECONDARY|WRF_NOBOB)
 Loop
@@ -48,10 +48,10 @@ stop
 NoFlash:
 TNT1 A 1
 stop
-
 DeadLowered:
 DUST B 0 ACS_NamedExecuteAlways("DropYourWeapons",0,-1)
 stop
+
 }
 }
 

@@ -18,6 +18,8 @@
 #libdefine POFFSET 0.10 //Pitch offset
 #libdefine AOFFSET 0.014 //Angle offset
 
+#libdefine REMOPITCH 0.01 //Pitch When in remote mode
+
 #LIBDEFINE OFFSET_LEFT -0.08
 #LIBDEFINE OFFSET_RIGHT 0.08
 bool cam_mode[64];		//Variable for turning the camera on or off.

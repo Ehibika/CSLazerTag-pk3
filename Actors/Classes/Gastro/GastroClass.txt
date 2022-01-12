@@ -5,6 +5,7 @@ player.startitem "IsGastro"
 player.startitem "BusterPower", 100
 player.startitem "SetupShop"
 player.startitem "LoadShopInventory"
+player.startitem "RoundSignatureGive"
 
 player.startitem "Gastro_ClassSet"
 

@@ -82,7 +82,7 @@ goto BuySuccess
 //===
 Use2:
 TNT1 A 0 A_JumpIfInventory("Zapper",1,"Possessed")
-DUST B 0 ACS_NamedExecuteAlways("DropYourWeapons",0,WP_Zapper)
+DUST B 0 ACS_NamedExecuteAlways("DropYourSidearm",0,WP_Zapper)
 DUST B 0 A_GiveInventory("WepPickupBuffer",1)
 TNT1 A 0 A_GiveInventory("Zapper",1)
 TNT1 A 0 A_SelectWeapon("Zapper")
@@ -105,7 +105,7 @@ goto BuySuccess
 //===
 Use2:
 TNT1 A 0 A_JumpIfInventory("Scrapper",1,"Possessed")
-DUST B 0 ACS_NamedExecuteAlways("DropYourWeapons",0,WP_Scrapper)
+DUST B 0 ACS_NamedExecuteAlways("DropYourSidearm",0,WP_Scrapper)
 DUST B 0 A_GiveInventory("WepPickupBuffer",1)
 TNT1 A 0 A_GiveInventory("Scrapper",1)
 TNT1 A 0 A_SelectWeapon("Scrapper")
@@ -128,7 +128,7 @@ goto BuySuccess
 //===
 Use2:
 TNT1 A 0 A_JumpIfInventory("Watchman",1,"Possessed")
-DUST B 0 ACS_NamedExecuteAlways("DropYourWeapons",0,WP_Watchman)
+DUST B 0 ACS_NamedExecuteAlways("DropYourSidearm",0,WP_Watchman)
 DUST B 0 A_GiveInventory("WepPickupBuffer",1)
 TNT1 A 0 A_GiveInventory("Watchman",1)
 TNT1 A 0 A_SelectWeapon("Watchman")
@@ -151,7 +151,7 @@ goto BuySuccess
 //===
 Use2:
 TNT1 A 0 A_JumpIfInventory("Scout",1,"Possessed")
-DUST B 0 ACS_NamedExecuteAlways("DropYourWeapons",0,WP_Scout)
+DUST B 0 ACS_NamedExecuteAlways("DropYourSidearm",0,WP_Scout)
 DUST B 0 A_GiveInventory("WepPickupBuffer",1)
 TNT1 A 0 A_GiveInventory("Scout",1)
 TNT1 A 0 A_SelectWeapon("Scout")
@@ -174,7 +174,7 @@ goto BuySuccess
 //===
 Use2:
 TNT1 A 0 A_JumpIfInventory("Pounder",1,"Possessed")
-DUST B 0 ACS_NamedExecuteAlways("DropYourWeapons",0,WP_Pounder)
+DUST B 0 ACS_NamedExecuteAlways("DropYourSidearm",0,WP_Pounder)
 DUST B 0 A_GiveInventory("WepPickupBuffer",1)
 TNT1 A 0 A_GiveInventory("Pounder",1)
 TNT1 A 0 A_SelectWeapon("Pounder")
@@ -197,7 +197,7 @@ goto BuySuccess
 //===
 Use2:
 TNT1 A 0 A_JumpIfInventory("Gunslinger",1,"Possessed")
-DUST B 0 ACS_NamedExecuteAlways("DropYourWeapons",0,WP_Gunslinger)
+DUST B 0 ACS_NamedExecuteAlways("DropYourSidearm",0,WP_Gunslinger)
 DUST B 0 A_GiveInventory("WepPickupBuffer",1)
 TNT1 A 0 A_GiveInventory("Gunslinger",1)
 TNT1 A 0 A_SelectWeapon("Gunslinger")
@@ -221,7 +221,7 @@ goto BuySuccess
 //===
 Use2:
 TNT1 A 0 A_JumpIfInventory("Fighter",1,"Possessed")
-DUST B 0 ACS_NamedExecuteAlways("DropYourWeapons",0,WP_Fighter)
+DUST B 0 ACS_NamedExecuteAlways("DropYourMainWep",0,WP_Fighter)
 DUST B 0 A_GiveInventory("WepPickupBuffer",1)
 TNT1 A 0 A_GiveInventory("Fighter",1)
 TNT1 A 0 A_SelectWeapon("Fighter")
@@ -244,7 +244,7 @@ goto BuySuccess
 //===
 Use2:
 TNT1 A 0 A_JumpIfInventory("Warden",1,"Possessed")
-DUST B 0 ACS_NamedExecuteAlways("DropYourWeapons",0,WP_Warden)
+DUST B 0 ACS_NamedExecuteAlways("DropYourMainWep",0,WP_Warden)
 DUST B 0 A_GiveInventory("WepPickupBuffer",1)
 TNT1 A 0 A_GiveInventory("Warden",1)
 TNT1 A 0 A_SelectWeapon("Warden")
@@ -267,7 +267,7 @@ goto BuySuccess
 //===
 Use2:
 TNT1 A 0 A_JumpIfInventory("Tracer",1,"Possessed")
-DUST B 0 ACS_NamedExecuteAlways("DropYourWeapons",0,WP_Tracer)
+DUST B 0 ACS_NamedExecuteAlways("DropYourMainWep",0,WP_Tracer)
 DUST B 0 A_GiveInventory("WepPickupBuffer",1)
 TNT1 A 0 A_GiveInventory("Tracer",1)
 TNT1 A 0 A_SelectWeapon("Tracer")
@@ -290,7 +290,7 @@ goto BuySuccess
 //===
 Use2:
 TNT1 A 0 A_JumpIfInventory("Enforcer",1,"Possessed")
-DUST B 0 ACS_NamedExecuteAlways("DropYourWeapons",0,WP_Enforcer)
+DUST B 0 ACS_NamedExecuteAlways("DropYourMainWep",0,WP_Enforcer)
 DUST B 0 A_GiveInventory("WepPickupBuffer",1)
 TNT1 A 0 A_GiveInventory("Enforcer",1)
 TNT1 A 0 A_SelectWeapon("Enforcer")
@@ -313,7 +313,7 @@ goto BuySuccess
 //===
 Use2:
 TNT1 A 0 A_JumpIfInventory("Toujorprey",1,"Possessed")
-DUST B 0 ACS_NamedExecuteAlways("DropYourWeapons",0,WP_Toujorprey)
+DUST B 0 ACS_NamedExecuteAlways("DropYourMainWep",0,WP_Toujorprey)
 DUST B 0 A_GiveInventory("WepPickupBuffer",1)
 TNT1 A 0 A_GiveInventory("Toujorprey",1)
 TNT1 A 0 A_SelectWeapon("Toujorprey")
@@ -336,7 +336,7 @@ goto BuySuccess
 //===
 Use2:
 TNT1 A 0 A_JumpIfInventory("Hyperbeam",1,"Possessed")
-DUST B 0 ACS_NamedExecuteAlways("DropYourWeapons",0,WP_Hyperbeam)
+DUST B 0 ACS_NamedExecuteAlways("DropYourMainWep",0,WP_Hyperbeam)
 DUST B 0 A_GiveInventory("WepPickupBuffer",1)
 TNT1 A 0 A_GiveInventory("Hyperbeam",1)
 TNT1 A 0 A_SelectWeapon("Hyperbeam")
@@ -359,7 +359,7 @@ goto BuySuccess
 //===
 Use2:
 TNT1 A 0 A_JumpIfInventory("LightCannon",1,"Possessed")
-DUST B 0 ACS_NamedExecuteAlways("DropYourWeapons",0,WP_LightCannon)
+DUST B 0 ACS_NamedExecuteAlways("DropYourMainWep",0,WP_LightCannon)
 DUST B 0 A_GiveInventory("WepPickupBuffer",1)
 TNT1 A 0 A_GiveInventory("LightCannon",1)
 TNT1 A 0 A_SelectWeapon("LightCannon")
@@ -382,7 +382,7 @@ goto BuySuccess
 //===
 Use2:
 TNT1 A 0 A_JumpIfInventory("Muscler",1,"Possessed")
-DUST B 0 ACS_NamedExecuteAlways("DropYourWeapons",0,WP_Muscler)
+DUST B 0 ACS_NamedExecuteAlways("DropYourMainWep",0,WP_Muscler)
 DUST B 0 A_GiveInventory("WepPickupBuffer",1)
 TNT1 A 0 A_GiveInventory("Muscler",1)
 TNT1 A 0 A_SelectWeapon("Muscler")
@@ -405,7 +405,7 @@ goto BuySuccess
 //===
 Use2:
 TNT1 A 0 A_JumpIfInventory("Skye",1,"Possessed")
-DUST B 0 ACS_NamedExecuteAlways("DropYourWeapons",0,WP_Skye)
+DUST B 0 ACS_NamedExecuteAlways("DropYourMainWep",0,WP_Skye)
 DUST B 0 A_GiveInventory("WepPickupBuffer",1)
 TNT1 A 0 A_GiveInventory("Skye",1)
 TNT1 A 0 A_SelectWeapon("Skye")
@@ -428,7 +428,7 @@ goto BuySuccess
 //===
 Use2:
 TNT1 A 0 A_JumpIfInventory("Vaporizer",1,"Possessed")
-DUST B 0 ACS_NamedExecuteAlways("DropYourWeapons",0,WP_Vaporizer)
+DUST B 0 ACS_NamedExecuteAlways("DropYourMainWep",0,WP_Vaporizer)
 DUST B 0 A_GiveInventory("WepPickupBuffer",1)
 TNT1 A 0 A_GiveInventory("Vaporizer",1)
 TNT1 A 0 A_SelectWeapon("Vaporizer")

@@ -4,6 +4,7 @@ Player.displayname "Gadget"
 Player.startitem "BusterPower", 100
 player.startitem "SetupShop"
 player.startitem "LoadShopInventory"
+player.startitem "RoundSignatureGive"
 
 Player.startitem "UseAbility1_Gadget"
 Player.startitem "UseAbility2_Gadget"

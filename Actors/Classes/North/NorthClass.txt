@@ -6,6 +6,7 @@ Player.startitem "IsNorth"
 Player.startitem "BusterPower", 1000
 player.startitem "SetupShop"
 player.startitem "LoadShopInventory"
+player.startitem "RoundSignatureGive"
 
 Player.startitem "North_ClassSet"
 

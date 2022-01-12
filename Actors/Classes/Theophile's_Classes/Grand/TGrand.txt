@@ -5,6 +5,7 @@ player.startitem "IsGrand"
 player.startitem "BusterPower", 1000
 player.startitem "SetupShop"
 player.startitem "LoadShopInventory"
+player.startitem "RoundSignatureGive"
 
 player.startitem "TGrand_ClassSet"
 

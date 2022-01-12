@@ -11,13 +11,17 @@ Const float Enforcer_SwayLeft = 5.5;
 Const float Enforcer_SwayRight = 5.5;
 Const int Enforcer_MoveError = 10;
 
-Const int Enforcer_Damage = 40;
-Const int Enforcer_FalloffRange = FalloffBase+800;
-Const int Enforcer_FalloffRate = S_FLR;
+Const int Enforcer_D1 = 50; // Highest damage
+Const int Enforcer_R1 = 20; //in 32 MU Meters
+Const int Enforcer_D2 = 45; //Mid damage
+Const int Enforcer_R2 = 30; //in 32 MU Meters
+Const int Enforcer_MinD = 25; //Lowest damage
 
-Const int Enforcer_HeadShotDamage = 65;
-Const int Enforcer_HeadShotFalloffRange = FalloffBase+800;
-Const int Enforcer_HeadShotFalloffRate = S_HFLR;
+Const int Enforcer_H_D1 = 65; // Highest damage
+Const int Enforcer_H_R1 = 20; //in 32 MU Meters
+Const int Enforcer_H_D2 = 60; //Mid damage
+Const int Enforcer_H_R2 = 50; //in 32 MU Meters
+Const int Enforcer_H_MinD = 30; //Lowest damage
 
 const float Enforcer_MoveSpeed = 0.8;
 
@@ -28,7 +32,7 @@ Weapon.SlotNumber 2
 Inventory.Pickupmessage "$PU_ENFORCER"
 Obituary "$OB_ENFORCER"
 Tag "Enforcer"
-weapon.ammotype "BusterPower"
+weapon.ammotype "BusterPower2"
 inventory.icon "WHICON10"
 //Dropitem "EnforcerDropItem"
 States
@@ -46,7 +50,7 @@ BUST B 1 A_Lower
 Loop
 Select:
 //TNT1 AAAAAAAAAAAAAAAAAAAAAA 0 A_Raise
-TNT1 A 0 ACS_NamedExecuteAlways("WepSpeedMod",0,Enforcer_MoveSpeed*FVM)
+TNT1 A 0 ACS_NamedExecuteAlways("WepSetup",0,Enforcer_MoveSpeed*FVM,W_MainWeapon)
 PIDB A 1 A_Raise
 Loop
 
@@ -72,7 +76,7 @@ NoAmmo:
 "####" C 0 A_GiveInventory("Enforcer_RR",1) 
 "####" A 0 A_TakeInventory("FiringSpeed",9)
 NoAmmo2:
-"####" "#" 1 A_JumpIfInventory("BusterPower",1000,"Fire")
+"####" "#" 1 A_JumpIfInventory("BusterPower2",1000,"Fire")
 "####" "#" 0 A_Refire("NoAmmo2")
 Goto Ready
 
@@ -100,7 +104,7 @@ DUST B 0 A_Jump(256,"Pickup.Check")
 goto Pickup.Check
 
 Pickup.WepGive:
-DUST B 0 ACS_NamedExecuteAlways("DropYourWeapons",0,WP_Enforcer)
+DUST B 0 ACS_NamedExecuteAlways("DropYourMainWep",0,WP_Enforcer)
 DUST B 0 A_GiveInventory("WepPickupBuffer",1)
 DUST B 0 A_GiveInventory("Enforcer",1)
 TNT1 A 0 A_SelectWeapon("Enforcer")
@@ -261,7 +265,7 @@ states
 {
 
 Spawn2:
-TNT1 A 0 A_Explode(CallACS("DamageRate",Enforcer_Damage,Enforcer_FalloffRange,Enforcer_FalloffRate),1,0,0,1)
+TNT1 A 0 A_Explode(CallACS("DMinMax",Enforcer_MinD,CallACS("DMGR",Enforcer_D1,Enforcer_R1,Enforcer_D2,Enforcer_R2)),1,0,0,1)
 TNT1 A 1
 stop
 }
@@ -277,7 +281,7 @@ args 45
 states
 {
 Spawn2:
-TNT1 A 0 A_Explode(CallACS("DamageRate",Enforcer_HeadShotDamage,Enforcer_HeadShotFalloffRange,Enforcer_HeadShotFalloffRate),1,0,0,1)
+TNT1 A 0 A_Explode(CallACS("DMinMax",Enforcer_H_MinD,CallACS("DMGR",Enforcer_H_D1,Enforcer_H_R1,Enforcer_H_D2,Enforcer_H_R2)),1,0,0,1)
 TNT1 A 1
 stop
 }

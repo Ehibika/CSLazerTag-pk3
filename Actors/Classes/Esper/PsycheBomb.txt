@@ -85,8 +85,8 @@ actor FutureSightRCFlag : Powerup {inventory.amount 1 powerup.duration 35 }
 
 Const int PsycheBombRad = 100;
 Const int PsycheBomb_Item = 16;
-Const int PsycheBomb_Forward = 150;
-Const int PsycheBomb_Range = 1600;
+Const int PsycheBomb_Forward = 1;
+Const int PsycheBomb_Range = 2000;
 
 actor FutureSight_Remote 
 {
@@ -114,7 +114,7 @@ Spawn:
 TNT1 A 0 
 TNT1 A 0 A_GiveInventory("ProjectileCode",1)
 TNT1 A 0 ACS_NamedExecuteAlways("CamGrabObject",0)
-TNT1 A 0 ACS_NamedExecuteAlways("RemoteControlActor",0,45.0,PsycheBomb_Range)
+TNT1 A 0 ACS_NamedExecuteAlways("MouseRemoteControlActor",0,45.0,PsycheBomb_Range)
 TNT1 A 0 A_SetArg(0,CallACS("Core_GetTarget")-1000)
 //TNT1 A 0 A_TransferPointer(AAPTR_TARGET,AAPTR_DEFAULT,AAPTR_TRACER,AAPTR_DEFAULT)
 TNT1 A 0 ACS_NamedExecuteAlways("ToggleCameraTint",0,2)

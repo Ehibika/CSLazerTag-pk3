@@ -10,13 +10,17 @@ Const int Zapper_SwayLeft = 1.1;
 Const int Zapper_SwayRight = 1.1;
 Const int Zapper_MoveError = 3;
 
-Const int Zapper_Damage = 20;
-Const int Zapper_FalloffRange = FalloffBase;
-Const int Zapper_FalloffRate = S_FLR;
+Const int Zapper_D1 = 20; // Highest damage
+Const int Zapper_R1 = 30; //in 32 MU Meters
+Const int Zapper_D2 = 15; //Mid damage
+Const int Zapper_R2 = 50; //in 32 MU Meters
+Const int Zapper_MinD = 10; //Lowest damage
 
-Const int Zapper_HeadShotDamage = 35;
-Const int Zapper_HeadShotFalloffRange = FalloffBase;
-Const int Zapper_HeadShotFalloffRate = S_HFLR;
+Const int Zapper_H_D1 = 35; // Highest damage
+Const int Zapper_H_R1 = 30; //in 32 MU Meters
+Const int Zapper_H_D2 = 25; //Mid damage
+Const int Zapper_H_R2 = 50; //in 32 MU Meters
+Const int Zapper_H_MinD = 20; //Lowest damage
 
 const float Zapper_MoveSpeed = 1.0;
 
@@ -45,7 +49,7 @@ CMUA A 1 A_Lower
 Loop
 Select:
 //TNT1 AAAAAAAAAAAAAAAAAAAAAA 0 A_Raise
-TNT1 A 0 ACS_NamedExecuteAlways("WepSpeedMod",0,Zapper_MoveSpeed*FVM)
+TNT1 A 0 ACS_NamedExecuteAlways("WepSetup",0,Zapper_MoveSpeed*FVM,W_SideArm)
 CMUA AA 0 A_Raise
 CMUA A 1
 Loop
@@ -102,8 +106,8 @@ AltHold:
 Goto Ready
 
 NoAmmo:
-"####" "#" 1 A_JumpIfInventory("BusterPower",1000,"Fire")
-"####" "#" 0 A_Refire("NoAmmo")
+"####" A 1 A_JumpIfInventory("BusterPower",1000,"Fire")
+"####" A 0 A_Refire("NoAmmo")
 Goto Ready
 
 Flash:
@@ -130,7 +134,7 @@ DUST B 0 A_Jump(256,"Pickup.Check")
 goto Pickup.Check
 
 Pickup.WepGive:
-DUST B 0 ACS_NamedExecuteAlways("DropYourWeapons",0,WP_Zapper)
+DUST B 0 ACS_NamedExecuteAlways("DropYourSidearm",0,WP_Zapper)
 DUST B 0 A_GiveInventory("WepPickupBuffer",1)
 DUST B 0 A_GiveInventory("Zapper",1)
 TNT1 A 0 A_SelectWeapon("Zapper")
@@ -218,7 +222,7 @@ states
 {
 
 Spawn2:
-TNT1 A 0 A_Explode(CallACS("DamageRate",Zapper_Damage,Zapper_FalloffRange,Zapper_FalloffRate),1,0,0,1)
+TNT1 A 0 A_Explode(CallACS("DMinMax",Zapper_MinD,CallACS("DMGR",Zapper_D1,Zapper_R1,Zapper_D2,Zapper_R2)),1,0,0,1)
 TNT1 A 1
 stop
 }
@@ -234,7 +238,7 @@ args 45
 states
 {
 Spawn2:
-TNT1 A 0 A_Explode(CallACS("DamageRate",Zapper_HeadShotDamage,Zapper_HeadShotFalloffRange,Zapper_HeadShotFalloffRate),1,0,0,1)
+TNT1 A 0 A_Explode(CallACS("DMinMax",Zapper_H_MinD,CallACS("DMGR",Zapper_H_D1,Zapper_H_R1,Zapper_H_D2,Zapper_H_R2)),1,0,0,1)
 TNT1 A 1
 stop
 }

@@ -11,7 +11,7 @@
 #LIBDEFINE BARRIERTID 390000 // 37| Owner TID
 
 #LIBDEFINE DROPITEMTID 4540
-
+#LIBDEFINE ZDMETER 32 //a meter is 32 map units
 Function bool CheckActorTeam(int TID)
 {
 	if(ClassifyActor(TID) & ACTOR_PLAYER) {return GetPlayerInfo(TID-1000, PLAYERINFO_TEAM);}

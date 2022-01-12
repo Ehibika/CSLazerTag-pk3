@@ -1,24 +1,24 @@
 [enu default]
 
 //==========|MegaMan|==============
-MEGAMANC_ABILITY_0 = "\cuRush! Here Boy!"; //Rush Call
-MEGAMANC_ABILITY_1 = "\cuGive me a boost, Rush!"; //Rush Call
+MEGAMANC_ABILITY_0 = "\cnRush! Here Boy!"; //Rush Call
+MEGAMANC_ABILITY_1 = "\cnGive me a boost, Rush!"; //Rush Call
 
-MEGAMANC_ABILITY_2 = "\cuHyperbomb Out!"; //Hyper Bomb
-MEGAMANC_ABILITY_3 = "\cuBombs Away!"; //Hyper Bomb
+MEGAMANC_ABILITY_2 = "\cnHyperbomb Out!"; //Hyper Bomb
+MEGAMANC_ABILITY_3 = "\cnBombs Away!"; //Hyper Bomb
 
-MEGAMANC_ROUNDSTART_0 = "\cuFor Doctor Light!";
-MEGAMANC_ROUNDSTART_1 = "\cuReady!";
+MEGAMANC_ROUNDSTART_0 = "\cnFor Doctor Light!";
+MEGAMANC_ROUNDSTART_1 = "\cnReady!";
 
-MEGAMANC_CLUTCH_0 = "\cuThat was Close! but I did it!";
+MEGAMANC_CLUTCH_0 = "\cnThat was Close! but I did it!";
 
-MEGAMANC_CLUTCHCOMMEND_0 = "\cuWay To Go!";
+MEGAMANC_CLUTCHCOMMEND_0 = "\cnWay To Go!";
 
-MEGAMANC_LOSING_0 = "\cuWe Just Gotta Fight!";
+MEGAMANC_LOSING_0 = "\cnWe Just Gotta Fight!";
 
-MEGAMANC_WINNING_0 = "\cuAlmost there! let's keep going!";
+MEGAMANC_WINNING_0 = "\cnAlmost there! let's keep going!";
 
-MEGAMANC_COMEBACK_0 = "\cuYeah! We're turning this around!";
+MEGAMANC_COMEBACK_0 = "\cnYeah! We're turning this around!";
 //==========|MegaMan|==============
 NORTH_ABILITY_0 = "\c[Ice]Ice Bolt..."; //Ice Bolt
 NORTH_ABILITY_1 = "\c[Ice]Watch out, Chilling the area..."; //Ice Bolt

@@ -5,6 +5,7 @@ player.startitem "IsEsper"
 player.startitem "BusterPower", 1000
 player.startitem "SetupShop"
 player.startitem "LoadShopInventory"
+player.startitem "RoundSignatureGive"
 
 player.startitem "Esper_ClassSet"
 

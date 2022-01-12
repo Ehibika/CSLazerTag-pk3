@@ -2,7 +2,7 @@ actor BasicMolotovWep : WepMasterBase
 {
 Weapon.AmmoUse2 1
 Weapon.AmmoGive2 2
-Weapon.SlotNumber 1
+Weapon.SlotNumber 0
 Inventory.Pickupmessage "$PU_MEGABUSTER"
 Obituary "$OB_MEGABUSTER"
 Tag "Basic Molotov"

@@ -61,8 +61,21 @@ InInventory LT_Armor, 1
 
 // ===|Ammo|===
 //DrawImage "AHUDB", -80+center, -32;
-Drawbar "NAMFLS1", "NBARE", AntiBusterPower, horizontal, -77+center, -28;
-Drawbar "NAMMOB", "NEMPTY", Ammo1, horizontal, -77+center, -28;
+	InInventory WepTier1, 1
+	{
+	Drawbar "NAMFLS1", "NBARE", AntiBusterPower, horizontal, -77+center, -28;
+	Drawbar "NAMMOB", "NEMPTY", Ammo1, horizontal, -77+center, -28;
+	}
+	InInventory WepTier2, 1
+	{
+	Drawbar "NAMFLS1", "NBARE", AntiBusterPower2, horizontal, -77+center, -28;
+	Drawbar "3AMMOB", "NEMPTY", Ammo1, horizontal, -77+center, -28;
+	}
+		InInventory WepTier3, 1
+	{
+	Drawbar "NAMFLS1", "NBARE", AntiBusterPower2, horizontal, -77+center, -28;
+	Drawbar "3AMMOB", "NEMPTY", Ammo1, horizontal, -77+center, -28;
+	}
 //DrawImage "ABILHUD3", -95+center, -32;
 DrawImage weaponicon, -92+center, -29;
 DrawSelectedInventory INDEXFONT ,-107+center, -29, -94+center, -29, white;

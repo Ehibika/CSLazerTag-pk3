@@ -135,6 +135,16 @@ if(CurCash+Wage > CASHCAP)
 
 }
 
+script "GiveCash" (int wage)
+{
+Int p = PlayerNumber();
+Int CurCash = GetCvar(StrParam(s:"PLAYER",i:p,s:"_CASH"));
+
+if(CurCash+Wage > CASHCAP)
+	{SetCvar(StrParam(s:"PLAYER",i:p,s:"_CASH"),CASHCAP);}
+	else{AdjustCvar(StrParam(s:"PLAYER",i:p,s:"_CASH"),wage);}
+
+}
 
 
 script "CashGameOver" UNLOADING
