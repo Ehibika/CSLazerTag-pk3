@@ -932,6 +932,11 @@ script "CG_LMS_CHECK" (void)
 SetResultValue(GetCvar("teamlms")||GetCvar("lastmanstanding"));
 }
 
+script "CG_TEAMGAME_CHECK" (void)
+{
+SetResultValue(GetCvar("TeamGame"));
+}
+
 Script "CSLT_GiveArmor" (int Amount)
 {
 int Subtract = CheckInventory("LT_Armor");
@@ -1771,7 +1776,7 @@ script "TrapSensorIdentify"  (VOID)
 
 Script "TLMS_RoundWarp" ENTER
 {
-if(GetCvar("lastmanstanding")==1||GetCvar("teamlms")==1){
+if(GetRoundGame(1)==1){
 	While(GetGameModeState() != GAMESTATE_INPROGRESS&&PlayerHealth()>0) Delay(1);
 	//===Round Start
 	While(GetGameModeState() != GAMESTATE_COUNTDOWN&&PlayerHealth()>0) Delay(1);
@@ -1786,7 +1791,7 @@ ACS_NamedExecuteAlways("TLMS_RoundWarpRespawn", 0);
 /*
 Script "TLMS_RoundSignature" ENTER
 {
-if(GetCvar("lastmanstanding")==1||GetCvar("teamlms")==1){
+if(GetRoundGame(1)==1){
 	While(GetGameModeState() != GAMESTATE_INPROGRESS) Delay(1);
 	//===Round Start
 	While(GetGameModeState() != GAMESTATE_INRESULTSEQUENCE ){ Delay(1);}
@@ -1811,8 +1816,15 @@ ACS_NamedExecuteAlways("TLMS_RoundSignature", 0);
 
 Script "TLMS_RoundSignatureHandler" (Void)
 {
-if((GetCvar("lastmanstanding")==1||GetCvar("teamlms")==1)
+if((GetRoundGame(1)==1)
 	&& GetGameModeState() == GAMESTATE_COUNTDOWN
+	&& !CheckInventory("AbilityCharge_1"))
+	{
+	GiveInventory("AbilityCharge_1",1); 
+	ACS_NamedExecuteAlways("Write_Inventory",0,1);
+	}
+Else if ((GetRoundGame(0)==1)
+	&& GetCvar("Bomb_GameState") == 0
 	&& !CheckInventory("AbilityCharge_1"))
 	{
 	GiveInventory("AbilityCharge_1",1); 
@@ -1822,7 +1834,7 @@ if((GetCvar("lastmanstanding")==1||GetCvar("teamlms")==1)
 
 Script "TLMS_RoundCleanup" OPEN
 {
-if(GetCvar("lastmanstanding")==1||GetCvar("teamlms")==1){
+if(GetRoundGame(0)==1){
 	//While(GetGameModeState() != GAMESTATE_INPROGRESS) Delay(1);
 	//===Round Start
 	While(GetGameModeState() != GAMESTATE_COUNTDOWN) Delay(1);

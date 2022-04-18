@@ -263,3 +263,11 @@ Function bool IsAlpha (str charStr)
 {
    return !IsDigit(charStr);
 }
+
+Function bool GetRoundGame (int type)
+{
+
+if(Type){return (GetCvar("lastmanstanding")==1||GetCvar("teamlms"));}
+
+return (GetCvar("lastmanstanding")==1||GetCvar("teamlms")||(GetCvar("Sv_BombGame")&&GetCvar("TeamGame")));
+}

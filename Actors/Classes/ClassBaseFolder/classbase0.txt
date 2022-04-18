@@ -67,6 +67,7 @@ TNT1 A 0 A_SpawnItemEx("FakeDeathFX", 0, 0, 32)
 MegamanFall:
 TNT1 A 0 A_PlayerScream
 MegamanErase:
+Death.DeadSpectate:
 TNT1 A 1 A_CheckPlayerDone
 wait
 MegamanGib:

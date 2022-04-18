@@ -5,7 +5,6 @@ statusbar normal, forcescaled, fullscreenoffsets
 {
 InInventory not NoHealthBar, 1
 {
-
 //=====
 
 // ===|Frames|===
@@ -79,6 +78,7 @@ InInventory LT_Armor, 1
 //DrawImage "ABILHUD3", -95+center, -32;
 DrawImage weaponicon, -92+center, -29;
 DrawSelectedInventory INDEXFONT ,-107+center, -29, -94+center, -29, white;
+
 
 
 //DrawNumber 3, "8BDMAFONT", Untranslated, AbilityCharge_1, alignment(left), 114, -50;

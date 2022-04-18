@@ -176,9 +176,9 @@ switch(GetPlayerInfo(TID-1000,PLAYERINFO_TEAM)){
 	}
 while(GetActorProperty(TID,APROP_Health)>0 && UniqueTID(TID+666,1) != TID+666 && PlayerInGame(TID-1000)){
 	SetFont(StrParam(s:"STKTC1", i:TID-1000));
-	HudMessage(s:"A";HUDMSG_PLAIN,467,CR_WHITE,3712.0,1920.0,1.0 / 35 + 3);//0.1, 225.1//1024 768
+	HudMessage(s:"A";HUDMSG_PLAIN,867,CR_WHITE,3712.0,1920.0,1.0 / 35 + 3);//0.1, 225.1//1024 768
 	SetFont(StrParam(s:"STKTC", s:team));
-	HudMessage(s:"A";HUDMSG_PLAIN,468,CR_WHITE,3712.0,1920.0,1.0 / 35 + 3);//0.1, 225.1//1024 768
+	HudMessage(s:"A";HUDMSG_PLAIN,868,CR_WHITE,3712.0,1920.0,1.0 / 35 + 3);//0.1, 225.1//1024 768
 	Delay(1);
 	}
 }

@@ -128,7 +128,7 @@ Function void DropWepFunc (str WepName, int XSpeed, int Zspeed)
 script "InventoryEvents" (int type, int arg1, int arg2) EVENT
 {
 
-    if(GetCvar("lastmanstanding")==1||GetCvar("teamlms")==1){
+    if(GetRoundGame(1)==1){
     Switch(type)
         {
         Case 5: LoadAllPlayerInventory(); break;
@@ -144,13 +144,18 @@ Str ClassName,StarterItem;
 ClassName = GetActorClass(0);
 StarterItem = StrParam(s:ClassName,s:"StarterSet");
 
-    if(GetCvar("lastmanstanding")==1||GetCvar("teamlms")==1) 
+    if(GetRoundGame(1)==1) 
 	{
 	if (GetGameModeState() != 2)
 		{
 		GiveInventory(StarterItem,1);
 		ACS_NamedExecuteAlways("Write_Inventory",0,1);
 		}	
+    }
+    if(GetCvar("TeamGame")==1&&GetCvar("Sv_BombGame")==1) 
+	{
+    //Bomb mode uses it's own classstarter, so terminate this one..
+    Terminate;
     }
 	else
 		{
@@ -294,9 +299,20 @@ Str PlayerInv = StrParam(s:"Player",i:P,s:"_INV");
 SetCvarString(PlayerInv,"0000");
 }
 
+
+script "Load_AllPlayerInventory" (void)
+{
+LoadAllPlayerInventory();
+}
+
 function void LoadAllPlayerInventory(void)
 {
 for(int i = 0; i < SHOP_MAX_PLAYERS; i++) GiveActorInventory(i+1000,"LoadShopInventory",1);
+}
+
+script "Save_AllPlayerInventory" (void)
+{
+SaveAllPlayerInventory();
 }
 
 function void SaveAllPlayerInventory(void)

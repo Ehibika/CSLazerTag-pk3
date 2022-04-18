@@ -1,13 +1,14 @@
 #library "A_Shop"
 #include "zcommon.acs"
 #import "DB_Shop.acs"
+#import "A_Core.acs"
 
 
 
 script "ShopEvents" (int type, int arg1, int arg2) EVENT
 {
 
-    if(GetCvar("lastmanstanding")==1||GetCvar("teamlms")==1){
+    if(GetRoundGame(0)==1){
     Switch(type)
         {
         Case 0: ACS_NamedExecuteWithResult("GivePlayerCash",0,FRAGAWARD); ACS_NamedExecuteWithResult("GiveUltimateCharge"); GiveActorInventory(arg1+1000,"GiveUltimateCharge",1); break;
@@ -168,7 +169,8 @@ ACS_NamedExecuteWithResult("RESET_PLAYER_CASH",p);
 
 script "SHOP_SETUP" (void)
 {
-while(GetGameModeState()==GAMESTATE_INPROGRESS&&PlayerHealth()>0) delay(1);
+if(GetCvar("Sv_BombGame")&&GetCvar("TeamGame")){while((GetCvar("Bomb_GameState") == 1 || GetCvar("Bomb_GameState") == 2) &&PlayerHealth()>0) delay(1);}
+else{while(GetGameModeState()==GAMESTATE_INPROGRESS&&PlayerHealth()>0) delay(1);}
 if(PlayerHealth()>0) 
 	{
 	GiveInventory("Shop",1);
